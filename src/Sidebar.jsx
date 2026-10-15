@@ -4,7 +4,7 @@ import './Sidebar.css';
 const KEY='aurora-sidebar-order-v2';
 const GROUPS=[
  {id:'explore',title:'EXPLORATION',items:['Command Center','Solar System','Planet Intelligence']},
- {id:'observe',title:'OBSERVATION',items:['Sky Tracker','AR Scanner','Galaxy Observatory']}
+ {id:'observe',title:'OBSERVATION',items:['Sky Tonight','Sky Tracker','AR Scanner','Galaxy Observatory']}
 ];
 const ALL=GROUPS.flatMap(g=>g.items);
 export function normalizeSidebarOrder(input){
