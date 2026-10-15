@@ -1,11 +1,11 @@
 {
   "name": "aurora-planet-tracker",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "vite build",
+    "build": "vite build && node --test tests/productionAssets.test.mjs",
     "preview": "vite preview",
     "test": "node --test tests/*.test.mjs"
   },
