@@ -8,3 +8,13 @@
 .stPassReason{grid-column:1/-1;margin:0;border-top:1px solid #37617f;font-size:11px;color:#a9cbe1;line-height:1.6;padding-top:8px}
 .stWeather .stPanelHeading button:disabled{opacity:.6;cursor:wait}
 @media(max-width:700px){.stWeather{margin:11px 0}.stPassVisibility{font-size:10px}}
+
+
+/* v2.3 — full-duration ISS assessment and weather-aware observation panel */
+.stTimelineToggle{grid-column:1/-1;display:flex;justify-content:center;width:100%;background:#14334e;border:1px solid #3e7691;padding:9px 12px;color:#bbf2ff;font:700 11px Rajdhani;cursor:pointer;letter-spacing:.9px}
+.stTimelineToggle:hover{background:#1a4664}
+.stTimeline{grid-column:1/-1;min-width:0;background:#09152c;border:1px solid #31536d;border-radius:5px;padding:11px}
+.stTimelineTrack{display:flex;height:18px;width:100%;gap:1px;overflow:hidden;border-radius:4px}
+.stTimelineTrack span{flex:1 1 auto;min-width:1px}
+.stTimeline p{font:500 11px Rajdhani;color:#a4c2d9;line-height:1.55;margin:8px 0 0}
+@media(max-width:700px){.stPassReason{grid-column:1/-1}.stTimeline,.stTimelineToggle{grid-column:1/-1}.stWeather .stPanelHeading{align-items:flex-start}.stWeather .stPanelHeading button{min-height:38px}}
