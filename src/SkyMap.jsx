@@ -1,4 +1,4 @@
-import React,{useMemo,useState} from 'react';
+import React,{useEffect,useMemo,useState} from 'react';
 import * as Astronomy from 'astronomy-engine';
 import './SkyMap.css';
 
@@ -30,6 +30,7 @@ export default function SkyMap({planets,location,selected,onSelect,onOpenDetails
  const [below,setBelow]=useState(false);
  const [clock,setClock]=useState(true);
  const [search,setSearch]=useState('');
+ useEffect(()=>{if(!clock)return;const update=()=>setAnchor(Date.now());const timer=setInterval(update,30000);return()=>clearInterval(timer)},[clock]);
  const date=useMemo(()=>new Date(anchor+hours*3600000),[anchor,hours]);
  const bodies=useMemo(()=>planets.map(p=>({...p,...position(p.name,date,location.lat,location.lon)})),[planets,date,location.lat,location.lon]);
  const solar=useMemo(()=>position('Sun',date,location.lat,location.lon),[date,location.lat,location.lon]);
