@@ -1,0 +1,74 @@
+{
+  "mercury": {
+    "texture": "public/planet-textures/mercury.jpg",
+    "source": "https://maps.jpl.nasa.gov/tmaps/pix/mer0muu2.jpg",
+    "sourcePage": "https://maps.jpl.nasa.gov/tmaps/mercury.html",
+    "credit": "NASA/JPL/Caltech \u2014 Solar System Simulator map",
+    "classification": "mission-derived; partial Mariner 10 imagery",
+    "width": 1440,
+    "height": 720
+  },
+  "venus": {
+    "texture": "public/planet-textures/venus.jpg",
+    "source": "https://maps.jpl.nasa.gov/tmaps/pix/ven0aaa2.jpg",
+    "sourcePage": "https://maps.jpl.nasa.gov/tmaps/venus.html",
+    "credit": "NASA/JPL/Caltech \u2014 Solar System Simulator map",
+    "classification": "Magellan radar-derived false-color surface map, not visible-light appearance",
+    "width": 1440,
+    "height": 720
+  },
+  "earth": {
+    "texture": "public/planet-textures/earth.jpg",
+    "source": "https://maps.jpl.nasa.gov/tmaps/pix/ear0xuu2.jpg",
+    "sourcePage": "https://maps.jpl.nasa.gov/tmaps/earth.html",
+    "credit": "NASA/JPL/Caltech \u2014 Solar System Simulator map",
+    "classification": "JPL/USGS topographic visualization, not a photographic true-color globe",
+    "width": 1440,
+    "height": 720
+  },
+  "mars": {
+    "texture": "public/planet-textures/mars.jpg",
+    "source": "https://maps.jpl.nasa.gov/tmaps/pix/mar0kuu2.jpg",
+    "sourcePage": "https://maps.jpl.nasa.gov/tmaps/mars.html",
+    "credit": "NASA/JPL/Caltech \u2014 Solar System Simulator map",
+    "classification": "Viking mission-derived processed mosaic",
+    "width": 1440,
+    "height": 720
+  },
+  "jupiter": {
+    "texture": "public/planet-textures/jupiter.jpg",
+    "source": "https://maps.jpl.nasa.gov/tmaps/pix/jup0vss1.jpg",
+    "sourcePage": "https://maps.jpl.nasa.gov/tmaps/jupiter.html",
+    "credit": "NASA/JPL/Caltech \u2014 Solar System Simulator map",
+    "classification": "Voyager representative atmosphere composite; dated appearance",
+    "width": 720,
+    "height": 360
+  },
+  "saturn": {
+    "texture": "public/planet-textures/saturn.jpg",
+    "source": "https://maps.jpl.nasa.gov/tmaps/pix/sat0fds1.jpg",
+    "sourcePage": "https://maps.jpl.nasa.gov/tmaps/saturn.html",
+    "credit": "NASA/JPL/Caltech \u2014 Solar System Simulator map",
+    "classification": "artist reconstruction, NOT an actual Saturn photograph",
+    "width": 720,
+    "height": 360
+  },
+  "uranus": {
+    "texture": "public/planet-textures/uranus.jpg",
+    "source": "https://maps.jpl.nasa.gov/tmaps/pix/ura0fss1.jpg",
+    "sourcePage": "https://maps.jpl.nasa.gov/tmaps/uranus.html",
+    "credit": "NASA/JPL/Caltech \u2014 Solar System Simulator map",
+    "classification": "fictional plain-color stand-in, NOT an actual photograph",
+    "width": 720,
+    "height": 360
+  },
+  "neptune": {
+    "texture": "public/planet-textures/neptune.jpg",
+    "source": "https://maps.jpl.nasa.gov/tmaps/pix/nep0fds1.jpg",
+    "sourcePage": "https://maps.jpl.nasa.gov/tmaps/neptune.html",
+    "credit": "NASA/JPL/Caltech \u2014 Solar System Simulator map",
+    "classification": "artist-representative cloud texture, NOT an actual photograph",
+    "width": 720,
+    "height": 360
+  }
+}
