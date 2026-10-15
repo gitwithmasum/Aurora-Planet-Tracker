@@ -21,7 +21,7 @@ self.addEventListener('install',event=>{
   for(const name of ['manifest.webmanifest','planet-icon.svg']){
    try{const response=await fetch(new URL(name,scope),{cache:'reload'});if(response.ok)await cache.put(new URL(name,scope),response)}catch{}
   }
- }).then(()=>self.skipWaiting()));
+ }));
 });
 self.addEventListener('activate',event=>{
  event.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(k=>k.startsWith('aurora-')&&!([SHELL,RUNTIME].includes(k))).map(k=>caches.delete(k)));await self.clients.claim()})());
