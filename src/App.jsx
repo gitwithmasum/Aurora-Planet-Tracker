@@ -2,6 +2,7 @@ import React,{useEffect,useMemo,useRef,useState} from 'react';
 import {Canvas,useFrame} from '@react-three/fiber';
 import {OrbitControls,Stars,Text} from '@react-three/drei';
 import * as THREE from 'three';
+import {useThree} from '@react-three/fiber';
 import * as Astronomy from 'astronomy-engine';
 import {Orbit,Compass,MapPin,Search,Clock3,ScanLine,Globe2,Layers3,Info,ArrowUpRight,LocateFixed,ChevronRight,Menu,X,Pause,Play,Volume2,VolumeX,Maximize2,Satellite,Eye} from 'lucide-react';
 
@@ -19,9 +20,81 @@ const PLANETS=[
 const compassName=(az)=>['N','NE','E','SE','S','SW','W','NW'][Math.round(az/45)%8];
 const fmt=(n,d=1)=>Number.isFinite(n)?n.toFixed(d):'—';
 function computePlanet(p,loc,date){try{const obs=new Astronomy.Observer(loc.lat,loc.lon,0);const eq=Astronomy.Equator(p.name,date,obs,true,true);const hor=Astronomy.Horizon(date,obs,eq.ra,eq.dec,'normal');return {...p,alt:hor.altitude,az:hor.azimuth,km:eq.dist*AU,visible:hor.altitude>0}}catch{return {...p,alt:null,az:null,km:null,visible:false}}}
-function PlanetMesh({planet,index,selected,onSelect,speed}){const mesh=useRef();const pivot=useRef();const ring=useMemo(()=>new THREE.RingGeometry(planet.size*1.28,planet.size*1.91,80),[planet.size]);useFrame((state,dt)=>{if(pivot.current)pivot.current.rotation.y+=dt*speed*(.035+2/(index+2));if(mesh.current)mesh.current.rotation.y+=dt*.13});return <group ref={pivot}><mesh rotation={[-Math.PI/2,0,0]}><ringGeometry args={[planet.orbit,planet.orbit+.012,160]}/><meshBasicMaterial color="#517291" transparent opacity={selected?.name===planet.name?.3:.13} side={THREE.DoubleSide}/></mesh><group position={[planet.orbit,0,0]}><mesh ref={mesh} onClick={e=>{e.stopPropagation();onSelect(planet)}}><sphereGeometry args={[planet.size,40,28]}/><meshStandardMaterial color={planet.color} roughness={.86} metalness={.1}/></mesh>{planet.name==='Saturn'&&<mesh rotation={[-Math.PI/2.6,0,0]} geometry={ring}><meshBasicMaterial color="#c4b392" transparent opacity={.7} side={THREE.DoubleSide}/></mesh>}{selected?.name===planet.name&&<mesh><sphereGeometry args={[planet.size*1.16,28,20]}/><meshBasicMaterial color="#52dffc" transparent opacity={.08} wireframe/></mesh>}<Text position={[0,planet.size+0.52,0]} fontSize={.34} color={selected?.name===planet.name?'#94f4ff':'#8098b6'} anchorX="center">{planet.name.toUpperCase()}</Text></group></group>}
-function Galaxy({selected,onSelect,paused,focus}){return <Canvas camera={{position:[0,22,31],fov:50}} gl={{antialias:true,alpha:true}} dpr={[1,1.7]}><color attach="background" args={['#050915']}/><ambientLight intensity={1.35}/><pointLight position={[0,2,0]} color="#ffc777" intensity={110} distance={55}/><Stars radius={150} depth={70} count={2600} factor={4} fade speed={.45}/><mesh><sphereGeometry args={[1.75,64,40]}/><meshBasicMaterial color="#ffb95d"/></mesh><mesh><sphereGeometry args={[2.18,32,16]}/><meshBasicMaterial color="#ff9e4e" transparent opacity={.07} side={THREE.BackSide}/></mesh>{PLANETS.map((p,i)=><PlanetMesh key={p.name} planet={p} index={i} selected={selected} onSelect={onSelect} speed={paused?0:1}/>) }<OrbitControls enableDamping minDistance={9} maxDistance={67} maxPolarAngle={Math.PI*.83}/></Canvas>}
-function App(){const [entered,setEntered]=useState(false),[tab,setTab]=useState('Command Center'),[selected,setSelected]=useState(PLANETS[4]),[loc,setLoc]=useState({lat:23.8103,lon:90.4125,label:'Dhaka • manual default'}),[now,setNow]=useState(new Date()),[paused,setPaused]=useState(false),[search,setSearch]=useState(''),[menu,setMenu]=useState(false),[locationError,setLocationError]=useState(''),[sensor,setSensor]=useState(null),[camera,setCamera]=useState(false);const video=useRef(null),stream=useRef(null);
+
+function planetTexture(planet){
+ const w=256,h=128,data=new Uint8Array(w*h*4),base=new THREE.Color(planet.color);
+ const seed=planet.name.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+ const gas=['Jupiter','Saturn','Uranus','Neptune','Venus'].includes(planet.name);
+ for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+  const latitude=y/h*Math.PI,longitude=x/w*Math.PI*2;
+  const wave=Math.sin(y*(gas?.29:.52)+Math.sin(x*.11+seed)*2.6);
+  const swirl=Math.sin(y*(gas?.83:.34)+Math.cos(x*.09+seed)*4);
+  const strata=gas?.74+.16*wave+.09*swirl:.74+.17*Math.sin(x*.22+y*.31)+.13*Math.cos(x*.08-y*.24);
+  const craters=gas?0:.18*Math.sin(x*.85+y*.42)*Math.cos(y*.9-x*.31);
+  const polar=planet.name==='Earth'?Math.pow(Math.abs(Math.cos(latitude)),18)*.5:0;
+  const cloud=planet.name==='Earth'?.17*Math.sin(longitude*14+Math.sin(latitude*11)*3):0;
+  const band=THREE.MathUtils.clamp(strata+craters+polar+cloud,.28,1.35);
+  const at=(y*w+x)*4;
+  data[at]=Math.min(255,Math.round(base.r*255*band));
+  data[at+1]=Math.min(255,Math.round(base.g*255*band));
+  data[at+2]=Math.min(255,Math.round(base.b*255*band));
+  data[at+3]=255;
+ }
+ const texture=new THREE.DataTexture(data,w,h,THREE.RGBAFormat);
+ texture.colorSpace=THREE.SRGBColorSpace;texture.wrapS=THREE.RepeatWrapping;texture.needsUpdate=true;return texture;
+}
+function PlanetMesh({planet,index,selected,onSelect,speed,onTrack}){
+ const mesh=useRef(),pivot=useRef(),group=useRef();
+ const texture=useMemo(()=>planetTexture(planet),[planet]);
+ useEffect(()=>()=>texture.dispose(),[texture]);
+ useFrame((state,dt)=>{
+  if(pivot.current)pivot.current.rotation.y+=dt*speed*(.035+2/(index+2));
+  if(mesh.current)mesh.current.rotation.y+=dt*.17;
+  if(group.current&&selected?.name===planet.name){const v=new THREE.Vector3();group.current.getWorldPosition(v);onTrack.current=v;}
+ });
+ return <group ref={pivot}>
+ <mesh rotation={[-Math.PI/2,0,0]}><ringGeometry args={[planet.orbit,planet.orbit+.014,192]}/><meshBasicMaterial color={selected?.name===planet.name?'#5fdcf9':'#517291'} transparent opacity={selected?.name===planet.name?.33:.16} side={THREE.DoubleSide}/></mesh>
+ <group ref={group} position={[planet.orbit,0,0]}>
+ <mesh ref={mesh} onClick={e=>{e.stopPropagation();onSelect(planet)}}>
+ <sphereGeometry args={[planet.size,64,48]}/><meshStandardMaterial map={texture} roughness={.94} metalness={.03}/></mesh>
+ {['Earth','Venus','Uranus','Neptune'].includes(planet.name)&&<mesh scale={1.055}><sphereGeometry args={[planet.size,48,32]}/><meshBasicMaterial color={planet.color} transparent opacity={.085} side={THREE.BackSide} depthWrite={false}/></mesh>}
+ {planet.name==='Saturn'&&[1.36,1.57,1.83,2.04].map((r,i)=><mesh key={r} rotation={[-Math.PI/2.6,0,0]}><ringGeometry args={[planet.size*r,planet.size*(r+.095),128]}/><meshStandardMaterial color={i%2?'#a89275':'#e7d7a9'} side={THREE.DoubleSide} transparent opacity={i%2?.6:.78} roughness={1}/></mesh>)}
+ {planet.name==='Uranus'&&<mesh rotation={[-Math.PI/2,0.3]}><ringGeometry args={[planet.size*1.43,planet.size*1.48,100]}/><meshBasicMaterial color="#8bcbd1" side={THREE.DoubleSide} transparent opacity={.39}/></mesh>}
+ {selected?.name===planet.name&&<mesh><sphereGeometry args={[planet.size*1.19,36,24]}/><meshBasicMaterial color="#52dffc" transparent opacity={.07} wireframe depthWrite={false}/></mesh>}
+ <Text position={[0,planet.size+0.58,0]} fontSize={.34} color={selected?.name===planet.name?'#94f4ff':'#8098b6'} anchorX="center">{planet.name.toUpperCase()}</Text>
+ </group></group>
+}
+function CameraFocus({tracked,focusEnabled}){
+ const {camera,controls}=useThree();
+ const target=useRef(new THREE.Vector3());
+ const last=useRef(null);
+ useFrame((state,dt)=>{
+  if(!focusEnabled||!tracked.current||!controls)return;
+  const desired=tracked.current;
+  if(!last.current){last.current=controls.target.clone()}
+  const delta=desired.clone().sub(controls.target);
+  const rate=1-Math.exp(-dt*2.3);
+  camera.position.addScaledVector(delta,rate);
+  controls.target.lerp(desired,rate);
+  controls.update();
+ });
+ return null;
+}
+function Galaxy({selected,onSelect,paused,focus}){
+ const tracked=useRef(null);
+ return <Canvas camera={{position:[0,22,31],fov:50}} gl={{antialias:true,alpha:true}} dpr={[1,1.6]}>
+ <color attach="background" args={['#050915']}/><fog attach="fog" args={['#07112c',30,100]}/>
+ <ambientLight intensity={.75}/><hemisphereLight args={['#4b84ff','#170d20',.9]}/>
+ <pointLight position={[0,2,0]} color="#ffd09a" intensity={145} distance={60}/>
+ <Stars radius={160} depth={100} count={4300} factor={5} saturation={.25} fade speed={paused?0:.35}/>
+ <mesh><sphereGeometry args={[1.75,64,40]}/><meshBasicMaterial color="#ffc476"/></mesh>
+ <mesh><sphereGeometry args={[2.32,40,28]}/><meshBasicMaterial color="#ffa342" transparent opacity={.08} side={THREE.BackSide} depthWrite={false}/></mesh>
+ {PLANETS.map((p,i)=><PlanetMesh key={p.name} planet={p} index={i} selected={selected} onSelect={onSelect} speed={paused?0:1} onTrack={tracked}/>)}
+ <OrbitControls makeDefault enableDamping dampingFactor={.055} minDistance={7} maxDistance={72} maxPolarAngle={Math.PI*.82}/>
+ <CameraFocus tracked={tracked} focusEnabled={focus}/>
+ </Canvas>
+}
+function App(){const [entered,setEntered]=useState(false),[tab,setTab]=useState('Command Center'),[selected,setSelected]=useState(PLANETS[4]),[loc,setLoc]=useState({lat:23.8103,lon:90.4125,label:'Dhaka • manual default'}),[now,setNow]=useState(new Date()),[paused,setPaused]=useState(false),[focus,setFocus]=useState(false),[search,setSearch]=useState(''),[menu,setMenu]=useState(false),[locationError,setLocationError]=useState(''),[sensor,setSensor]=useState(null),[camera,setCamera]=useState(false);const video=useRef(null),stream=useRef(null);
 useEffect(()=>{const id=setInterval(()=>setNow(new Date()),30000);return()=>clearInterval(id)},[]);
 useEffect(()=>()=>{stream.current?.getTracks().forEach(t=>t.stop())},[]);
 const sky=useMemo(()=>PLANETS.map(p=>computePlanet(p,loc,now)),[loc,now]);const current=sky.find(p=>p.name===selected.name)||sky[0];const filtered=sky.filter(p=>p.name.toLowerCase().includes(search.toLowerCase()));
@@ -34,10 +107,10 @@ const nav=[['Command Center',Globe2],['Solar System',Orbit],['Planet Intelligenc
 return <div className="app"><div className="noise"/>{!entered&&<div className="portal"><div className="portal-stars"/><div className="portal-orbit one"/><div className="portal-orbit two"/><div className="portal-core"><div className="portal-planet"/></div><div className="portal-copy"><span className="eyebrow">AURORA // DEEP SPACE SYSTEMS</span><h1>BEYOND THE <em>HORIZON.</em></h1><p>Your gateway to the living Solar System. Track worlds, explore orbits, and step inside the galaxy.</p><button className="primary enter" onClick={()=>setEntered(true)}>ENTER THE GALAXY <ArrowUpRight size={18}/></button><small>MISSION CONTROL • v1.0 / ONLINE</small></div></div>}
 <header><button className="brand" onClick={()=>setTab('Command Center')}><span className="brandmark"><Orbit size={23}/></span><span>AURORA <strong>PLANET TRACKER</strong><small>GALACTIC INTELLIGENCE SYSTEM</small></span></button><nav>{nav.map(([n,I])=><button key={n} className={tab===n?'active':''} onClick={()=>{setTab(n);setMenu(false)}}><I size={15}/>{n}</button>)}</nav><button className="mobileMenu" onClick={()=>setMenu(!menu)} aria-label="Toggle menu">{menu?<X/>:<Menu/>}</button><div className="status"><span className="dot"/> SYSTEM ONLINE</div></header>{menu&&<div className="mobileNav">{nav.map(([n,I])=><button key={n} onClick={()=>{setTab(n);setMenu(false)}}><I size={17}/> {n}</button>)}</div>}
 <main><div className="topline"><div><span className="eyebrow">MISSION / {tab.toUpperCase()}</span><h2>{tab==='Command Center'?'Explore the extraordinary.':tab}</h2><p>{tab==='AR Scanner'?'Experimental camera-assisted planet direction finder':tab==='Sky Tracker'?'Astronomical positions calculated for your location and current time':'Navigate the cosmos through an immersive command interface'}</p></div><div className="timestamp"><Clock3 size={16}/>{now.toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'})} <span>LIVE</span></div></div>
-{(tab==='Command Center'||tab==='Solar System')&&<div className="scene-layout"><section className="universe"><div className="viewport"><div className="overlaytop"><span className="eyebrow">◉ SOLAR SYSTEM / LIVE EXPLORER</span><span className="coord">3D INTERACTIVE VIEW</span></div><Galaxy selected={selected} onSelect={setSelected} paused={paused}/><div className="viewport-bottom"><span>DRAG TO ROTATE · SCROLL TO ZOOM · SELECT PLANET</span><button onClick={()=>setPaused(!paused)}>{paused?<Play size={15}/>:<Pause size={15}/>} {paused?'RESUME':'PAUSE'}</button></div></div></section><aside className="planetpanel"><div className="paneltitle"><span className="eyebrow">TARGET ACQUIRED</span><span className="lighttag">◉ TRACKING</span></div><div className="planetcircle" style={{'--planet':selected.color}}><span/></div><h3>{selected.name}</h3><span className="classification">{selected.type.toUpperCase()} · SOL SYSTEM</span><p>{selected.description}</p><div className="statgrid"><div><small>FROM EARTH</small><strong>{current.km? (current.km/1e6).toFixed(1)+'M km':'—'}</strong></div><div><small>ALTITUDE</small><strong>{fmt(current.alt)}°</strong></div><div><small>AZIMUTH</small><strong>{fmt(current.az)}°</strong></div><div><small>VISIBILITY*</small><strong>{current.visible?'ABOVE HORIZON':'BELOW HORIZON'}</strong></div></div><button className="outline" onClick={()=>setTab('Planet Intelligence')}>EXPLORE PLANET DATA <ChevronRight size={17}/></button></aside></div>}
+{(tab==='Command Center'||tab==='Solar System')&&<div className="scene-layout"><section className="universe"><div className="viewport"><div className="overlaytop"><span className="eyebrow">◉ SOLAR SYSTEM / LIVE EXPLORER</span><span className="coord">3D INTERACTIVE VIEW</span></div><Galaxy selected={selected} onSelect={setSelected} paused={paused} focus={focus}/><div className="viewport-bottom"><span>DRAG TO ROTATE · SCROLL TO ZOOM · SELECT PLANET</span><div className='scenecontrols'><button onClick={()=>setFocus(!focus)}>{focus?'FREE CAMERA':'FOCUS PLANET'}</button><button onClick={()=>setPaused(!paused)}>{paused?<Play size={15}/>:<Pause size={15}/>} {paused?'RESUME':'PAUSE'}</button></div></div></div></section><aside className="planetpanel"><div className="paneltitle"><span className="eyebrow">TARGET ACQUIRED</span><span className="lighttag">◉ TRACKING</span></div><div className="planetcircle" style={{'--planet':selected.color}}><span/></div><h3>{selected.name}</h3><span className="classification">{selected.type.toUpperCase()} · SOL SYSTEM</span><p>{selected.description}</p><div className="statgrid"><div><small>FROM EARTH</small><strong>{current.km? (current.km/1e6).toFixed(1)+'M km':'—'}</strong></div><div><small>ALTITUDE</small><strong>{fmt(current.alt)}°</strong></div><div><small>AZIMUTH</small><strong>{fmt(current.az)}°</strong></div><div><small>VISIBILITY*</small><strong>{current.visible?'ABOVE HORIZON':'BELOW HORIZON'}</strong></div></div><button className="outline" onClick={()=>setTab('Planet Intelligence')}>EXPLORE PLANET DATA <ChevronRight size={17}/></button></aside></div>}
 {tab==='Planet Intelligence'&&<div className="intelligence"><section className="glass"><span className="eyebrow">CELESTIAL DATABASE / 8 PLANETS</span><h3>Planet intelligence</h3><div className="search"><Search size={17}/><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search for a planet..." /></div><div className="planetlist">{filtered.map(p=><button key={p.name} className={selected.name===p.name?'chosen':''} onClick={()=>setSelected(p)}><span className="planetdot" style={{background:p.color}}/>{p.name}<span>{p.visible?'ABOVE HORIZON':'BELOW HORIZON'}</span><ChevronRight size={17}/></button>)}</div></section><section className="glass intelligenceDetail"><span className="eyebrow">SELECTED CELESTIAL BODY</span><div className="detailplanet" style={{'--planet':selected.color}}/><h2>{selected.name}</h2><p>{selected.description}</p><div className="statgrid large"><div><small>EARTH DISTANCE</small><strong>{current.km?(current.km/1e6).toFixed(2)+' million km':'—'}</strong></div><div><small>ALTITUDE</small><strong>{fmt(current.alt,2)}°</strong></div><div><small>AZIMUTH / DIRECTION</small><strong>{fmt(current.az,2)}° {current.az!==null?compassName(current.az):''}</strong></div><div><small>ORBITAL PERIOD</small><strong>{selected.period} days</strong></div><div><small>CLASS</small><strong>{selected.type}</strong></div><div><small>MOONS (REFERENCE)</small><strong>{selected.moons}</strong></div></div><p className="disclaimer">Positions and distance are computed estimates. Planet visuals are artistic, not to scale. Visibility depends on sunlight, weather and sky conditions.</p></section></div>}
 {(tab==='Sky Tracker'||tab==='AR Scanner')&&<div className="tracking"><section className="glass tracker"><div className="paneltitle"><span className="eyebrow">OBSERVER TELEMETRY</span><span className="lighttag">◉ EPHEMERIS ACTIVE</span></div><h3>Locate the planets.</h3><p>Horizontal coordinates use a live astronomical model. Permit GPS for your actual observer position.</p><div className="location"><MapPin size={17}/>{loc.label}<button onClick={geo}><LocateFixed size={16}/> USE GPS</button></div><div className="manual"><label>LATITUDE<input aria-label="Latitude" type="number" min="-90" max="90" step=".0001" value={loc.lat} onChange={e=>{const v=Number(e.target.value);if(v>=-90&&v<=90)setLoc({...loc,lat:v,label:'Manual coordinates'})}}/></label><label>LONGITUDE<input aria-label="Longitude" type="number" min="-180" max="180" step=".0001" value={loc.lon} onChange={e=>{const v=Number(e.target.value);if(v>=-180&&v<=180)setLoc({...loc,lon:v,label:'Manual coordinates'})}}/></label></div>{locationError&&<p className="error" role="alert">{locationError}</p>}
 {tab==='AR Scanner'&&<><div className="camera"><video ref={video} autoPlay muted playsInline/><div className="crosshair"><ScanLine size={70}/></div><div className="cameraLabel">EXPERIMENTAL SKY VIEW · NOT CALIBRATED</div>{sensor?.heading!==null&&sensor&&<div className="sensor">DEVICE HEADING {fmt(sensor.heading)}° · TILT {fmt(sensor.tilt)}°</div>}</div><div className="actions"><button className="primary" onClick={camera?stopCamera:startCamera}>{camera?'STOP CAMERA':'START CAMERA'}</button><button className="outline" onClick={orientation}>ENABLE DIRECTION SENSOR</button></div><p className="disclaimer">Camera preview and orientation readout are experimental. Accurate on-screen AR planet alignment is not yet implemented; use the calculated azimuth/altitude table below. A phone compass may need calibration. Requires HTTPS and browser permissions.</p></>}
 </section><section className="glass skylist"><span className="eyebrow">PLANETARY POSITION FEED</span><h3>Sky coordinates</h3><div className="skyhead"><span>PLANET</span><span>ALTITUDE</span><span>AZIMUTH</span></div>{sky.map(p=><button key={p.name} className="skyrow" onClick={()=>{setSelected(p);setTab('Planet Intelligence')}}><span><i style={{background:p.color}}/>{p.name}<small>{p.visible?'Above horizon':'Below horizon'}</small></span><strong>{fmt(p.alt)}°</strong><strong>{fmt(p.az)}° <small>{p.az!==null?compassName(p.az):''}</small></strong></button>)}<p className="disclaimer">Altitude above 0° means geometrically above the local horizon, not necessarily visible to the naked eye. Default Dhaka coordinates are only an example until you set your location.</p></section></div>}
-<div className="footerline"><span>◈ AURORA DEEP SPACE • RELEASE 1.0.0</span><span>ASTRONOMICAL DATA: ASTRONOMY ENGINE · OBSERVER-DEPENDENT</span><span>BUILT FOR EXPLORATION</span></div></main></div>}
+<div className="footerline"><span>◈ AURORA DEEP SPACE • RELEASE 1.1.0</span><span>ASTRONOMICAL DATA: ASTRONOMY ENGINE · OBSERVER-DEPENDENT</span><span>BUILT FOR EXPLORATION</span></div></main></div>}
 export default App;
