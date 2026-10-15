@@ -7,7 +7,18 @@ const home=new URL('./',scope).pathname;
 const maxRuntime=70;
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(SHELL).then(async cache=>{
-  for(const name of ['./','manifest.webmanifest','planet-icon.svg']){
+  try {
+   const documentResponse=await fetch(new URL('./',scope),{cache:'reload'});
+   if(documentResponse.ok){
+    await cache.put(new URL('./',scope),documentResponse.clone());
+    const html=await documentResponse.text();
+    const assetPaths=[...html.matchAll(/(?:src|href)=["']([^"']+\.(?:js|css))["']/g)].map(match=>match[1]);
+    for(const path of assetPaths){
+     try{const url=new URL(path,scope);if(url.origin===self.location.origin&&url.pathname.startsWith(home)){const response=await fetch(url);if(response.ok)await cache.put(url,response)}}catch{}
+    }
+   }
+  }catch{}
+  for(const name of ['manifest.webmanifest','planet-icon.svg']){
    try{const response=await fetch(new URL(name,scope),{cache:'reload'});if(response.ok)await cache.put(new URL(name,scope),response)}catch{}
   }
  }).then(()=>self.skipWaiting()));
