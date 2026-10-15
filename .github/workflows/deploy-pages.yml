@@ -48,4 +48,10 @@ jobs:
         uses: actions/deploy-pages@v4
       - name: Verify published HTML and assets
         run: node scripts/check-live-pages.mjs
+      - name: Install browser test runtime
+        run: |
+          npm install --no-save playwright
+          npx playwright install chromium
+      - name: Verify React boots in Chromium
+        run: node scripts/browser-smoke.mjs
 
