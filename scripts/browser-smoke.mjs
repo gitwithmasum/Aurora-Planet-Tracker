@@ -44,6 +44,12 @@ try{
  console.log('ISS telemetry:',telemetry.replace(/\n/g,' | ').slice(0,360));
  if(await page.getByText('Orbital data unavailable',{exact:true}).count())throw Error('ISS orbital data is still unavailable');
  console.log('PASS: Fresh ISS orbital dataset is loaded and telemetry populated');
+ // Exercise v2.6 catalog selection, not just the historical ISS case.
+ await page.getByRole('button',{name:/Hubble Space Telescope.*Hubble/i}).first().click();
+ await page.waitForFunction(()=>document.querySelector('.satGlobeCorner')?.textContent?.includes('Hubble'),null,{timeout:12000});
+ await page.waitForFunction(()=>/\\d+(?:\\.\\d+)?\\s*km/.test(document.querySelector('.satTelemetry')?.textContent||''),null,{timeout:12000});
+ console.log('PASS: Hubble selection switches orbital globe and populates telemetry');
+
  console.log('PASS: Satellite Tracker opened without recovery error');
  console.log('PASS: Chromium rendered Aurora root and dismissed loader');
 }catch(e){
