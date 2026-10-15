@@ -1,6 +1,6 @@
 # Aurora Planet Tracker
 
-**Galactic Intelligence System — v1.2.0**
+**Galactic Intelligence System — v1.3.0**
 
 An immersive interactive space-themed web app with an animated galaxy entry, explorable 3D Solar System, planet intelligence cards, and observer-based astronomical planet coordinates.
 
@@ -37,8 +37,17 @@ The on-screen 3D orbit geometry and animation are **artistic**, not live ephemer
 
 These enhancements are artistic visualizations; precise sky coordinates still use the independent Astronomy Engine, not positions from the 3D scene.
 
+## v1.3 — 360° Sky Observatory
+
+- Interactive horizon-to-zenith azimuth projection and compass heading rotation, with calculated locations of planets above the horizon
+- GPS and manually entered observer latitude/longitude
+- Planet selection, altitude, azimuth, Earth distance, map-heading guidance
+- Observation-time offset of −24 to +48 hours and quick return to now
+- Sampled 24-hour geometric observing-window guide (planet altitude >= 10° and Sun altitude <= −6°); **not a weather, atmospheric, or naked-eye visibility forecast**
+- The sky map uses physical ephemerides independently of the artistic 3D Solar System. This is not yet camera AR alignment.
+
 ## Roadmap
 
-v1.3 — 360° sky map and observation forecasts; v1.4 — calibrated AR sky markers; v1.5 — PWA, offline resilience, internationalization.
+v1.4 — calibrated AR sky markers; v1.5 — PWA, offline resilience, internationalization.
 
 Built with React, Vite, React Three Fiber, Three.js and Astronomy Engine.
