@@ -33,7 +33,7 @@ export default function SkyTonight({location,onLocation,onOpenSky}){
  const summary=useMemo(()=>skySummary(now,location.lat,location.lon),[now,location.lat,location.lon]);
  const events=useMemo(()=>upcomingSunEvents(now,location.lat,location.lon,24),[now,location.lat,location.lon]);
  const passes=useMemo(()=>tle?predictIssPasses(tle.satrec,now,location.lat,location.lon,24,10):[],[tle,now,location.lat,location.lon]);
- const annotatedPasses=useMemo(()=>passes.map(p=>({...p,visibility:assessIssPass(p,tle.satrec,location.lat,location.lon,weather?.cloudCover??null)})),[passes,tle,location.lat,location.lon,weather]);
+ const annotatedPasses=useMemo(()=>passes.map(p=>({...p,visibility:assessIssPass(p,tle.satrec,location.lat,location.lon,(weather&&Math.abs(p.peak.getTime()-weather.fetched.getTime())<3600000)?weather.cloudCover:null)})),[passes,tle,location.lat,location.lon,weather]);
  useEffect(()=>{setWeather(null);setWeatherState('idle')},[location.lat,location.lon]);
  async function loadWeather(){
   setWeatherState('loading');setWeatherError('');
