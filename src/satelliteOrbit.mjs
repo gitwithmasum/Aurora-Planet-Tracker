@@ -26,8 +26,11 @@ export function satelliteTelemetry(satrec,date){
 }
 export function orbitalSamples(satrec,now,spanMinutes=100,stepSeconds=60){
  if(!satrec)return [];
+ // Accept both Date and numeric Unix-millisecond timestamps; the 3D globe uses the latter.
+ const milliseconds=now instanceof Date?now.getTime():Number(now);
+ if(!Number.isFinite(milliseconds))return [];
  const samples=[];
- const start=now.getTime()-spanMinutes*30000,stop=now.getTime()+spanMinutes*30000;
+ const start=milliseconds-spanMinutes*30000,stop=milliseconds+spanMinutes*30000;
  const step=stepSeconds*1000;
  for(let ts=start;ts<=stop;ts+=step){const sample=satelliteTelemetry(satrec,new Date(ts));if(sample)samples.push(sample)}
  return samples;
