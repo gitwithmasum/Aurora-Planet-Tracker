@@ -18,8 +18,12 @@ try{
  // Smoke-test the navigation path that previously triggered Satellite Tracker recovery mode.
  const enter=page.getByText('ENTER THE GALAXY',{exact:true});
  if(await enter.count())await enter.first().click();
- const satellite=page.getByRole('button',{name:/Satellite Tracker/i});
- await satellite.first().click({timeout:15000});
+ const satellite=page.locator('.sidebarLinks button[title="Satellite Tracker"]');
+ await satellite.waitFor({state:'attached',timeout:10000});
+ // Activate the page's own button handler. Avoid hover overlays and canvas pointer capture
+ // interfering with the regression check in headless Chromium.
+ await satellite.evaluate(button=>button.click());
+ await page.getByText('Interactive Earth Orbit').waitFor({state:'visible',timeout:20000});
  await page.waitForTimeout(1800);
  const section=await page.locator('body').innerText();
  if(section.includes('Satellite Tracker is temporarily unavailable')||section.includes('Aurora recovery mode'))throw Error('Satellite Tracker crashed inside feature error boundary');
