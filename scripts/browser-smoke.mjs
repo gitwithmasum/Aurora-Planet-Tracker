@@ -49,6 +49,15 @@ try{
  await page.waitForFunction(()=>document.querySelector('.satGlobeCorner')?.textContent?.includes('Hubble'),null,{timeout:12000});
  await page.waitForFunction(()=>/\d+(?:\.\d+)?\s*km/.test(document.querySelector('.satTelemetry')?.textContent||''),null,{timeout:12000});
  console.log('PASS: Hubble selection switches orbital globe and populates telemetry');
+ // Validate the v2.7 planner on the selected non-ISS satellite.
+ await page.getByText('Hubble Space Telescope · Pass Calendar').waitFor({state:'visible',timeout:16000});
+ await page.getByLabel('Pass prediction duration').selectOption('1');
+ await page.getByLabel('Alert lead time').selectOption('15');
+ await page.getByRole('button',{name:'ADD FAVORITE'}).click();
+ const planner=await page.locator('.satPlanner').innerText();
+ if(!planner.includes('FAVORITED')||!planner.includes('VISIBILITY'))throw Error('v2.7 calendar or favorites did not render');
+ console.log('PASS: Hubble pass calendar, 15-minute lead option and favorite toggle rendered');
+
 
  console.log('PASS: Satellite Tracker opened without recovery error');
  console.log('PASS: Chromium rendered Aurora root and dismissed loader');
