@@ -1,6 +1,6 @@
 # Aurora Planet Tracker
 
-**Galactic Intelligence System — v1.0.0**
+**Galactic Intelligence System — v1.1.0**
 
 An immersive interactive space-themed web app with an animated galaxy entry, explorable 3D Solar System, planet intelligence cards, and observer-based astronomical planet coordinates.
 
@@ -16,7 +16,8 @@ Run a production build with `npm run build`. Deploy as a Vite app on Vercel: bui
 ## Features
 
 - Animated galaxy portal and responsive command-center interface
-- Interactive Three.js Solar System: orbit, select, pan and zoom; **artistic planet rendering, not drawn to scale**
+- Interactive Three.js Solar System: orbit, select, pan and zoom, cinematic planet-focus tracking; **procedural artistic materials, not photographic textures or to scale**
+- Procedural gas bands and rocky surface variations, atmospheric glow, multi-layer Saturn rings and subtle Uranus ring
 - Real astronomical altitudes, azimuths and approximate Earth distances via [Astronomy Engine](https://github.com/cosinekitty/astronomy)
 - GPS permission and manually editable latitude/longitude (Dhaka is only the illustrative default)
 - Planet catalogue and search; pause/resume orbital animation
