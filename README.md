@@ -6,6 +6,9 @@ An immersive interactive space-themed web app with an animated galaxy entry, exp
 
 ## v2.4.0 — Satellite Pass Alert with Sound
 
+- **Satellite Tracker** is a dedicated Observation sidebar page that shares the existing global ISS alert state with Sky Tonight and offers observer coordinates, countdown, sound controls, and true-north direction guidance. The feature currently covers ISS, not arbitrary satellites.
+
+
 - An opt-in **ENABLE PASS ALERTS** control in Sky Tonight uses live ISS TLE (NORAD 25544), existing satellite.js SGP4 pass predictions and an approximate 10° elevation threshold.
 - While the application is open, it counts down to the next predicted pass and sends one notification per pass after the predicted pass start enters the 10-minute warning window; alerts also work when browsing other Aurora tabs (in-page panel).
 - **North-referenced direction arrow** and compass bearing help indicate where to face; once a pass is underway the pointer uses updated ISS azimuth and altitude.
