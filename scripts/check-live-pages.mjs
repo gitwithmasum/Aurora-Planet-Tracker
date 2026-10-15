@@ -12,7 +12,11 @@ const {res,text:html}=await request(base.href+'?aurora_smoke='+Date.now());
 if(!html.includes('id="root"'))throw Error('Missing root element in served HTML');
 const js=[...html.matchAll(/<script[^>]+src=["']([^"']+\.js)["']/g)].map(m=>m[1]);
 const css=[...html.matchAll(/<link[^>]+href=["']([^"']+\.css)["']/g)].map(m=>m[1]);
-if(!js.length)throw Error('No built JS asset in published index');
+if(!js.length){
+ console.error('Published HTML excerpt:',html.slice(0,2200));
+ console.error('Raw source entry present:',html.includes('/src/main.jsx'));
+ throw Error('No production JS bundle in published index. GitHub Pages may be publishing repository source instead of Actions dist artifact.');
+}
 const paths=[...js,...css];
 for(const path of paths){
  const url=new URL(path,base).href;
