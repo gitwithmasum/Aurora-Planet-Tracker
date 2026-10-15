@@ -1,6 +1,6 @@
 import {parseIssTle} from './skyTonightMath.mjs';
 const REMOTE='https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE';
-const LOCAL=import.meta.env.BASE_URL+'orbital-data/iss.json';
+const LOCAL=(import.meta.env?.BASE_URL||'/Aurora-Planet-Tracker/')+'orbital-data/iss.json';
 export const ISS_ORBIT_SOURCES={local:LOCAL,remote:REMOTE};
 export function orbitEpoch(line1){
  const yearShort=Number(line1.slice(18,20)),day=Number(line1.slice(20,32));
