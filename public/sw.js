@@ -1,0 +1,34 @@
+/* Aurora Planet Tracker offline navigation and immutable build assets cache.
+   Same-origin only; no user GPS, camera streams, tokens, or reports stored. */
+const VERSION='aurora-v1.8.0';
+const SHELL=VERSION+'-shell',RUNTIME=VERSION+'-runtime';
+const scope=self.registration.scope;
+const home=new URL('./',scope).pathname;
+const maxRuntime=70;
+self.addEventListener('install',event=>{
+ event.waitUntil(caches.open(SHELL).then(async cache=>{
+  for(const name of ['./','manifest.webmanifest','planet-icon.svg']){
+   try{const response=await fetch(new URL(name,scope),{cache:'reload'});if(response.ok)await cache.put(new URL(name,scope),response)}catch{}
+  }
+ }).then(()=>self.skipWaiting()));
+});
+self.addEventListener('activate',event=>{
+ event.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(k=>k.startsWith('aurora-')&&!([SHELL,RUNTIME].includes(k))).map(k=>caches.delete(k)));await self.clients.claim()})());
+});
+self.addEventListener('message',event=>{if(event.data?.type==='SKIP_WAITING')self.skipWaiting()});
+self.addEventListener('fetch',event=>{
+ const request=event.request;
+ if(request.method!=='GET')return;
+ const url=new URL(request.url);
+ if(url.origin!==self.location.origin||!url.pathname.startsWith(home))return;
+ if(request.mode==='navigate'){
+  event.respondWith((async()=>{try{const response=await fetch(request);if(response.ok)(await caches.open(SHELL)).put(request,response.clone());return response}catch{return await caches.match(request)||await caches.match(home)||Response.error()}})());return;
+ }
+ if(!/\.(?:js|css|svg|png|jpg|jpeg|webp|woff2?|webmanifest)$/.test(url.pathname))return;
+ event.respondWith((async()=>{
+  const cache=await caches.open(RUNTIME);
+  const cached=await cache.match(request);
+  if(cached)return cached;
+  try{const response=await fetch(request);if(response.ok){await cache.put(request,response.clone());const keys=await cache.keys();if(keys.length>maxRuntime)await cache.delete(keys[0])}return response}catch{return Response.error()}
+ })());
+});
