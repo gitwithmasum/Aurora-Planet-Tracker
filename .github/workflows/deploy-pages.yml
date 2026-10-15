@@ -44,3 +44,6 @@ jobs:
       - name: Publish website
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Verify published HTML and assets
+        run: node scripts/check-live-pages.mjs
+
