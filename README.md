@@ -1,6 +1,6 @@
 # Aurora Planet Tracker
 
-**Galactic Intelligence System — v1.8.0**
+**Galactic Intelligence System — v1.8.1**
 
 An immersive interactive space-themed web app with an animated galaxy entry, explorable 3D Solar System, planet intelligence cards, and observer-based astronomical planet coordinates.
 
@@ -82,6 +82,13 @@ Validate with `npm test` and `npm run build`, then test on an actual smartphone 
 In **AR Scanner**, use the field-test checklist to verify HTTPS, rear camera, observer coordinates, compass, portrait/landscape handling, manual reference alignment, fallback controls, and camera restart. Add device/browser model and manual notes, then export a JSON diagnostic report locally. The app **does not upload** these reports and intentionally excludes observer GPS coordinates from the exported data. Reports may include your device/browser details; review before sharing.
 
 A checklist completion is not a scientific accuracy certification. Marker placement remains approximate until device-specific optics and orientation calibration are empirically validated on real phones.
+
+## v1.8.1 — Deep Galaxy theme
+
+- Select **Deep Galaxy** or **Classic Cyber** from the header to change the visual universe without modifying scientific planet calculations.
+- The Deep Galaxy theme adds an original, internally hosted nebula/starfield SVG and atmospheric styling to the entrance, 3D viewport, and glassy dashboard.
+- Theme preference is saved in local storage. The source image is original SVG artwork—not the watermarked reference image supplied for inspiration.
+- Existing 3D controls, Sky Tracker, AR Scanner and PWA features remain available. Actual photo-realistic planet textures are not part of this visual pass.
 
 ## v1.8 — Bilingual foundation, install and offline astronomy
 
