@@ -1,0 +1,13 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {projectSkyPoint,validateCalibration,signedDegrees} from '../src/arProjection.mjs';
+const project=opts=>projectSkyPoint({heading:90,pitch:30,hfov:60,aspect:16/9,...opts});
+test('optical axis projects exactly to center',()=>{const p=project({azimuth:90,altitude:30});assert.ok(p);assert.ok(Math.abs(p.x-50)<1e-8);assert.ok(Math.abs(p.y-50)<1e-8);});
+test('more eastward bearing appears to right',()=>{const p=project({azimuth:105,altitude:30});assert.ok(p.x>50);});
+test('higher altitude appears above center',()=>{const p=project({azimuth:90,altitude:45});assert.ok(p.y<50);});
+test('objects behind camera are rejected',()=>assert.equal(project({azimuth:270,altitude:-30}),null));
+test('bearings wrap without visible jump',()=>{const a=projectSkyPoint({azimuth:359,altitude:20,heading:0,pitch:20,hfov:60,aspect:1});const b=projectSkyPoint({azimuth:-1,altitude:20,heading:0,pitch:20,hfov:60,aspect:1});assert.ok(Math.abs(a.x-b.x)<1e-9);});
+test('roll rotates displacement without changing center',()=>{const a=project({azimuth:100,altitude:30,roll:0});const b=project({azimuth:100,altitude:30,roll:90});assert.ok(a.x>50);assert.ok(b.y<50);});
+test('camera aspect affects vertical projection',()=>{const a=project({azimuth:90,altitude:40,aspect:1});const b=project({azimuth:90,altitude:40,aspect:2});assert.ok(b.y<a.y);});
+test('reject invalid input and stale calibration',()=>{assert.equal(projectSkyPoint({azimuth:Infinity,altitude:10,heading:0,pitch:0,hfov:60,aspect:1}),null);assert.equal(validateCalibration({hfov:'60',roll:0}),null);assert.deepEqual(validateCalibration({hfov:60,roll:0}),{hfov:60,roll:0});});
+test('shortest azimuth rotation across north',()=>assert.equal(signedDegrees(1-359),2));
