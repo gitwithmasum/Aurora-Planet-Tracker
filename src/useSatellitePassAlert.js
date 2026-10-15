@@ -1,5 +1,6 @@
 import {useCallback,useEffect,useMemo,useRef,useState} from 'react';
-import {parseIssTle,predictIssPasses,issLook,direction} from './skyTonightMath.mjs';
+import {predictIssPasses,issLook,direction} from './skyTonightMath.mjs';
+import {fetchIssOrbit} from './issOrbitSource.mjs';
 const ENDPOINT='https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE';
 const KEY='aurora-iss-alert-enabled';
 const ALERT_BEFORE_MS=10*60*1000;
@@ -40,17 +41,11 @@ export function useSatellitePassAlert(location){
  const refresh=useCallback(async()=>{
   setStatus('loading');setError('');
   try{
-   const response=await fetch(ENDPOINT,{cache:'no-store'});
-   if(!response.ok)throw Error('Orbital source HTTP '+response.status);
-   const tle=parseIssTle(await response.text());
-   const yy=Number(tle.line1.slice(18,20)),days=Number(tle.line1.slice(20,32));
-   const epoch=Date.UTC(yy>=57?1900+yy:2000+yy,0,1)+(days-1)*86400000;
-   const age=(Date.now()-epoch)/86400000;
-   if(!Number.isFinite(age)||age>5||age<-.5)throw Error('ISS orbital elements too old for pass alerts.');
+   const tle=await fetchIssOrbit();
    if(!active.current)return;
    setSatrec(tle.satrec);setStatus('ready');
   }catch(e){if(!active.current)return;setSatrec(null);setError(e?.message||'ISS data unavailable');setStatus('error')}
- },[armed]);
+ },[]);
  useEffect(()=>{active.current=true;return()=>{active.current=false;audio.current?.close?.()}},[]);
  useEffect(()=>{refresh();const id=setInterval(refresh,3*3600000);return()=>clearInterval(id)},[refresh]);
  // Recalculate only every 60 seconds or when location/data changes.
