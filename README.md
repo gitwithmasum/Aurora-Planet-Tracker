@@ -1,3 +1,14 @@
+## v2.7.0 — Multi-Satellite Pass Predictor
+
+- Dedicated **per-satellite pass calendar** under Satellite Tracker, available for any craft with validated TLE data in the v2.6 catalog (ISS, Tiangong, Hubble, NOAA, selected Starlink).
+- 24-hour, 3-day and 7-day selection, plus 10°, 20° or 30° minimum elevation filters; pass times, bearings, peak altitude and an educational visibility-geometry estimate.
+- Visibility estimates use approximate peak satellite sunlight, observer dusk/darkness and elevation, **not** observed optical magnitude, live clouds or a statistical probability. Long-range forecasts can diverge as TLE ages.
+- **Opt-in custom satellite alert** per NORAD ID with 5/10/15/30-minute warning and optional synthesized sci-fi audio. Browser notifications require HTTPS/permission and alerts run only while the Satellite Tracker page is mounted/awake; no backend push exists.
+- Favorites and individual alert settings persist in local browser storage. Session-level deduplication avoids repeated notifications for the same pass.
+- Original always-available, app-wide ISS 10-minute alert remains unchanged; if both independent systems are enabled an ISS notification may occur from each.
+- Regression tests for invalid orbit data, threshold boundaries and unique pass IDs, plus a Chromium smoke test opening the Hubble planner.
+- Browser/device QA is still necessary to verify OS sound restrictions and suspended-tab behavior.
+
 ## v2.6.0 — Multi-Satellite Tracking
 
 - Observation → Satellite Tracker now displays a searchable, category-filtered **multi-satellite catalog** with active NORAD IDs.
