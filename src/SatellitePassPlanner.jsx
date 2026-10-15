@@ -2,28 +2,25 @@ import React,{useEffect,useMemo,useRef,useState} from 'react';
 import {Bell,CalendarDays,Volume2,VolumeX,Star,Clock3} from 'lucide-react';
 import {predictSatelliteCalendar,ALERT_LEAD_MINUTES,DEFAULT_ALERT_SETTINGS,alertShouldFire,uniquePassKey,alertDirection} from './satellitePassPlanner.mjs';
 import './SatellitePassPlanner.css';
-const PREFS='aurora-satellite-alert-prefs-v1',FAVS='aurora-satellite-favorites-v1';
+const PREFS='aurora-satellite-alert-prefs-v1',FAVS='aurora-satellite-favorites-v1',SEEN='aurora-satellite-alert-seen-v1';
 function stored(key,fallback){try{const v=JSON.parse(localStorage.getItem(key));return v&&typeof v==='object'?v:fallback}catch{return fallback}}
-function tone(){
- const AudioContext=window.AudioContext||window.webkitAudioContext;
- if(!AudioContext)return;
- const audio=new AudioContext();
- audio.resume().then(()=>{
+function tone(audio){
+ if(!audio)return;
+ return audio.resume().then(()=>{
   for(const [i,freq] of [392,523.25,659.25].entries()){
    const osc=audio.createOscillator(),gain=audio.createGain(),at=audio.currentTime+i*.15;
    osc.type='sine';osc.frequency.value=freq;
    gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(.12,at+.035);gain.gain.exponentialRampToValueAtTime(.0001,at+.14);
    osc.connect(gain).connect(audio.destination);osc.start(at);osc.stop(at+.15);
   }
-  setTimeout(()=>audio.close().catch(()=>{}),1500);
- }).catch(()=>audio.close().catch(()=>{}));
+ }).catch(()=>{});
 }
 const localTime=d=>new Date(d).toLocaleString(undefined,{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
 export default function SatellitePassPlanner({satrec,now,location,satellite,allSatellites=[]}){
  const [days,setDays]=useState(3),[minElevation,setMinElevation]=useState(10);
  const [prefs,setPrefs]=useState(()=>stored(PREFS,{})),[favorites,setFavorites]=useState(()=>stored(FAVS,{}));
  const [notice,setNotice]=useState(''),[expanded,setExpanded]=useState(false);
- const seen=useRef(new Set()),audioReady=useRef(false);
+ const seen=useRef(new Set(stored(SEEN,[]))),audio=useRef(null);
  const id=String(satellite.noradId);
  const preference={...DEFAULT_ALERT_SETTINGS,...prefs[id]};
  const isFavorite=Boolean(favorites[id]);
@@ -39,7 +36,7 @@ export default function SatellitePassPlanner({satrec,now,location,satellite,allS
   if('Notification' in window){
    try{permission=Notification.permission==='default'?await Notification.requestPermission():Notification.permission}catch{permission='denied'}
   }
-  audioReady.current=true; // current tab may play only after a user gesture
+  if(preference.sound){try{const Context=window.AudioContext||window.webkitAudioContext;if(Context){audio.current??=new Context();await audio.current.resume()}}catch{setNotice('Sound could not be unlocked; text alerts remain available.')}}
   update({enabled:true});
   setNotice(permission==='granted'?'Browser notifications enabled while Satellite Tracker is running.':'In-page alerts enabled. Browser notifications may be blocked or unsupported.');
  }
@@ -49,9 +46,10 @@ export default function SatellitePassPlanner({satrec,now,location,satellite,allS
   if(!due)return;
   const key=uniquePassKey(id,due);
   seen.current.add(key);
+  try{sessionStorage.setItem(SEEN,JSON.stringify([...seen.current].slice(-200)))}catch{}
   const message=satellite.name+' pass in '+Math.max(1,Math.ceil((due.start.getTime()-now)/60000))+' min · '+alertDirection(due);
   setNotice(message);
-  if(preference.sound&&audioReady.current&&document.visibilityState==='visible')try{tone()}catch{}
+  if(preference.sound&&audio.current?.state==='running'&&document.visibilityState==='visible')try{tone(audio.current)}catch{}
   if('Notification' in window&&Notification.permission==='granted')try{
    const notification=new Notification('Aurora satellite pass alert',{body:message,tag:'aurora-pass-'+key});
    notification.onclick=()=>{window.focus();notification.close()};
