@@ -34,14 +34,14 @@ try{
   const panel=document.querySelector('.satTelemetry');
   if(!panel)return false;
   const text=panel.textContent||'';
-  return /ALTITUDE/.test(text)&&/\\d+(?:\\.\\d+)?\\s*km/.test(text);
+  return /ALTITUDE/.test(text)&&/\d+(?:\.\d+)?\s*km/.test(text);
  },null,{timeout:16000});}catch(error){
   console.error('ISS data state:',await page.locator('.satGlobeViewport').innerText());
   console.error('Telemetry state:',await page.locator('.satTelemetry').innerText());
   throw error;
  }
  const telemetry=await page.locator('.satTelemetry').innerText();
- console.log('ISS telemetry:',telemetry.replace(/\\n/g,' | ').slice(0,360));
+ console.log('ISS telemetry:',telemetry.replace(/\n/g,' | ').slice(0,360));
  if(await page.getByText('Orbital data unavailable',{exact:true}).count())throw Error('ISS orbital data is still unavailable');
  console.log('PASS: Fresh ISS orbital dataset is loaded and telemetry populated');
  console.log('PASS: Satellite Tracker opened without recovery error');
