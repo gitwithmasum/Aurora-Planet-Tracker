@@ -1,1 +1,27 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><meta name="theme-color" content="#050918"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-title" content="Aurora Planet"/><link rel="manifest" href="%BASE_URL%manifest.webmanifest"/><link rel="icon" type="image/svg+xml" href="%BASE_URL%planet-icon.svg"/><meta name="description" content="Aurora Planet Tracker — immersive 3D galaxy exploration and live astronomical planet positions."/><title>Aurora Planet Tracker • Galactic Intelligence</title><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/><link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/></head><body><div id="root"></div><script type="module" src="/src/main.jsx"></script></body></html>
+<!doctype html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><meta name="theme-color" content="#050918"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-title" content="Aurora Planet"/><link rel="manifest" href="%BASE_URL%manifest.webmanifest"/><link rel="icon" type="image/svg+xml" href="%BASE_URL%planet-icon.svg"/><meta name="description" content="Aurora Planet Tracker — immersive 3D galaxy exploration and live astronomical planet positions."/><title>Aurora Planet Tracker • Galactic Intelligence</title><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/><link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/></head><body><div id="root"></div><script>
+(function(){
+ var errorMessage='';
+ window.addEventListener('error',function(event){errorMessage=event.message||'Resource loading failed'},true);
+ window.addEventListener('unhandledrejection',function(event){errorMessage=String(event.reason&&event.reason.message||event.reason||'Script startup failed')});
+ setTimeout(function(){
+  var root=document.getElementById('root');
+  if(!root||root.children.length)return;
+  var panel=document.createElement('section');
+  panel.style.cssText='min-height:100vh;display:grid;place-content:center;text-align:center;padding:30px;background:#071328;color:#dff8ff;font:16px system-ui';
+  var heading=document.createElement('h1');heading.textContent='Aurora startup recovery';
+  var explanation=document.createElement('p');explanation.textContent='The application could not start. A previous PWA cache or browser script error may be responsible.';
+  var diagnostic=document.createElement('p');diagnostic.style.cssText='max-width:650px;color:#a6c6dd;overflow-wrap:anywhere';diagnostic.textContent=errorMessage;
+  var button=document.createElement('button');button.textContent='Clear Aurora offline cache and reload';
+  button.style.cssText='padding:15px;background:#6ae3f7;color:#031127;border:0;border-radius:8;cursor:pointer;font-weight:bold';
+  button.addEventListener('click',async function(){
+   button.disabled=true;
+   try{
+    if('serviceWorker'in navigator){var regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.filter(function(r){return r.scope.indexOf(location.origin+'/Aurora-Planet-Tracker/')===0||r.scope===location.origin+'/'}).map(function(r){return r.unregister()}));}
+    if('caches'in window){var keys=await caches.keys();await Promise.all(keys.filter(function(k){return k.indexOf('aurora-')===0}).map(function(k){return caches.delete(k)}));}
+   }catch(e){console.warn('Recovery could not clear all caches',e)}
+   location.reload();
+  });
+  panel.append(heading,explanation,diagnostic,button);root.replaceChildren(panel);
+ },12000);
+})();
+</script><script type="module" src="/src/main.jsx"></script></body></html>
