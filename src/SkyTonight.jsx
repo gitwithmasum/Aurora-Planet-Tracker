@@ -3,12 +3,13 @@ import {Satellite,Sun,Moon,LocateFixed,Compass,Clock3,RefreshCcw,Eye} from 'luci
 import {useLanguage} from './i18n.jsx';
 import {skySummary,upcomingSunEvents,parseIssTle,predictIssPasses,direction,bodyPosition} from './skyTonightMath.mjs';
 import './SkyTonight.css';
+import SatellitePassAlert from './SatellitePassAlert.jsx';
 import {assessIssPass,cloudLabel,analyzeFullIssPass,cloudForecastAt} from './issVisibility.mjs';
 const ENDPOINT='https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE';
 const fixed=(n,d=1)=>Number.isFinite(n)?n.toFixed(d):'—';
 const clock=(date)=>date?date.toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'—';
 const twilightLabel=(name,evening)=>evening?name+' begins':name+' ends';
-export default function SkyTonight({location,onLocation,onOpenSky}){
+export default function SkyTonight({location,onLocation,onOpenSky,passAlert}){
  const {language}=useLanguage(),bn=language==='bn';
  const [now,setNow]=useState(()=>new Date());
  const [tle,setTle]=useState(null),[issState,setIssState]=useState('idle'),[issError,setIssError]=useState('');
@@ -81,6 +82,7 @@ export default function SkyTonight({location,onLocation,onOpenSky}){
     <div className="stTwilight"><div><strong>EVENING</strong>{nextEvening.length?nextEvening.map((e,i)=><div key={i}><span>{twilightLabel(e.kind,true)}</span><b>{clock(e.time)}</b></div>):<p>No evening crossing in the next 24 hours.</p>}</div><div><strong>MORNING</strong>{nextMorning.length?nextMorning.map((e,i)=><div key={i}><span>{twilightLabel(e.kind,false)}</span><b>{clock(e.time)}</b></div>):<p>No morning crossing in the next 24 hours.</p>}</div></div>
    </div>
   </div>
+  {passAlert&&<SatellitePassAlert alert={passAlert}/>}
   <div className="stPanel stISS"><div className="stPanelHeading"><h4><Satellite size={19}/> ISS Pass Predictor</h4><button onClick={refreshISS} disabled={issState==='loading'}><RefreshCcw size={15}/> {issState==='loading'?'LOADING':'REFRESH ORBIT'}</button></div>
    <p className="stIntro">Live two-line orbital elements from CelesTrak (ISS NORAD 25544) are propagated with SGP4. Passes shown below reach at least 10° altitude. These are <strong>geometric passes</strong>. Each pass is sampled throughout its predicted duration for estimated Earth shadow, sky darkness and optional pass-time cloud forecast. Actual visual visibility remains unconfirmed.</p>
    <div className="stIssStatus">{issState==='loading'?'Retrieving current ISS orbit...':issState==='ready'?<>Orbital elements epoch: {clock(tle.epoch)} · refreshed {tle.fetched.toLocaleTimeString()}</>:issState==='error'?issError:'Waiting for orbital data'}</div>
