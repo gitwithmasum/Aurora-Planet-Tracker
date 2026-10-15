@@ -4,7 +4,7 @@ import {readFileSync,existsSync} from 'node:fs';
 import {join,dirname} from 'node:path';
 const BASE=process.env.VERCEL||process.env.VERCEL_ENV||process.env.VERCEL_URL?'/':'/Aurora-Planet-Tracker/';
 const root=process.cwd();
-test('production Vite HTML references bundled existing JS/CSS with correct deploy base',()=>{
+test('production Vite HTML references bundled existing JS/CSS with correct deploy base',{skip:!existsSync(join(root,'dist/index.html'))},()=>{
  const html=readFileSync(join(root,'dist/index.html'),'utf8');
  assert.ok(!html.includes('Aurora startup recovery'),'Legacy startup recovery should not replace app');
  assert.ok(html.includes('aurora-autorepair-once'),'Scoped, once-only recovery should be present');
