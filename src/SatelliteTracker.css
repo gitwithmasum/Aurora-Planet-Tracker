@@ -1,1 +1,18 @@
 .satTracker{border:1px solid #355f82;border-radius:12px;padding:23px;background:linear-gradient(135deg,#081b36f2,#0a1129e8);color:#e2f6ff}.satTrackerIntro{display:flex;justify-content:space-between;align-items:center;gap:16px}.satTrackerIntro h3{font:700 clamp(30px,4vw,47px) Rajdhani;margin:8px 0}.satTrackerIntro p{font:500 13px/1.7 'Space Grotesk',sans-serif;color:#a1c1d6}.satTrackerIntro>svg{color:#7adce8;flex-shrink:0}.satTrackerLocation{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border:1px solid #32617c;background:#091f37;padding:12px;margin-top:16px;font:600 12px Rajdhani}.satTrackerLocation>span{flex:1;color:#accee0}.satTrackerLocation label{display:flex;align-items:center;gap:6px;color:#92cde0}.satTrackerLocation input{background:#061629;border:1px solid #416a87;color:#ecfaff;padding:8px;width:96px}.satTrackerDetails{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.satTrackerDetails>div{display:grid;gap:7px;border:1px solid #335f7f;background:#10243e;padding:16px}.satTrackerDetails svg{color:#7ed8ee}.satTrackerDetails span{font:700 11px Rajdhani;color:#9cbad2;letter-spacing:.8px}.satTrackerDetails strong{font:700 27px Rajdhani}.satTrackerDetails small,.satTrackerCaution{font:500 11px/1.65 'Space Grotesk',sans-serif;color:#9dbbd0}.satTrackerSkyLink{display:flex;align-items:center;justify-content:center;gap:8px;background:#164764;border:1px solid #4f97b5;color:#c1f5ff;padding:13px;margin-top:14px;width:100%;cursor:pointer;font:700 12px Rajdhani;letter-spacing:1px}.satTrackerCaution{margin:16px 0 0}@media(max-width:700px){.satTracker{padding:12px}.satTrackerIntro>svg{display:none}.satTrackerDetails{grid-template-columns:1fr}.satTrackerLocation>span{flex-basis:80%}}
+/* v2.6 curated orbital catalog */
+.satCatalog{border:1px solid #396b8c;background:linear-gradient(125deg,#091f3b,#101b38);padding:16px;border-radius:10px;margin:18px 0 12px}
+.satCatalogHeading{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:12px;color:#a0edfa;font:700 13px Rajdhani;letter-spacing:1px}
+.satCatalogHeading span{font:600 11px Rajdhani;color:#8eaec7;flex:1}
+.satCatalogHeading button{background:#124561;border:1px solid #3d87a3;color:#d1f7ff;border-radius:5px;padding:9px 12px;cursor:pointer}
+.satCatalogHeading button:disabled{opacity:.55}
+.satCatalogControls{display:flex;gap:10px;margin:12px 0}
+.satCatalogControls input,.satCatalogControls select{background:#08192c;color:#e9faff;border:1px solid #41718e;border-radius:5px;padding:11px 12px;min-width:0}
+.satCatalogControls input{flex:1}
+.satCatalogList{display:grid;grid-template-columns:repeat(auto-fit,minmax(176px,1fr));gap:8px;max-height:268px;overflow-y:auto}
+.satCatalogList>button{display:flex;flex-direction:column;align-items:start;gap:5px;border:1px solid #315e7c;border-radius:7px;background:#0d2942;color:#dcf5ff;padding:11px;text-align:left;cursor:pointer}
+.satCatalogList>button.selected{background:#174d68;border-color:#8aebfa;box-shadow:inset 3px 0 #7decfa}
+.satCatalogList>button strong{font:700 15px Rajdhani}
+.satCatalogList>button small{font:600 11px Rajdhani;color:#a0c5d6}
+.satCatalogNote,.satCatalogError{font-size:11px;line-height:1.6;color:#9bbacf}
+.satCatalogError{color:#ffc7b9}
+@media(max-width:620px){.satCatalog{padding:10px}.satCatalogControls{flex-wrap:wrap}.satCatalogControls input,.satCatalogControls select{width:100%;flex:auto}}
