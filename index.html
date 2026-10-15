@@ -1,27 +1,71 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><meta name="theme-color" content="#050918"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-title" content="Aurora Planet"/><link rel="manifest" href="%BASE_URL%manifest.webmanifest"/><link rel="icon" type="image/svg+xml" href="%BASE_URL%planet-icon.svg"/><meta name="description" content="Aurora Planet Tracker — immersive 3D galaxy exploration and live astronomical planet positions."/><title>Aurora Planet Tracker • Galactic Intelligence</title><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/><link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/></head><body><div id="root"></div><script>
-(function(){
- var errorMessage='';
- window.addEventListener('error',function(event){errorMessage=event.message||'Resource loading failed'},true);
- window.addEventListener('unhandledrejection',function(event){errorMessage=String(event.reason&&event.reason.message||event.reason||'Script startup failed')});
- setTimeout(function(){
-  var root=document.getElementById('root');
-  if(!root||root.children.length)return;
-  var panel=document.createElement('section');
-  panel.style.cssText='min-height:100vh;display:grid;place-content:center;text-align:center;padding:30px;background:#071328;color:#dff8ff;font:16px system-ui';
-  var heading=document.createElement('h1');heading.textContent='Aurora startup recovery';
-  var explanation=document.createElement('p');explanation.textContent='The application could not start. A previous PWA cache or browser script error may be responsible.';
-  var diagnostic=document.createElement('p');diagnostic.style.cssText='max-width:650px;color:#a6c6dd;overflow-wrap:anywhere';diagnostic.textContent=errorMessage;
-  var button=document.createElement('button');button.textContent='Clear Aurora offline cache and reload';
-  button.style.cssText='padding:15px;background:#6ae3f7;color:#031127;border:0;border-radius:8;cursor:pointer;font-weight:bold';
-  button.addEventListener('click',async function(){
-   button.disabled=true;
-   try{
-    if('serviceWorker'in navigator){var regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.filter(function(r){return r.scope.indexOf(location.origin+'/Aurora-Planet-Tracker/')===0||r.scope===location.origin+'/'}).map(function(r){return r.unregister()}));}
-    if('caches'in window){var keys=await caches.keys();await Promise.all(keys.filter(function(k){return k.indexOf('aurora-')===0}).map(function(k){return caches.delete(k)}));}
-   }catch(e){console.warn('Recovery could not clear all caches',e)}
-   location.reload();
-  });
-  panel.append(heading,explanation,diagnostic,button);root.replaceChildren(panel);
- },12000);
-})();
-</script><script type="module" src="/src/main.jsx"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8"/>
+ <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+ <meta name="theme-color" content="#050918"/>
+ <meta name="apple-mobile-web-app-capable" content="yes"/>
+ <meta name="apple-mobile-web-app-title" content="Aurora Planet"/>
+ <link rel="manifest" href="%BASE_URL%manifest.webmanifest"/>
+ <link rel="icon" type="image/svg+xml" href="%BASE_URL%planet-icon.svg"/>
+ <meta name="description" content="Aurora Planet Tracker — immersive 3D galaxy exploration and observer-based astronomical data."/>
+ <title>Aurora Planet Tracker • Galactic Intelligence</title>
+ <link rel="preconnect" href="https://fonts.googleapis.com"/>
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+ <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+ <style>html,body{margin:0;min-height:100%;background:#061126;color:#e1f7ff}#root{min-height:100vh}#aurora-boot{position:fixed;inset:0;display:grid;place-items:center;background:#061126;color:#aeeaff;font:600 14px system-ui;z-index:9999}#aurora-boot[hidden]{display:none!important}.aurora-boot-wrap{text-align:center;max-width:550px;padding:22px}.aurora-spinner{width:38px;height:38px;border:3px solid #254e69;border-top-color:#70e9ff;border-radius:50%;animation:aurora-spin .85s linear infinite;margin:0 auto 20px}@keyframes aurora-spin{to{transform:rotate(360deg)}}#aurora-boot button{background:#5ed9ed;color:#061126;border:0;padding:12px 18px;cursor:pointer;border-radius:6px;margin-top:12px;font-weight:700}@media(prefers-reduced-motion:reduce){.aurora-spinner{animation:none}}</style>
+</head>
+<body>
+ <div id="root"></div>
+ <div id="aurora-boot" role="status" aria-live="polite"><div class="aurora-boot-wrap"><div class="aurora-spinner" aria-hidden="true"></div><div id="aurora-boot-text">Loading Aurora Planet Tracker…</div></div></div>
+ <script>
+ (function(){
+  var root=document.getElementById('root'),boot=document.getElementById('aurora-boot');
+  var bootText=document.getElementById('aurora-boot-text'),failedAsset=false;
+  // Track only own application script/stylesheet failures, not Google fonts or pictures.
+  window.addEventListener('error',function(event){
+   var target=event.target,tag=target&&target.tagName;
+   if(tag!=='SCRIPT'&&tag!=='LINK')return;
+   var url=tag==='SCRIPT'?target.src:target.href;
+   if(url&&new URL(url,location.href).origin===location.origin){failedAsset=true;console.error('Aurora startup asset failed:',url);}
+  },true);
+  function ready(){return !!(root&&root.children.length)}
+  function hide(){if(ready()){boot.hidden=true;return true}return false}
+  var watch=new MutationObserver(function(){if(hide())watch.disconnect()});
+  watch.observe(root,{childList:true});
+  if(hide())watch.disconnect();
+  setTimeout(async function(){
+   if(hide())return;
+   var key='aurora-autorepair-once',already=false;
+   try{already=sessionStorage.getItem(key)==='1'}catch(e){}
+   if(!already){
+    bootText.textContent='Refreshing application assets…';
+    try{sessionStorage.setItem(key,'1')}catch(e){}
+    try{
+     if('serviceWorker' in navigator){
+      var registrations=await navigator.serviceWorker.getRegistrations();
+      var path=location.pathname;
+      await Promise.all(registrations.filter(function(reg){
+       return reg.scope.startsWith(location.origin+'/Aurora-Planet-Tracker/') ||
+         (reg.scope===location.origin+'/'&&path.indexOf('/Aurora-Planet-Tracker/')!==-1) ||
+         (reg.scope===location.origin+'/'&&path==='/');
+      }).map(function(reg){return reg.unregister()}));
+     }
+     if('caches' in window){
+      var keys=await caches.keys();
+      await Promise.all(keys.filter(function(name){return name.indexOf('aurora-')===0}).map(function(name){return caches.delete(name)}));
+     }
+    }catch(e){console.warn('Aurora automatic cache repair was partial:',e)}
+    var retry=new URL(location.href);retry.searchParams.set('aurora_refresh','1');location.replace(retry.href);return;
+   }
+   bootText.textContent=failedAsset?'Some application files could not load. Check your connection and retry.':'The application could not start. Please retry or check the browser console.';
+   var button=document.createElement('button');button.textContent='Retry loading Aurora';button.onclick=function(){
+    try{sessionStorage.removeItem(key)}catch(e){}
+    location.reload();
+   };bootText.parentElement.appendChild(button);
+  },10000);
+ })();
+ </script>
+ <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>
