@@ -1,6 +1,6 @@
 # Aurora Planet Tracker
 
-**Galactic Intelligence System — v1.7.0**
+**Galactic Intelligence System — v1.8.0**
 
 An immersive interactive space-themed web app with an animated galaxy entry, explorable 3D Solar System, planet intelligence cards, and observer-based astronomical planet coordinates.
 
@@ -83,8 +83,17 @@ In **AR Scanner**, use the field-test checklist to verify HTTPS, rear camera, ob
 
 A checklist completion is not a scientific accuracy certification. Marker placement remains approximate until device-specific optics and orientation calibration are empirically validated on real phones.
 
+## v1.8 — Bilingual foundation, install and offline astronomy
+
+- Manifest + SVG app icon, install prompt where supported; mobile Safari typically uses Share → Add to Home Screen instead of the browser install prompt.
+- Same-origin service worker caches the application shell and hashed JavaScript/CSS bundles for repeat offline visits; astronomy calculations execute locally after the necessary scripts have been cached. Open the site online once after installation before testing offline.
+- Offline access is best-effort; browser storage eviction, disabled JavaScript or cache clearing can make it unavailable. GPS permissions and live camera feeds are not offline data sources.
+- English and Bangla language switcher with persisted preference. Core navigation, portal, primary dashboard actions, and selected Sky Map / AR Scanner labels are translated; **advanced telemetry and secondary panels are not fully localized yet**.
+- Update notification appears when the service worker installs a replacement and is waiting for activation. Existing user observations and settings are not deleted by the worker.
+- GitHub Pages repo base and Vercel root base are handled independently.
+
 ## Roadmap
 
-v1.8 — PWA, offline resilience and internationalization; later — measured camera intrinsics and verified optical calibration on tested devices.
+v1.9 — complete Bangla localization, automated offline tests and PWA install QA; later — measured camera intrinsics and verified optical calibration on tested devices.
 
 Built with React, Vite, React Three Fiber, Three.js and Astronomy Engine.
