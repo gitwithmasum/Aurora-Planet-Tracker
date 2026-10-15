@@ -1,8 +1,17 @@
 # Aurora Planet Tracker
 
-**Galactic Intelligence System — v2.2.1**
+**Galactic Intelligence System — v2.3.1**
 
 An immersive interactive space-themed web app with an animated galaxy entry, explorable 3D Solar System, planet intelligence cards, and observer-based astronomical planet coordinates.
+
+## v2.3.1 — Startup Recovery & Asset Reliability
+
+- Removed the blocking "Aurora startup recovery" panel. The application shows a lightweight loading state until React mounts.
+- If app files fail to load, it automatically attempts one targeted service-worker/cache reset and reloads once. It never clears general localStorage, browser profiles, account logins or other sites' caches.
+- When auto-repair fails, a non-destructive manual retry action and a specific error message remain available instead of an endless reload loop.
+- The bootstrap now ignores third-party font/image load errors when deciding whether an app script failed.
+- Production builds verify that HTML references the actual generated JS/CSS assets, and Vercel root-path resolution checks multiple Vercel environment signals.
+- v2.3.1 rotates the Aurora-specific PWA cache namespace, preserving user data and all astronomy UI.
 
 ## v2.3.0 — Full ISS pass analysis and hourly weather
 
