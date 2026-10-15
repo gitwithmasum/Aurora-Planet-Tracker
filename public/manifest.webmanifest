@@ -1,0 +1,20 @@
+{
+  "name": "Aurora Planet Tracker — Galactic Intelligence",
+  "short_name": "Aurora Planet",
+  "description": "Explore the galaxy, 3D planets and astronomy sky maps.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#050916",
+  "theme_color": "#050918",
+  "orientation": "any",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "planet-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
