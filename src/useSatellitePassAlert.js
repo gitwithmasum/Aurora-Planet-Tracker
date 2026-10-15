@@ -38,7 +38,6 @@ export function useSatellitePassAlert(location){
  useEffect(()=>{const id=setInterval(()=>setTick(Date.now()),1000);return()=>clearInterval(id)},[]);
  useEffect(()=>{try{localStorage.setItem(KEY,armed?'yes':'no')}catch{}},[armed]);
  const refresh=useCallback(async()=>{
-  if(!armed)return;
   setStatus('loading');setError('');
   try{
    const response=await fetch(ENDPOINT,{cache:'no-store'});
@@ -53,7 +52,7 @@ export function useSatellitePassAlert(location){
   }catch(e){if(!active.current)return;setSatrec(null);setError(e?.message||'ISS data unavailable');setStatus('error')}
  },[armed]);
  useEffect(()=>{active.current=true;return()=>{active.current=false;audio.current?.close?.()}},[]);
- useEffect(()=>{if(!armed){setSatrec(null);setStatus('off');return}refresh();const id=setInterval(refresh,3*3600000);return()=>clearInterval(id)},[armed,refresh]);
+ useEffect(()=>{refresh();const id=setInterval(refresh,3*3600000);return()=>clearInterval(id)},[refresh]);
  // Recalculate only every 60 seconds or when location/data changes.
  const minute=Math.floor(tick/60000);
  const passes=useMemo(()=>satrec?predictIssPasses(satrec,new Date(minute*60000),location.lat,location.lon,24,10):[],[satrec,minute,location.lat,location.lon]);
@@ -99,7 +98,7 @@ export function useSatellitePassAlert(location){
    });n.onclick=()=>{window.focus();n.close()}}catch(e){console.warn('ISS notification unavailable',e)}
   }
  },[armed,status,upcoming?.start?.getTime(),tick,soundOn]);
- return {armed,soundOn,setSoundOn,status,error,enable,disable,testSound,refresh,
+ return {armed,soundOn,setSoundOn,status,error,satrec,tick,enable,disable,testSound,refresh,
   upcoming,activePass,look,timeLeft,withinCountdown,lastAlert,countdown:timeLeft===null?'--:--:--':remainingTime(timeLeft),
   directionText:look?azimuthInstruction(look.az):target?azimuthInstruction(target.azStart):'Direction unavailable'};
 }
