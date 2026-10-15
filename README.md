@@ -1,3 +1,14 @@
+## v2.6.0 — Multi-Satellite Tracking
+
+- Observation → Satellite Tracker now displays a searchable, category-filtered **multi-satellite catalog** with active NORAD IDs.
+- Includes validated recent orbital elements for the **ISS (25544), Tiangong Tianhe (48274), Hubble (20580), NOAA 19 (33591), NOAA 20 (43013)** and a selected **sample of four Starlink craft** from a recent public TLE group. Starlink sample identifiers may vary when the catalog refreshes.
+- Clicking a satellite switches the same interactive Earth globe, predicted 3D orbit trail, ground track, and derived altitude, speed, position and orbital-period telemetry to that craft.
+- Scheduled GitHub Actions refreshes the published JSON catalog from CelesTrak approximately every six hours. Data is validated against NORAD ID and a recent orbital epoch; missing/stale objects are omitted, never replaced with invented telemetry.
+- The first-party JSON catalog enables browser loading without cross-origin CelesTrak requests. A separate ISS data source is preserved as fallback.
+- **ISS pass countdown, alert notifications and sounds remain ISS-only.** Selecting other satellites changes orbital visualization, not the ISS notification target.
+- A category filter and name/NORAD search work with mobile layouts. Unit tests cover category search and rejection of invalid/stale orbital elements.
+- Calculated positions use SGP4 orbital propagation, not direct satellite telemetry. This is an educational tracker, not authoritative positioning data.
+
 ## v2.5.4 — Satellite Tracker rendering hotfix
 
 - Fixed a reproducible `TypeError: now.getTime is not a function` in orbit sampling: the 3D globe passed a numeric Unix-millisecond timestamp into a helper that previously required a `Date`.
