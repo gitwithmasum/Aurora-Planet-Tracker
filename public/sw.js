@@ -1,6 +1,6 @@
 /* Aurora Planet Tracker offline navigation and immutable build assets cache.
    Same-origin only; no user GPS, camera streams, tokens, or reports stored. */
-const VERSION='aurora-v1.8.4';
+const VERSION='aurora-v1.8.5';
 const SHELL=VERSION+'-shell',RUNTIME=VERSION+'-runtime';
 const scope=self.registration.scope;
 const home=new URL('./',scope).pathname;
@@ -38,8 +38,11 @@ self.addEventListener('fetch',event=>{
  if(!/\.(?:js|css|svg|png|jpg|jpeg|webp|woff2?|webmanifest)$/.test(url.pathname))return;
  event.respondWith((async()=>{
   const cache=await caches.open(RUNTIME);
-  const cached=await cache.match(request);
-  if(cached)return cached;
-  try{const response=await fetch(request);if(response.ok){await cache.put(request,response.clone());const keys=await cache.keys();if(keys.length>maxRuntime)await cache.delete(keys[0])}return response}catch{return Response.error()}
+  // Network-first prevents an earlier JS/CSS chunk from being paired with newer HTML.
+  try{
+   const response=await fetch(request);
+   if(response.ok){await cache.put(request,response.clone());const keys=await cache.keys();if(keys.length>maxRuntime)await cache.delete(keys[0])}
+   return response;
+  }catch{return await cache.match(request)||await caches.match(request)||Response.error()}
  })());
 });
