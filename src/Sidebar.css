@@ -45,3 +45,35 @@ header .sidebarMobileToggle{display:none}
 @media(prefers-reduced-motion:reduce){.auroraLayout,.auroraSidebar{transition:none}}
 .theme-cosmic .auroraSidebar,.theme-nebula .auroraSidebar{background:linear-gradient(150deg,#061327e9,#10132ddf);border-right-color:#6d81b78c}
 .theme-nebula .sidebarLinks button.active{background:linear-gradient(90deg,#3d3c88b3,#145a84a1)!important}
+
+
+/* v2.0.2 grouped navigation and accessible customization */
+.sidebarQuickTools{padding:10px 12px 3px;display:flex;flex-wrap:wrap;gap:5px}
+.sidebarQuickTools button{border:1px solid #28536f;background:#0b2941;color:#a6d5e8;border-radius:6px;padding:7px 9px;display:flex;align-items:center;gap:6px;cursor:pointer;font:700 10px Rajdhani;letter-spacing:.6px}
+.sidebarQuickTools button[aria-pressed="true"]{color:#8ff3e7;border-color:#6ddfdf}
+.sidebarGroup{min-width:0;display:grid;gap:6px}
+.sidebarGroup+.sidebarGroup{border-top:1px solid #30516b85;padding-top:13px;margin-top:6px}
+.sidebarGroupLabel{font:700 10px Rajdhani,sans-serif;letter-spacing:1.5px;color:#6da7c6;padding:6px 10px}
+.sidebarLinkRow{display:flex;align-items:center;min-width:0;gap:4px}
+.sidebarLinks .sidebarLinkRow>button:first-child{min-width:0;flex:1;width:auto}
+.sidebarLinkRow[draggable="true"]{cursor:grab}
+.sidebarLinkRow[draggable="true"]:active{cursor:grabbing}
+.sidebarMove{display:flex;flex-direction:column;gap:1px;flex:0 0 24px}
+.sidebarLinks .sidebarMove button{width:24px;min-height:23px;height:23px;border:1px solid #335a75!important;border-radius:5px;padding:2px!important;background:#0a2845!important;justify-content:center;color:#aadff2}
+.sidebarLinks .sidebarMove button:disabled{opacity:.25;cursor:default}
+.sidebarLinks .sidebarMove button:not(:disabled):hover{background:#215778!important}
+.auroraLayout--collapsed .sidebarGroupLabel,.auroraLayout--collapsed .sidebarQuickTools span{display:none}
+.auroraLayout--collapsed .sidebarQuickTools{justify-content:center}
+.auroraLayout--collapsed .sidebarLinkRow{flex-wrap:wrap;justify-content:center}
+.auroraLayout--collapsed .sidebarLinks .sidebarLinkRow>button:first-child{flex:0 0 100%}
+.auroraLayout--collapsed .sidebarMove{flex-direction:row;flex:0 0 auto}
+.auroraLayout--collapsed .sidebarMove button{width:22px}
+.auroraLayout--collapsed .sidebarGroup+.sidebarGroup{padding-top:10px}
+@media(max-width:768px){
+ .auroraLayout--collapsed .sidebarGroupLabel,.auroraLayout--collapsed .sidebarQuickTools span{display:block}
+ .auroraLayout--collapsed .sidebarLinkRow{flex-wrap:nowrap;justify-content:flex-start}
+ .auroraLayout--collapsed .sidebarLinks .sidebarLinkRow>button:first-child{flex:1 1 auto}
+ .sidebarMove{display:flex}
+ .auroraLayout--collapsed .sidebarMove{flex-direction:column}
+ .sidebarQuickTools{padding-top:18px}
+}
