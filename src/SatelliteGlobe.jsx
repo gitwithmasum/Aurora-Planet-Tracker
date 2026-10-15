@@ -51,7 +51,8 @@ export default function SatelliteGlobe({satrec,now,loading=false}){
  const [offset,setOffset]=useState(0);
  const epoch=useMemo(()=>new Date(now+offset*60000),[now,offset]);
  const telemetry=useMemo(()=>satelliteTelemetry(satrec,epoch),[satrec,epoch]);
- const samples=useMemo(()=>orbitalSamples(satrec,epoch.getTime(),100,quality==='eco'?120:60),[satrec,epoch.getTime(),quality]);
+ const trackMinute=Math.floor(epoch.getTime()/60000);
+ const samples=useMemo(()=>orbitalSamples(satrec,trackMinute*60000,100,quality==='eco'?120:60),[satrec,trackMinute,quality]);
  const groundSegments=useMemo(()=>segmentGroundTrack(samples),[samples]);
  return <section className="satGlobe" aria-label="Live calculated ISS Earth orbit">
   <div className="satGlobeHeader"><div><span className="eyebrow">AURORA / ORBITAL COMMAND</span><h4><Globe2 size={21}/> Interactive Earth Orbit</h4><p>Calculated ISS position from current orbital elements; not a satellite GPS broadcast.</p></div><div className="satGlobeTabs"><button className={mode==='3d'?'active':''} onClick={()=>setMode('3d')}>3D GLOBE</button><button className={mode==='map'?'active':''} onClick={()=>setMode('map')}><MapIcon size={13}/> GROUND TRACK</button></div></div>
