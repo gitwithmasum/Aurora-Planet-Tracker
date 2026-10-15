@@ -32,6 +32,12 @@ function OrbitTrail({samples}){
  if(!geometry)return null;
  return <line geometry={geometry}><lineBasicMaterial color="#6ce6ff" transparent opacity={.74} depthWrite={false}/></line>;
 }
+class GlobeErrorBoundary extends React.Component {
+ constructor(props){super(props);this.state={error:null}}
+ static getDerivedStateFromError(error){return {error}}
+ componentDidCatch(error){console.warn('ISS 3D canvas could not initialize; showing ground track instead',error)}
+ render(){return this.state.error?<div className="satGlobeEmpty" role="status"><strong>3D globe unavailable</strong><span>The browser could not start WebGL. The ISS ground track is still available.</span><button type="button" onClick={this.props.onMap}>OPEN GROUND TRACK</button></div>:this.props.children}
+}
 function GlobeScene({telemetry,samples,lowQuality}){
  return <Canvas shadows={false} dpr={[1,lowQuality?1:1.65]} camera={{position:[0,2.2,7.7],fov:43}} gl={{antialias:!lowQuality,alpha:true,powerPreference:'low-power'}}>
   <color attach="background" args={['#050d23']}/>
@@ -63,7 +69,7 @@ export default function SatelliteGlobe({satrec,now,loading=false}){
   </div>
   <div className="satGlobeViewport">
    {!satrec?<div className="satGlobeEmpty"><Satellite size={39}/><strong>{loading?'Retrieving ISS orbital elements…':'Orbital data unavailable'}</strong><span>Enable or refresh ISS tracking to load calculated location. No substitute coordinates are fabricated.</span></div>:
-    mode==='3d'?<GlobeScene telemetry={telemetry} samples={samples} lowQuality={quality==='eco'}/>:
+    mode==='3d'?<GlobeErrorBoundary onMap={()=>setMode('map')}><GlobeScene telemetry={telemetry} samples={samples} lowQuality={quality==='eco'}/></GlobeErrorBoundary>:
     <svg className="satGroundMap" viewBox="0 0 800 410" role="img" aria-label="ISS latitude longitude ground track. Map is simplified geographic coordinate grid.">
      <rect width="800" height="410" fill="#081a32"/>
      {Array.from({length:13},(_,i)=><line key={'lon'+i} x1={i*800/12} x2={i*800/12} y1="0" y2="410" stroke="#22506b" strokeDasharray="4 6"/>)}
