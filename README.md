@@ -4,6 +4,15 @@
 
 An immersive interactive space-themed web app with an animated galaxy entry, explorable 3D Solar System, planet intelligence cards, and observer-based astronomical planet coordinates.
 
+## v2.3.0 — Full ISS pass analysis and hourly weather
+
+- Samples each predicted ISS pass at approximately 20-second steps, estimating Sun illumination, observer twilight and (when loaded) pass-time cloud forecast.
+- Expandable timeline identifies likely favorable, cloud-limited, unfavorable and uncertain segments, and displays an estimated best viewing interval when available.
+- Optional **LOAD LIVE WEATHER** calls Open-Meteo with user-selected latitude and longitude and requests current weather plus hourly UTC cloud forecasts; no weather data is sent or fetched without the user's action.
+- Hourly forecasts are used only within 70 minutes of a matching forecast hour; missing or outdated forecasts are never represented as measured conditions.
+- Adds tests for UTC forecast matching and invalid/missing data; detailed Android and iOS manual QA checklist in `docs/SKY-TONIGHT-MOBILE-QA.md`.
+- These optical predictions remain **approximate**. Umbra estimation is simplified; estimated favorable segments are not an assurance of naked-eye visibility, and weather forecasts are not guaranteed.
+
 ## v2.2.1 — ISS visibility and local sky weather
 
 - Per-ISS-pass **approximate** sunlight/shadow indication at maximum elevation using a geocentric Sun vector and cylindrical Earth shadow approximation. A sunlit satellite and sufficiently dark observer sky are classified as *potentially visible*, never guaranteed visible.
