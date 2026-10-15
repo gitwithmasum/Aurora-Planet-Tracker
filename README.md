@@ -1,6 +1,6 @@
 # Aurora Planet Tracker
 
-**Galactic Intelligence System — v1.4.0**
+**Galactic Intelligence System — v1.5.0**
 
 An immersive interactive space-themed web app with an animated galaxy entry, explorable 3D Solar System, planet intelligence cards, and observer-based astronomical planet coordinates.
 
@@ -57,8 +57,18 @@ These enhancements are artistic visualizations; precise sky coordinates still us
 
 **Scientific limitations:** This is approximate camera-assisted sky guidance, **not calibrated optical AR or image recognition**. Phone orientation alpha/beta readings are not reliable camera attitudes on all devices; the user must manually align the sky overlay. Camera FOV is a manual approximation and screen orientation/camera intrinsics are not fully calibrated. For accurate pointing, further calibration and real-device tests are required. Overlay markers can appear when planets are not optically visible.
 
+## v1.5 — Mobile AR reliability pass
+
+- Detect stale device orientation events and disable experimental sensor-heading controls when readings are stale or lack an absolute reference.
+- Display screen rotation angle, camera stream resolution and honest calibration status in the AR telemetry panel.
+- Detect unexpected camera track termination and show a restart error instead of silently leaving a frozen scanner.
+- Manual heading/elevation/FOV controls remain the recommended fallback, and optically verified AR alignment is not claimed.
+- GitHub Pages and Vercel use distinct Vite build bases to support both hosts.
+
+**QA still required:** a successful CI build does not verify real camera and compass alignment; test physical Android/iPhone devices separately.
+
 ## Roadmap
 
-v1.5 — device-specific 3D orientation calibration and verified AR projection, PWA, offline resilience, internationalization.
+v1.6 — device-specific orientation calibration and measured camera projection; v1.7 — PWA, offline resilience and internationalization.
 
 Built with React, Vite, React Three Fiber, Three.js and Astronomy Engine.
