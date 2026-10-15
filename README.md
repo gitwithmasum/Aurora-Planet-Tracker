@@ -1,6 +1,6 @@
 # Aurora Planet Tracker
 
-**Galactic Intelligence System — v1.6.0**
+**Galactic Intelligence System — v1.7.0**
 
 An immersive interactive space-themed web app with an animated galaxy entry, explorable 3D Solar System, planet intelligence cards, and observer-based astronomical planet coordinates.
 
@@ -77,8 +77,14 @@ These enhancements are artistic visualizations; precise sky coordinates still us
 
 Validate with `npm test` and `npm run build`, then test on an actual smartphone over HTTPS. Do not use the marker alignment as a precision instrument.
 
+## v1.7 — AR mobile field-test console
+
+In **AR Scanner**, use the field-test checklist to verify HTTPS, rear camera, observer coordinates, compass, portrait/landscape handling, manual reference alignment, fallback controls, and camera restart. Add device/browser model and manual notes, then export a JSON diagnostic report locally. The app **does not upload** these reports and intentionally excludes observer GPS coordinates from the exported data. Reports may include your device/browser details; review before sharing.
+
+A checklist completion is not a scientific accuracy certification. Marker placement remains approximate until device-specific optics and orientation calibration are empirically validated on real phones.
+
 ## Roadmap
 
-v1.7 — measured camera intrinsics, device-specific optical calibration and field QA; v1.8 — PWA, offline resilience and internationalization.
+v1.8 — PWA, offline resilience and internationalization; later — measured camera intrinsics and verified optical calibration on tested devices.
 
 Built with React, Vite, React Three Fiber, Three.js and Astronomy Engine.
