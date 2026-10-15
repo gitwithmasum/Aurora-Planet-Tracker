@@ -21,3 +21,10 @@ test('flat ground tracks split at international dateline',()=>{
  assert.equal(segments.length,2);
  assert.equal(segments[0].length,2);assert.equal(segments[1].length,3);
 });
+
+test('orbit sampler accepts numeric timestamps used by 3D globe without a rendering exception',()=>{
+ const timestamp=Date.parse('2026-10-16T00:00:00Z');
+ assert.doesNotThrow(()=>orbitalSamples({},timestamp,0,60));
+ assert.deepEqual(orbitalSamples({},Number.NaN,0,60),[]);
+ assert.doesNotThrow(()=>orbitalSamples({},new Date(timestamp),0,60));
+});
