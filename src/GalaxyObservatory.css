@@ -37,3 +37,13 @@
 .goTrailToggle input{width:auto!important}
 @media(max-width:590px){.goComparisonGrid{grid-template-columns:1fr}.goTravelButton{flex:1}.goPhoto--large{height:180px}.goCompareCard>.goPhoto{height:140px}}
 @media(prefers-reduced-motion:reduce){.goTravelFrame--active,.goWarp{animation:none}.goWarp{display:none}.goPhoto>img{transition:none}}
+
+
+/* v2.1.1: smooth navigation without expensive full-panel GPU filters */
+.goMotionSwitch{display:inline-flex;align-items:center;gap:7px;color:#add7e6;font:700 11px Rajdhani;letter-spacing:.8px;padding:9px 5px;white-space:nowrap}
+.goMotionSwitch input{accent-color:#66dfed}
+.goTravelFrame--active{animation:galacticSlide .95s cubic-bezier(.16,.8,.19,1) both;will-change:opacity,transform}
+.goTravelFrame--active .goWarp{animation:warpPulse .95s ease-out forwards}
+@keyframes galacticSlide{0%{opacity:.45;transform:translateY(9px) scale(.955)}60%{opacity:1;transform:translateY(-2px) scale(1.012)}100%{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:768px){.goTravelFrame--active{animation:galacticSlide .65s ease-out both}.goPhoto--large{height:176px}.goUniverseDust{opacity:.22}.goPhotoFallback{background-size:46px 50px,cover}}
+@media(prefers-reduced-motion:reduce){.goTravelFrame--active,.goTravelFrame--active .goWarp{animation:none!important}.goWarp{display:none!important}.goPhoto:hover>img{transform:none}}
