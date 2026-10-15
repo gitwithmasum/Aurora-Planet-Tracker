@@ -4,6 +4,17 @@
 
 An immersive interactive space-themed web app with an animated galaxy entry, explorable 3D Solar System, planet intelligence cards, and observer-based astronomical planet coordinates.
 
+## v2.4.0 — Satellite Pass Alert with Sound
+
+- An opt-in **ENABLE PASS ALERTS** control in Sky Tonight uses live ISS TLE (NORAD 25544), existing satellite.js SGP4 pass predictions and an approximate 10° elevation threshold.
+- While the application is open, it counts down to the next predicted pass and sends one notification per pass after the predicted pass start enters the 10-minute warning window; alerts also work when browsing other Aurora tabs (in-page panel).
+- **North-referenced direction arrow** and compass bearing help indicate where to face; once a pass is underway the pointer uses updated ISS azimuth and altitude.
+- **Synthesized sci-fi audio chime** with enable/disable switch and test button, implemented with Web Audio (no copyrighted audio files). User gesture is required to unlock sound.
+- Browser notifications require explicit permission, HTTPS, and support from the browser. Alerts and audio are **not guaranteed when the browser tab or installed PWA is suspended, closed or background-throttled**; this is not an OS background scheduler or push notification system.
+- Alert enablement persists on the current device, with an easy disable option. No browser notification permissions are requested until the user enables the feature.
+- Disabled / stale / inaccessible ISS orbital data results in a clear status and no fabricated pass times.
+- Includes tests for alert threshold, countdown, direction and pass selection. A real mobile device check is still required to validate sound unlock, browser notifications and page suspension behaviour.
+
 ## v2.3.1 — Startup Recovery & Asset Reliability
 
 - Removed the blocking "Aurora startup recovery" panel. The application shows a lightweight loading state until React mounts.
