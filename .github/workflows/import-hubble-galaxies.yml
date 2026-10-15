@@ -1,6 +1,10 @@
 name: Import NASA Hubble Galaxy Photos
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/import-hubble-galaxies.yml'
+      - 'scripts/import_hubble_galaxies.py'
 permissions:
   contents: write
 jobs:
