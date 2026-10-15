@@ -2,6 +2,7 @@ import React,{useEffect,useMemo,useRef,useState} from 'react';
 import * as Astronomy from 'astronomy-engine';
 import {Camera,CameraOff,Compass,Crosshair,LocateFixed,RotateCcw,SlidersHorizontal,Info} from 'lucide-react';
 import './ARScanner.css';
+import {useLanguage} from './i18n.jsx';
 import FieldTest from './FieldTest.jsx';
 import {projectSkyPoint,wrapDegrees,validateCalibration,signedDegrees} from './arProjection.mjs';
 
@@ -19,6 +20,7 @@ function calculate(name,location,instant){
 }
 function compassDirection(az){return ['N','NE','E','SE','S','SW','W','NW'][Math.round(wrap(az)/45)%8]}
 export default function ARScanner({planets,location,onLocation,onSelect,selected}){
+ const {t}=useLanguage();
  const video=useRef(null),stream=useRef(null),lastEvent=useRef(0),listener=useRef(null);
  const [camera,setCamera]=useState(false),[cameraError,setCameraError]=useState('');
  const [orientation,setOrientation]=useState(null),[sensorEnabled,setSensorEnabled]=useState(false),[sensorError,setSensorError]=useState('');
@@ -87,7 +89,7 @@ export default function ARScanner({planets,location,onLocation,onSelect,selected
  }),[bodies,heading,elevation,roll,fov,aspect]);
  const target=nearby.find(p=>p.name===selected.name)||nearby[0];
  return <div className="arModule">
- <div className="arLead"><div><span className="eyebrow">AURORA / AR NAVIGATION LAB</span><h3>Planet Scanner</h3><p>Explore calculated planet directions through a camera-assisted HUD. Use manual alignment to aim the overlay before relying on markers.</p></div><span className="arStatus">BETA · MANUAL ALIGNMENT</span></div>
+ <div className="arLead"><div><span className="eyebrow">AURORA / AR NAVIGATION LAB</span><h3>{t('arTitle')}</h3><p>Explore calculated planet directions through a camera-assisted HUD. Use manual alignment to aim the overlay before relying on markers.</p></div><span className="arStatus">BETA · MANUAL ALIGNMENT</span></div>
  <div className="arLayout"><div className="arPrimary">
  <div className="arViewport" ref={viewportRef}>
   {camera?<video ref={video} autoPlay playsInline muted aria-label="Rear camera live preview"/>:<div className="arDemo"><div className="arDemoPlanet"/><span>CAMERA OFF · SIMULATED SKY BACKDROP</span></div>}
@@ -97,7 +99,7 @@ export default function ARScanner({planets,location,onLocation,onSelect,selected
   <div className="arReticle"><Crosshair size={35}/></div>
   <div className="arBottomBar"><span>AZ {number(heading)}° {compassDirection(heading)}</span><span>ALT {number(elevation)}°</span><span>HFOV {fov}° · ROLL {roll}°</span></div>
  </div>
- <div className="arButtons"><button onClick={camera?stopCamera:startCamera} className="arAction">{camera?<CameraOff size={16}/>:<Camera size={16}/>} {camera?'STOP CAMERA':'START REAR CAMERA'}</button><button onClick={enableSensor} className="arAction arOutline"><Compass size={16}/> ENABLE SENSORS</button><button onClick={useGPS} className="arAction arOutline"><LocateFixed size={16}/> USE GPS</button></div>
+ <div className="arButtons"><button onClick={camera?stopCamera:startCamera} className="arAction">{camera?<CameraOff size={16}/>:<Camera size={16}/>} {camera?t('cameraStop'):t('cameraStart')}</button><button onClick={enableSensor} className="arAction arOutline"><Compass size={16}/> ENABLE SENSORS</button><button onClick={useGPS} className="arAction arOutline"><LocateFixed size={16}/> USE GPS</button></div>
  {(cameraError||sensorError||locationError)&&<div className="arErrors" role="alert">{[cameraError,sensorError,locationError].filter(Boolean).join(' • ')}</div>}
  <p className="arWarning"><Info size={15}/> Perspective-based marker positioning is still approximate and not verified optical AR. Heading and pitch are not a fully calibrated camera pose, even after detecting screen rotation ({screenAngle}°). Manually align with a known reference. Camera field-of-view and lens cropping are estimated; optical visibility depends on daylight, clouds and light pollution.</p>
  <div className="arDirections"><strong>PLANET DIRECTIONS / CURRENT TIME</strong><div>{nearby.map(p=><button key={p.name} className={selected.name===p.name?'chosen':''} onClick={()=>{onSelect(planets.find(q=>q.name===p.name));if(Number.isFinite(p.az))setManualHeading(Math.round(p.az));if(Number.isFinite(p.alt))setManualElevation(Math.max(-20,Math.min(90,Math.round(p.alt))));setAutoHeading(false)}}><span style={{background:p.color}}/>{p.name}<small>{number(p.az)}° / {number(p.alt)}°</small></button>)}</div></div>
