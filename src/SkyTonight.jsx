@@ -3,6 +3,7 @@ import {Satellite,Sun,Moon,LocateFixed,Compass,Clock3,RefreshCcw,Eye} from 'luci
 import {useLanguage} from './i18n.jsx';
 import {skySummary,upcomingSunEvents,parseIssTle,predictIssPasses,direction,bodyPosition} from './skyTonightMath.mjs';
 import './SkyTonight.css';
+import {assessIssPass,cloudLabel} from './issVisibility.mjs';
 const ENDPOINT='https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE';
 const fixed=(n,d=1)=>Number.isFinite(n)?n.toFixed(d):'—';
 const clock=(date)=>date?date.toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'—';
@@ -12,6 +13,7 @@ export default function SkyTonight({location,onLocation,onOpenSky}){
  const [now,setNow]=useState(()=>new Date());
  const [tle,setTle]=useState(null),[issState,setIssState]=useState('idle'),[issError,setIssError]=useState('');
  const [gpsError,setGpsError]=useState(''),[onlyAbove,setOnlyAbove]=useState(true);
+ const [weather,setWeather]=useState(null),[weatherState,setWeatherState]=useState('idle'),[weatherError,setWeatherError]=useState('');
  useEffect(()=>{const id=setInterval(()=>setNow(new Date()),60000);return()=>clearInterval(id)},[]);
  async function refreshISS(){
   setIssState('loading');setIssError('');
@@ -31,6 +33,21 @@ export default function SkyTonight({location,onLocation,onOpenSky}){
  const summary=useMemo(()=>skySummary(now,location.lat,location.lon),[now,location.lat,location.lon]);
  const events=useMemo(()=>upcomingSunEvents(now,location.lat,location.lon,24),[now,location.lat,location.lon]);
  const passes=useMemo(()=>tle?predictIssPasses(tle.satrec,now,location.lat,location.lon,24,10):[],[tle,now,location.lat,location.lon]);
+ const annotatedPasses=useMemo(()=>passes.map(p=>({...p,visibility:assessIssPass(p,tle.satrec,location.lat,location.lon,weather?.cloudCover??null)})),[passes,tle,location.lat,location.lon,weather]);
+ useEffect(()=>{setWeather(null);setWeatherState('idle')},[location.lat,location.lon]);
+ async function loadWeather(){
+  setWeatherState('loading');setWeatherError('');
+  try{
+   const url=new URL('https://api.open-meteo.com/v1/forecast');
+   url.searchParams.set('latitude',String(location.lat));url.searchParams.set('longitude',String(location.lon));
+   url.searchParams.set('current','cloud_cover,precipitation,weather_code');url.searchParams.set('timezone','auto');
+   const res=await fetch(url.toString(),{cache:'no-store'});
+   if(!res.ok)throw Error('Weather service HTTP '+res.status);
+   const json=await res.json(),cloud=json.current?.cloud_cover;
+   if(!Number.isFinite(cloud))throw Error('Cloud coverage is not available from the weather service.');
+   setWeather({cloudCover:cloud,precipitation:json.current.precipitation,fetched:new Date(),lat:location.lat,lon:location.lon});setWeatherState('ready');
+  }catch(e){setWeather(null);setWeatherState('error');setWeatherError(e.message||'Weather unavailable')}
+ }
  const selected=summary.planets.filter(p=>!onlyAbove||p.above);
  const nextEvening=events.filter(e=>e.event==='Evening').slice(0,4);
  const nextMorning=events.filter(e=>e.event==='Morning').slice(0,4);
@@ -48,6 +65,7 @@ export default function SkyTonight({location,onLocation,onOpenSky}){
    <div><Eye size={22}/><span>PLANETS ABOVE HORIZON</span><strong>{summary.planets.filter(p=>p.above).length} / 7</strong><small>Geometric altitude, not naked-eye confirmation</small></div>
    <div><Clock3 size={22}/><span>OBSERVATION TIME</span><strong>{now.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'})}</strong><small>Browser local timezone</small></div>
   </div>
+  <div className="stPanel stWeather"><div className="stPanelHeading"><h4>☁ Cloud Cover & Viewing Conditions</h4><button onClick={loadWeather} disabled={weatherState==='loading'}>{weatherState==='loading'?'LOADING':'LOAD LIVE WEATHER'}</button></div><p className="stIntro">Cloud data is optional. Press LOAD LIVE WEATHER to send the currently selected latitude/longitude to Open-Meteo. No location is sent to Open-Meteo until you press this button.</p><div className="stWeatherStatus">{weatherState==='ready'?<>Cloud cover: <strong>{weather.cloudCover}% — {cloudLabel(weather.cloudCover)}</strong> · Precipitation: {Number.isFinite(weather.precipitation)?weather.precipitation+' mm':'—'} · Updated {weather.fetched.toLocaleTimeString()} · <small>Current conditions only, not a pass-time forecast</small></>:weatherState==='error'?weatherError:'Weather not requested; sky predictions use astronomy only.'}</div></div>
   <div className="stGrid">
    <div className="stPanel"><div className="stPanelHeading"><h4><Moon size={18}/> Tonight's Sky</h4><button onClick={onOpenSky}>OPEN 360° SKY MAP ↗</button></div><p className="stIntro">Planet altitude and direction are calculated at the selected coordinates. Actual visibility also depends on twilight, weather and light pollution.</p>
     <label className="stCheck"><input type="checkbox" checked={onlyAbove} onChange={e=>setOnlyAbove(e.target.checked)}/> ABOVE HORIZON ONLY</label>
@@ -58,11 +76,11 @@ export default function SkyTonight({location,onLocation,onOpenSky}){
    </div>
   </div>
   <div className="stPanel stISS"><div className="stPanelHeading"><h4><Satellite size={19}/> ISS Pass Predictor</h4><button onClick={refreshISS} disabled={issState==='loading'}><RefreshCcw size={15}/> {issState==='loading'?'LOADING':'REFRESH ORBIT'}</button></div>
-   <p className="stIntro">Live two-line orbital elements from CelesTrak (ISS NORAD 25544) are propagated with SGP4. Passes shown below reach at least 10° altitude. These are <strong>geometric passes</strong>, not confirmed visually illuminated passes.</p>
+   <p className="stIntro">Live two-line orbital elements from CelesTrak (ISS NORAD 25544) are propagated with SGP4. Passes shown below reach at least 10° altitude. These are <strong>geometric passes</strong>. Each pass now has an approximate Earth-shadow / sky-darkness assessment at its peak, but actual visibility remains unconfirmed.</p>
    <div className="stIssStatus">{issState==='loading'?'Retrieving current ISS orbit...':issState==='ready'?<>Orbital elements epoch: {clock(tle.epoch)} · refreshed {tle.fetched.toLocaleTimeString()}</>:issState==='error'?issError:'Waiting for orbital data'}</div>
-   {issState==='ready'&&(passes.length?<div className="stPasses">{passes.slice(0,6).map((p,i)=><div className="stPass" key={i}><span className="stPassIndex">PASS {i+1}</span><div><small>RISE ABOVE 10°</small><strong>{clock(p.start)}</strong><em>{direction(p.azStart)} · {fixed(p.azStart)}°</em></div><div><small>MAX ELEVATION</small><strong>{fixed(p.maxAltitude)}°</strong><em>{clock(p.peak)}</em></div><div><small>END BELOW 10°</small><strong>{clock(p.end)}</strong><em>{direction(p.azEnd)} · {fixed(p.azEnd)}°</em></div><div><small>SUN ALTITUDE AT PEAK</small><strong>{fixed(bodyPosition('Sun',p.peak,location.lat,location.lon).alt)}°</strong><em>Visibility not verified</em></div></div>)}</div>:<p>No ISS passes above 10° found in the next 24 hours using the current orbital elements.</p>)}
+   {issState==='ready'&&(annotatedPasses.length?<div className="stPasses">{annotatedPasses.slice(0,6).map((p,i)=><div className="stPass" key={i}><span className="stPassIndex">PASS {i+1}<em className="stPassVisibility">{p.visibility.classification}</em></span><div><small>RISE ABOVE 10°</small><strong>{clock(p.start)}</strong><em>{direction(p.azStart)} · {fixed(p.azStart)}°</em></div><div><small>MAX ELEVATION</small><strong>{fixed(p.maxAltitude)}°</strong><em>{clock(p.peak)}</em></div><div><small>END BELOW 10°</small><strong>{clock(p.end)}</strong><em>{direction(p.azEnd)} · {fixed(p.azEnd)}°</em></div><div><small>SUN ALTITUDE AT PEAK</small><strong>{fixed(bodyPosition('Sun',p.peak,location.lat,location.lon).alt)}°</strong><em>{p.visibility.sunlit===null?'Sunlight unknown':p.visibility.sunlit?'Sunlit (estimated)':'Earth shadow (estimated)'}</em></div><p className="stPassReason">{p.visibility.reason}</p></div>)}</div>:<p>No ISS passes above 10° found in the next 24 hours using the current orbital elements.</p>)}
    {issState!=='ready'&&<div className="stEmpty">ISS times unavailable. Check network access and orbital data freshness; no pass times will be invented.</div>}
-   <p className="stNote">ISS rise/end times mark crossing the 10° minimum elevation threshold, not the geometric horizon. Predictions are approximate, may shift as the orbit changes, and require ISS solar illumination and clear/dark skies for actual viewing. Source: <a href={ENDPOINT} target="_blank" rel="noopener noreferrer">CelesTrak live TLE</a>.</p>
+   <p className="stNote">ISS rise/end times mark crossing the 10° minimum elevation threshold, not the geometric horizon. Predictions are approximate, may shift as the orbit changes, and require ISS solar illumination and clear/dark skies for actual viewing. The shadow estimate uses an approximate cylindrical Earth umbra at pass peak; it does not model penumbra, varying brightness or true visibility along the entire pass. Current cloud data is not a future pass forecast. Source: <a href={ENDPOINT} target="_blank" rel="noopener noreferrer">CelesTrak live TLE</a>.</p>
   </div>
   <p className="stFoot">Educational observing guide · no live telescope imagery · all directions measured clockwise from true north · time shown in your browser timezone.</p>
  </section>;
