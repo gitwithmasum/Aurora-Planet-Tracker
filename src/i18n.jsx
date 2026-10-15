@@ -1,0 +1,14 @@
+import React,{createContext,useContext,useEffect,useMemo,useState} from 'react';
+const KEY='aurora-language';
+const messages={
+ en:{enter:'ENTER THE GALAXY',dashboard:'Command Center',solar:'Solar System',intelligence:'Planet Intelligence',sky:'Sky Tracker',ar:'AR Scanner',explore:'Explore the extraordinary.',welcome:'Your gateway to the living Solar System. Track worlds, explore orbits, and step inside the galaxy.',mission:'MISSION',online:'SYSTEM ONLINE',selected:'TARGET ACQUIRED',details:'EXPLORE PLANET DATA',focus:'FOCUS PLANET',free:'FREE CAMERA',inspect:'INSPECT',exitInspect:'EXIT INSPECT',pause:'PAUSE',resume:'RESUME',skyTitle:'360° Sky Observatory',arTitle:'Planet Scanner',cameraStart:'START REAR CAMERA',cameraStop:'STOP CAMERA',gps:'USE GPS',sensors:'ENABLE SENSORS',install:'INSTALL APP',update:'UPDATE AVAILABLE',reload:'RELOAD APP',offline:'OFFLINE MODE',language:'LANGUAGE',release:'RELEASE',observer:'OBSERVER POSITION',altitude:'ALTITUDE',azimuth:'AZIMUTH',distance:'FROM EARTH',visibility:'VISIBILITY',above:'ABOVE HORIZON',below:'BELOW HORIZON'},
+ bn:{enter:'গ্যালাক্সিতে প্রবেশ করো',dashboard:'কমান্ড সেন্টার',solar:'সৌরজগৎ',intelligence:'গ্রহের বিস্তারিত তথ্য',sky:'আকাশ পর্যবেক্ষণ',ar:'এআর স্ক্যানার',explore:'মহাবিশ্বকে আবিষ্কার করো।',welcome:'সজীব সৌরজগতে প্রবেশ করো। গ্রহের অবস্থান, কক্ষপথ ও মহাকাশের রহস্য অনুসন্ধান করো।',mission:'মিশন',online:'সিস্টেম চালু',selected:'নির্বাচিত গ্রহ',details:'গ্রহের বিস্তারিত দেখো',focus:'গ্রহে ফোকাস',free:'ফ্রি ক্যামেরা',inspect:'কাছ থেকে দেখো',exitInspect:'ফিরে যাও',pause:'থামাও',resume:'চালু করো',skyTitle:'৩৬০° আকাশ পর্যবেক্ষণ',arTitle:'গ্রহ স্ক্যানার',cameraStart:'ক্যামেরা চালু করো',cameraStop:'ক্যামেরা বন্ধ করো',gps:'জিপিএস ব্যবহার করো',sensors:'সেন্সর চালু করো',install:'অ্যাপ ইনস্টল',update:'নতুন আপডেট',reload:'অ্যাপ আপডেট করো',offline:'অফলাইন মোড',language:'ভাষা',release:'সংস্করণ',observer:'পর্যবেক্ষকের অবস্থান',altitude:'উচ্চতা',azimuth:'দিকের কোণ',distance:'পৃথিবী থেকে দূরত্ব',visibility:'দিগন্তের অবস্থা',above:'দিগন্তের উপরে',below:'দিগন্তের নিচে'}
+};
+const Context=createContext({language:'en',setLanguage:()=>{},t:key=>key});
+export function LanguageProvider({children}){
+ const [language,setLanguage]=useState(()=>{try{return localStorage.getItem(KEY)==='bn'?'bn':'en'}catch{return 'en'}});
+ useEffect(()=>{document.documentElement.lang=language;try{localStorage.setItem(KEY,language)}catch{}},[language]);
+ const context=useMemo(()=>({language,setLanguage,t:key=>messages[language][key]||messages.en[key]||key}),[language]);
+ return <Context.Provider value={context}>{children}</Context.Provider>;
+}
+export function useLanguage(){return useContext(Context)}
