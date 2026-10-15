@@ -13,3 +13,6 @@
 .scene-options select{background:#132b47;color:#c9f7ff;border:1px solid #315e79;padding:4px 5px;font:700 12px Rajdhani;cursor:pointer}
 .scenecontrols button.selectedControl{background:#1a5471;color:#d4faff;border-color:#6ceaff}
 @media(max-width:600px){.scene-options{top:47px;left:12px;gap:5px}.scene-options label{font-size:10px;padding:5px}.scene-options select{font-size:10px}}
+
+/* v1.8 bilingual and PWA toolbar */
+.headerTools{display:flex;align-items:center;gap:11px;flex-wrap:wrap;justify-content:flex-end}.languageSwitch{display:flex;align-items:center;gap:6px;font:700 11px Rajdhani;color:#8bcce3;letter-spacing:.5px}.languageSwitch select{padding:8px 7px;background:#0d2840;border:1px solid #356f8b;color:#d3f2ff;border-radius:5px}.app:lang(bn){font-family:'Space Grotesk','Noto Sans Bengali',sans-serif}.app:lang(bn) button,.app:lang(bn) select{font-family:inherit}.headerTools .status{font-size:10px}@media(max-width:1100px){.headerTools .status{display:none}}@media(max-width:600px){header{gap:8px;padding-left:12px;padding-right:12px}.headerTools{gap:5px}.languageSwitch span{display:none}.languageSwitch select{padding:6px;font-size:11px}.brandmark{width:32px;height:32px}.brand{gap:6px}.brand small{display:none}}
