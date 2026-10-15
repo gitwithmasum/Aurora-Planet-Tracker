@@ -1,6 +1,7 @@
 import React,{useEffect,useMemo,useState} from 'react';
 import * as Astronomy from 'astronomy-engine';
 import './SkyMap.css';
+import {useLanguage} from './i18n.jsx';
 
 const AU=149597870.7;
 const DEG=Math.PI/180;
@@ -24,6 +25,7 @@ const glyphs=[{name:'N',angle:0},{name:'NE',angle:45},{name:'E',angle:90},{name:
 const presets=[{name:'N',angle:0},{name:'E',angle:90},{name:'S',angle:180},{name:'W',angle:270}];
 
 export default function SkyMap({planets,location,selected,onSelect,onOpenDetails}){
+ const {t,language}=useLanguage();
  const [hours,setHours]=useState(0);
  const [anchor,setAnchor]=useState(()=>Date.now());
  const [heading,setHeading]=useState(0);
@@ -52,7 +54,7 @@ export default function SkyMap({planets,location,selected,onSelect,onOpenDetails
  function changeHours(v){setHours(Number(v));setClock(false)}
  const conditions=solar.alt>0?'DAYLIGHT':solar.alt>-6?'TWILIGHT':'NIGHT';
  return <section className="astroMap">
-  <div className="astroHeader"><div><span className="eyebrow">ASTRONOMICAL NAVIGATION / HORIZON PROJECTION</span><h3>360° Sky Observatory</h3><p>Accurate calculated directions for your observer coordinates, visualized on a compass-style sky dome.</p></div><span className="astroLive">{clock&&hours===0?'● LIVE BASE TIME':'◉ TIME EXPLORER'}</span></div>
+  <div className="astroHeader"><div><span className="eyebrow">ASTRONOMICAL NAVIGATION / HORIZON PROJECTION</span><h3>{t('skyTitle')}</h3><p>Accurate calculated directions for your observer coordinates, visualized on a compass-style sky dome.</p></div><span className="astroLive">{clock&&hours===0?'● LIVE BASE TIME':'◉ TIME EXPLORER'}</span></div>
   <div className="astroControls">
    <label className="astroSearch">FIND PLANET<input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search by planet name"/></label>
    <label>TIME OFFSET <strong>{hours>0?'+':''}{hours} h</strong><input aria-label="Time offset in hours" type="range" min="-24" max="48" step="1" value={hours} onChange={e=>changeHours(e.target.value)}/></label>
@@ -60,7 +62,7 @@ export default function SkyMap({planets,location,selected,onSelect,onOpenDetails
    <label className="astroToggle"><input type="checkbox" checked={below} onChange={e=>setBelow(e.target.checked)}/> INCLUDE BELOW HORIZON</label>
   </div>
   <div className="astroLayout">
-  <div className="astroMapArea"><div className="astroMapMeta"><span>{date.toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'})}</span><span>{conditions}</span><span>OBSERVER {fmt(location.lat,3)}°, {fmt(location.lon,3)}°</span></div>
+  <div className="astroMapArea"><div className="astroMapMeta"><span>{date.toLocaleString(language==='bn'?'bn-BD':'en-US',{dateStyle:'medium',timeStyle:'short'})}</span><span>{conditions}</span><span>OBSERVER {fmt(location.lat,3)}°, {fmt(location.lon,3)}°</span></div>
    <svg className="astroChart" viewBox="0 0 400 400" role="img" aria-label="360 degree sky map. North is at the top when bearing zero. Planet locations represent azimuth and altitude.">
     <defs><radialGradient id="astroBackdrop"><stop stopColor="#152a57"/><stop offset=".75" stopColor="#0a1a35"/><stop offset="1" stopColor="#030b1d"/></radialGradient><filter id="astroHalo"><feGaussianBlur stdDeviation="4"/></filter></defs>
     <circle cx="200" cy="200" r="165" fill="url(#astroBackdrop)" stroke="#63a2ca" strokeWidth="1.5"/>
@@ -82,7 +84,7 @@ export default function SkyMap({planets,location,selected,onSelect,onOpenDetails
    <div className="astroForecast"><div className="astroSectionCaption">NEXT 24 HOURS / GEOMETRIC OBSERVATION</div><div className="astroTimeline">{forecasts.filter((f,i)=>i%2===0).map((f,i)=><div key={i} title={f.at.toLocaleString()+' altitude '+fmt(f.alt)+'°'}><span style={{height:(Math.max(0,f.alt)+6)*.85+'px',background:f.good?'#6de6d3':f.above?'#5a93c8':'#2a3b57'}}/><small>{f.at.getHours().toString().padStart(2,'0')}</small></div>)}</div>
    <p>{nextWindow?'Next candidate observing window (planet ≥ 10° and Sun ≤ −6°): '+nextWindow.at.toLocaleString(undefined,{weekday:'short',hour:'numeric',minute:'2-digit'}):'No suitable geometric observation window found within the sampled next 24 hours.'}</p>
    </div>
-   <button className="astroButton astroFull" onClick={onOpenDetails}>OPEN PLANET INTELLIGENCE →</button>
+   <button className="astroButton astroFull" onClick={onOpenDetails}>{t('details')} →</button>
    <div className="astroSectionCaption">PLANET FEED</div><div className="astroFeed">{bodies.filter(p=>p.name.toLowerCase().includes(search.toLowerCase())).map(p=><button key={p.name} className={p.name===active?.name?'selected':''} onClick={()=>onSelect(planets.find(q=>q.name===p.name))}><span style={{background:p.color}}/>{p.name}<b>{fmt(p.alt)}°</b><small>{fmt(p.az)}°</small></button>)}</div>
   </aside>
   </div>
