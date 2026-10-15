@@ -4,6 +4,7 @@ const browser=await chromium.launch({headless:true,args:['--use-gl=angle','--use
 const page=await browser.newPage({viewport:{width:1366,height:768}});
 const errors=[];
 page.on('pageerror',error=>errors.push('JS: '+error.message));
+page.on('response',r=>{if(r.url().includes('orbital-data/')||r.url().includes('celestrak.org'))console.log('ISS DATA HTTP',r.status(),r.url(),r.headers()['content-type'])});
 page.on('requestfailed',request=>errors.push('NETWORK '+request.url()+' '+request.failure()?.errorText));
 page.on('console',msg=>{if(msg.type()==='error')errors.push('CONSOLE '+msg.text())});
 try{
@@ -29,12 +30,16 @@ try{
  if(section.includes('Satellite Tracker is temporarily unavailable')||section.includes('Aurora recovery mode'))throw Error('Satellite Tracker crashed inside feature error boundary');
  if(!section.includes('Interactive Earth Orbit'))throw Error('Satellite Tracker orbital UI did not render');
  // Also verify orbit telemetry really loads; simply rendering the globe controls is not enough.
- await page.waitForFunction(()=>{
+ try{await page.waitForFunction(()=>{
   const panel=document.querySelector('.satTelemetry');
   if(!panel)return false;
   const text=panel.textContent||'';
   return /ALTITUDE/.test(text)&&/\\d+(?:\\.\\d+)?\\s*km/.test(text);
- },{timeout:18000});
+ },null,{timeout:16000});}catch(error){
+  console.error('ISS data state:',await page.locator('.satGlobeViewport').innerText());
+  console.error('Telemetry state:',await page.locator('.satTelemetry').innerText());
+  throw error;
+ }
  const telemetry=await page.locator('.satTelemetry').innerText();
  console.log('ISS telemetry:',telemetry.replace(/\\n/g,' | ').slice(0,360));
  if(await page.getByText('Orbital data unavailable',{exact:true}).count())throw Error('ISS orbital data is still unavailable');
