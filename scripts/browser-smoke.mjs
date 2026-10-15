@@ -15,6 +15,16 @@ try{
  if(/Aurora recovery mode|could not start|Some application files could not load/i.test(snapshot.rootText||''))throw Error('Recovery screen is still mounted');
  if(!snapshot.bootHidden)throw Error('Startup loader never dismissed');
  if(errors.length)console.warn('Browser issues:',errors.slice(0,12).join('\n'));
+ // Smoke-test the navigation path that previously triggered Satellite Tracker recovery mode.
+ const enter=page.getByText('ENTER THE GALAXY',{exact:true});
+ if(await enter.count())await enter.first().click();
+ const satellite=page.getByRole('button',{name:/Satellite Tracker/i});
+ await satellite.first().click({timeout:15000});
+ await page.waitForTimeout(1800);
+ const section=await page.locator('body').innerText();
+ if(section.includes('Satellite Tracker is temporarily unavailable')||section.includes('Aurora recovery mode'))throw Error('Satellite Tracker crashed inside feature error boundary');
+ if(!section.includes('Interactive Earth Orbit'))throw Error('Satellite Tracker orbital UI did not render');
+ console.log('PASS: Satellite Tracker opened without recovery error');
  console.log('PASS: Chromium rendered Aurora root and dismissed loader');
 }catch(e){
  console.error('CHROMIUM BOOT FAILURE',String(e));
