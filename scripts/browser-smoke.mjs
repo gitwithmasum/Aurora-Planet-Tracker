@@ -28,6 +28,17 @@ try{
  const section=await page.locator('body').innerText();
  if(section.includes('Satellite Tracker is temporarily unavailable')||section.includes('Aurora recovery mode'))throw Error('Satellite Tracker crashed inside feature error boundary');
  if(!section.includes('Interactive Earth Orbit'))throw Error('Satellite Tracker orbital UI did not render');
+ // Also verify orbit telemetry really loads; simply rendering the globe controls is not enough.
+ await page.waitForFunction(()=>{
+  const panel=document.querySelector('.satTelemetry');
+  if(!panel)return false;
+  const text=panel.textContent||'';
+  return /ALTITUDE/.test(text)&&/\\d+(?:\\.\\d+)?\\s*km/.test(text);
+ },{timeout:18000});
+ const telemetry=await page.locator('.satTelemetry').innerText();
+ console.log('ISS telemetry:',telemetry.replace(/\\n/g,' | ').slice(0,360));
+ if(await page.getByText('Orbital data unavailable',{exact:true}).count())throw Error('ISS orbital data is still unavailable');
+ console.log('PASS: Fresh ISS orbital dataset is loaded and telemetry populated');
  console.log('PASS: Satellite Tracker opened without recovery error');
  console.log('PASS: Chromium rendered Aurora root and dismissed loader');
 }catch(e){
