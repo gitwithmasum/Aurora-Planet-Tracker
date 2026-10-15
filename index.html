@@ -21,14 +21,16 @@
  <script>
  (function(){
   var root=document.getElementById('root'),boot=document.getElementById('aurora-boot');
-  var bootText=document.getElementById('aurora-boot-text'),failedAsset=false;
+  var bootText=document.getElementById('aurora-boot-text'),failedAsset=false,failedUrls=[],runtimeErrors=[];
   // Track only own application script/stylesheet failures, not Google fonts or pictures.
   window.addEventListener('error',function(event){
    var target=event.target,tag=target&&target.tagName;
    if(tag!=='SCRIPT'&&tag!=='LINK')return;
    var url=tag==='SCRIPT'?target.src:target.href;
-   if(url&&new URL(url,location.href).origin===location.origin){failedAsset=true;console.error('Aurora startup asset failed:',url);}
+   if(url&&new URL(url,location.href).origin===location.origin){failedAsset=true;failedUrls.push(url);console.error('Aurora startup asset failed:',url);}
   },true);
+  window.addEventListener('unhandledrejection',function(e){var message=String(e.reason?.message||e.reason||'unknown promise rejection');runtimeErrors.push(message);console.error('Aurora bootstrap import failure:',message)});
+  window.addEventListener('error',function(e){if(e.message)runtimeErrors.push(String(e.message));});
   function ready(){return !!(root&&root.children.length)}
   function hide(){if(ready()){boot.hidden=true;return true}return false}
   var watch=new MutationObserver(function(){if(hide())watch.disconnect()});
@@ -58,7 +60,10 @@
     }catch(e){console.warn('Aurora automatic cache repair was partial:',e)}
     var retry=new URL(location.href);retry.searchParams.set('aurora_refresh','1');location.replace(retry.href);return;
    }
-   bootText.textContent=failedAsset?'Some application files could not load. Check your connection and retry.':'The application could not start. Please retry or check the browser console.';
+   bootText.textContent=failedAsset?'Some application files could not load. Check the details below.':'Aurora could not initialize. See the error details below.';
+   var diagnostic=document.createElement('pre');diagnostic.style.cssText='white-space:pre-wrap;overflow-wrap:anywhere;max-width:80vw;max-height:140px;overflow:auto;font:11px monospace;color:#c8e8f9;text-align:left';
+   diagnostic.textContent='Page: '+location.pathname+'\nFailed assets: '+(failedUrls.join(' | ')||'none detected')+'\nJavaScript errors: '+(runtimeErrors.slice(0,3).join(' | ')||'none detected');
+   bootText.parentElement.appendChild(diagnostic);
    var button=document.createElement('button');button.textContent='Retry loading Aurora';button.onclick=function(){
     try{sessionStorage.removeItem(key)}catch(e){}
     location.reload();
