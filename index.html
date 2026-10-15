@@ -27,7 +27,7 @@
    var target=event.target,tag=target&&target.tagName;
    if(tag!=='SCRIPT'&&tag!=='LINK')return;
    var url=tag==='SCRIPT'?target.src:target.href;
-   if(url&&new URL(url,location.href).origin===location.origin){failedAsset=true;failedUrls.push(url);console.error('Aurora startup asset failed:',url);}
+   if(url&&new URL(url,location.href).origin===location.origin&&/\.(?:js|css)(?:[?#]|$)/.test(url)){failedAsset=true;failedUrls.push(url);console.error('Aurora startup script/style failed:',url);}
   },true);
   window.addEventListener('unhandledrejection',function(e){var message=String(e.reason?.message||e.reason||'unknown promise rejection');runtimeErrors.push(message);console.error('Aurora bootstrap import failure:',message)});
   window.addEventListener('error',function(e){if(e.message)runtimeErrors.push(String(e.message));});
@@ -68,7 +68,7 @@
     try{sessionStorage.removeItem(key)}catch(e){}
     location.reload();
    };bootText.parentElement.appendChild(button);
-  },10000);
+  },18000);
  })();
  </script>
  <script type="module" src="/src/main.jsx"></script>
