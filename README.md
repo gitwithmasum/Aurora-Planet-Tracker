@@ -1,6 +1,6 @@
 # Aurora Planet Tracker
 
-**Galactic Intelligence System — v1.3.0**
+**Galactic Intelligence System — v1.4.0**
 
 An immersive interactive space-themed web app with an animated galaxy entry, explorable 3D Solar System, planet intelligence cards, and observer-based astronomical planet coordinates.
 
@@ -46,8 +46,19 @@ These enhancements are artistic visualizations; precise sky coordinates still us
 - Sampled 24-hour geometric observing-window guide (planet altitude >= 10° and Sun altitude <= −6°); **not a weather, atmospheric, or naked-eye visibility forecast**
 - The sky map uses physical ephemerides independently of the artistic 3D Solar System. This is not yet camera AR alignment.
 
+## v1.4 — Mobile camera-assisted planet scanner
+
+- Rear-facing camera preview (permission-based) with fallbacks when unavailable.
+- Approximate planet markers calculated from observer coordinates and current time.
+- Manually adjustable camera heading, elevation and horizontal field of view, plus reset controls.
+- Experimental device orientation telemetry and optional unverified sensor-heading assistance.
+- GPS or manually entered coordinates, selectable planets and estimated Earth distance.
+- Sensor/browser caveats and simulated backdrop clearly identified in the UI.
+
+**Scientific limitations:** This is approximate camera-assisted sky guidance, **not calibrated optical AR or image recognition**. Phone orientation alpha/beta readings are not reliable camera attitudes on all devices; the user must manually align the sky overlay. Camera FOV is a manual approximation and screen orientation/camera intrinsics are not fully calibrated. For accurate pointing, further calibration and real-device tests are required. Overlay markers can appear when planets are not optically visible.
+
 ## Roadmap
 
-v1.4 — calibrated AR sky markers; v1.5 — PWA, offline resilience, internationalization.
+v1.5 — device-specific 3D orientation calibration and verified AR projection, PWA, offline resilience, internationalization.
 
 Built with React, Vite, React Three Fiber, Three.js and Astronomy Engine.
