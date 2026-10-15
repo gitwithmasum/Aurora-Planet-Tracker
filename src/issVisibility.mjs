@@ -35,3 +35,43 @@ export function assessIssPass(pass,satrec,lat,lon,cloudCover=null){
  return {classification,sunlit,sunAltitude,dark,cloudCover:clouds,reason};
 }
 export function cloudLabel(cloud){if(!Number.isFinite(cloud))return 'Unavailable';if(cloud<20)return 'Mostly clear';if(cloud<55)return 'Partly cloudy';if(cloud<80)return 'Mostly cloudy';return 'Overcast'}
+
+
+/** Match pass time to an actual hourly forecast timestamp in UTC, no extrapolation. */
+export function cloudForecastAt(forecast,date,maxMinutes=70){
+ if(!forecast||!Array.isArray(forecast.times)||!Array.isArray(forecast.clouds)||!date)return null;
+ const target=date.getTime();if(!Number.isFinite(target))return null;
+ let closest=null,best=Infinity;
+ for(let i=0;i<forecast.times.length;i++){
+  const dt=Math.abs(Date.parse(forecast.times[i])-target),cloud=forecast.clouds[i];
+  if(Number.isFinite(dt)&&Number.isFinite(cloud)&&dt<best){closest=Math.max(0,Math.min(100,cloud));best=dt}
+ }
+ return best<=maxMinutes*60000?closest:null;
+}
+/** Sample the full pass and describe the time spent with favourable illumination.
+ * Sampling gives an estimate (not precise transition instants or naked-eye brightness).
+ */
+export function analyzeFullIssPass(pass,satrec,lat,lon,forecast=null,stepSeconds=20){
+ if(!pass?.start||!pass?.end||!(pass.end>pass.start)||!satrec)return {classification:'Unknown',samples:[],bestWindow:null,reason:'No valid pass interval'};
+ const samples=[],step=Math.max(10,Math.min(120,stepSeconds))*1000,start=pass.start.getTime(),end=pass.end.getTime();
+ for(let t=start;t<=end+step;t+=step){
+  const date=new Date(Math.min(t,end));
+  const cloud=cloudForecastAt(forecast,date);
+  const result=assessIssPass({peak:date},satrec,lat,lon,cloud);
+  samples.push({time:date,classification:result.classification,sunlit:result.sunlit,dark:result.dark,cloudCover:cloud,reason:result.reason});
+  if(date.getTime()===end)break;
+ }
+ const good=samples.filter(s=>s.classification==='Potentially visible');
+ const cloudLimited=samples.filter(s=>s.classification==='Cloud limited');
+ let current=null,longest=null;
+ for(const s of samples){
+  if(s.classification==='Potentially visible'){
+   if(!current)current={start:s.time,end:s.time,count:0};current.end=s.time;current.count++;
+  }else if(current){if(!longest||current.count>longest.count)longest=current;current=null}
+ }
+ if(current&&(!longest||current.count>longest.count))longest=current;
+ const classification=good.length?'Potentially visible interval':cloudLimited.length?'Cloud limited':'Unlikely / uncertain';
+ return {classification,samples,bestWindow:longest?{start:longest.start,end:longest.end}:null,
+  favorableSamples:good.length,totalSamples:samples.length,
+  reason:good.length?'Dark observer sky and estimated sunlit ISS overlap for part of this pass':cloudLimited.length?'Some dark and sunlit intervals appear cloud limited':'No interval meets both sunlight and darkness criteria, or data is incomplete'};
+}
