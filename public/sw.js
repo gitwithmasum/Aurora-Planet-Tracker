@@ -1,6 +1,6 @@
 /* Aurora Planet Tracker offline navigation and immutable build assets cache.
    Same-origin only; no user GPS, camera streams, tokens, or reports stored. */
-const VERSION='aurora-v2.5.1';
+const VERSION='aurora-v2.5.2';
 const SHELL=VERSION+'-shell',RUNTIME=VERSION+'-runtime';
 const scope=self.registration.scope;
 const home=new URL('./',scope).pathname;
@@ -33,7 +33,17 @@ self.addEventListener('fetch',event=>{
  const url=new URL(request.url);
  if(url.origin!==self.location.origin||!url.pathname.startsWith(home))return;
  if(request.mode==='navigate'){
-  event.respondWith((async()=>{try{const response=await fetch(request);if(response.ok)(await caches.open(SHELL)).put(request,response.clone());return response}catch{return await caches.match(request)||await caches.match(home)||Response.error()}})());return;
+  // Always prefer the current deployment's HTML. Avoid pairing old cached HTML with deleted hashed JS chunks.
+  event.respondWith((async()=>{
+   try{
+    const fresh=await fetch(request,{cache:'no-store'});
+    if(fresh.ok){const cache=await caches.open(SHELL);await cache.put(request,fresh.clone());return fresh}
+    return fresh;
+   }catch{
+    // Offline shell is only a fallback, never an online replacement for a failed deployment response.
+    return await caches.match(request)||await caches.match(home)||Response.error();
+   }
+  })());return;
  }
  if(!/\.(?:js|css|svg|png|jpg|jpeg|webp|woff2?|webmanifest)$/.test(url.pathname))return;
  event.respondWith((async()=>{
