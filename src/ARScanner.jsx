@@ -2,6 +2,7 @@ import React,{useEffect,useMemo,useRef,useState} from 'react';
 import * as Astronomy from 'astronomy-engine';
 import {Camera,CameraOff,Compass,Crosshair,LocateFixed,RotateCcw,SlidersHorizontal,Info} from 'lucide-react';
 import './ARScanner.css';
+import FieldTest from './FieldTest.jsx';
 import {projectSkyPoint,wrapDegrees,validateCalibration,signedDegrees} from './arProjection.mjs';
 
 const AU_KM=149597870.7;
@@ -26,7 +27,7 @@ export default function ARScanner({planets,location,onLocation,onSelect,selected
  const [locationError,setLocationError]=useState(''),[time,setTime]=useState(()=>new Date());
  const [fov,setFov]=useState(60),[roll,setRoll]=useState(0),[viewportSize,setViewportSize]=useState({width:640,height:480});
  const viewportRef=useRef(null);
- const [screenAngle,setScreenAngle]=useState(0),[sensorLastSeen,setSensorLastSeen]=useState(0),[deviceWidth,setDeviceWidth]=useState(null);
+ const [screenAngle,setScreenAngle]=useState(0),[sensorLastSeen,setSensorLastSeen]=useState(0),[deviceWidth,setDeviceWidth]=useState(null),[deviceHeight,setDeviceHeight]=useState(null);
  useEffect(()=>{const timer=setInterval(()=>setTime(new Date()),1000);return()=>clearInterval(timer)},[]);
  useEffect(()=>{try{const saved=validateCalibration(JSON.parse(localStorage.getItem('aurora-ar-calibration-v1')||'null'));if(saved){setFov(saved.hfov);setRoll(saved.roll)}}catch{}},[]);
  useEffect(()=>{try{localStorage.setItem('aurora-ar-calibration-v1',JSON.stringify({hfov:fov,roll}))}catch{}},[fov,roll]);
@@ -40,10 +41,10 @@ export default function ARScanner({planets,location,onLocation,onSelect,selected
   try{
    if(!navigator.mediaDevices?.getUserMedia)throw new Error('Camera access requires HTTPS and a supported mobile browser.');
    const media=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}}});
-   stream.current?.getTracks().forEach(t=>t.stop());stream.current=media;const track=media.getVideoTracks()[0];setDeviceWidth(track?.getSettings()?.width||null);setCamera(true);
+   stream.current?.getTracks().forEach(t=>t.stop());stream.current=media;const track=media.getVideoTracks()[0];setDeviceWidth(track?.getSettings()?.width||null);setDeviceHeight(track?.getSettings()?.height||null);setCamera(true);
   }catch(e){setCamera(false);setCameraError(e.message||'Camera permission or device unavailable.')}
  }
- function stopCamera(){stream.current?.getTracks().forEach(t=>t.stop());stream.current=null;if(video.current)video.current.srcObject=null;setCamera(false);setDeviceWidth(null)}
+ function stopCamera(){stream.current?.getTracks().forEach(t=>t.stop());stream.current=null;if(video.current)video.current.srcObject=null;setCamera(false);setDeviceWidth(null);setDeviceHeight(null)}
  async function enableSensor(){
   setSensorError('');
   try{
@@ -113,5 +114,6 @@ export default function ARScanner({planets,location,onLocation,onSelect,selected
  <div className="arLocation"><strong>OBSERVER LOCATION</strong><p>{location.label}</p><div>Lat <input type="number" aria-label="AR observer latitude" step=".0001" min="-90" max="90" value={location.lat} onChange={e=>{const v=Number(e.target.value);if(v>=-90&&v<=90)onLocation({...location,lat:v,label:'Manual coordinates'})}}/></div><div>Lon <input type="number" aria-label="AR observer longitude" step=".0001" min="-180" max="180" value={location.lon} onChange={e=>{const v=Number(e.target.value);if(v>=-180&&v<=180)onLocation({...location,lon:v,label:'Manual coordinates'})}}/></div></div>
  <button className="arReset" onClick={()=>{setManualHeading(180);setManualElevation(35);setAutoHeading(false);setCorrection(0);setFov(60);setRoll(0)}}><RotateCcw size={15}/> RESET CALIBRATION</button>
  </aside></div>
+ <FieldTest data={{camera,sensorFresh,sensorAbsolute:!!absoluteHeading,screenAngle,videoWidth:deviceWidth,videoHeight:deviceHeight,viewportWidth:viewportSize.width,viewportHeight:viewportSize.height,heading,elevation,roll,fov}}/>
  </div>
 }
