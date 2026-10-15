@@ -4,6 +4,19 @@
 
 An immersive interactive space-themed web app with an animated galaxy entry, explorable 3D Solar System, planet intelligence cards, and observer-based astronomical planet coordinates.
 
+## v2.5.0 — Interactive 3D Earth and ISS orbital tracker
+
+- New **interactive 3D Earth globe** in Observation → Satellite Tracker, with OrbitControls drag-to-orbit and zoom and the existing NASA/JPL Earth surface image.
+- **ISS calculated location:** satellite.js SGP4 propagates current ISS orbital elements and converts Earth-centered inertial vectors to geodetic Earth-fixed latitude/longitude/altitude, then to a globe marker and sampled 3D orbital trail.
+- **Telemetry cards** show geodetic latitude, longitude, estimated orbital altitude in kilometers, inertial speed in km/s, orbital period, and the selected model time.
+- **Ground-track map:** simplified equirectangular lat/long grid with dateline-safe path segments and current ISS point. Not a full GIS geographic basemap.
+- **Time Warp:** −90 to +90 minutes for educational orbit preview and NOW reset. Path samples recalculate at minute resolution while satellite telemetry updates from the shared one-second clock.
+- **Graphics quality:** balanced and mobile ECO mode, with reduced stars/pixel ratio/trail sampling for low-power devices.
+- ISS **orbit data fetch is independent of notification opt-in**: users can explore the globe without enabling sounds or notifications. Existing pass alerts, countdown, chime and Sky Tonight remain.
+- Automatic pass tracking still uses live orbital TLE fetched on client; when fresh elements are inaccessible, no ISS coordinates are fabricated.
+- Astronomical accuracy limitations: 3D satellite marker is enlarged, Earth radius and relative altitude scale are schematic, TLE prediction accuracy deteriorates farther from epoch, and the orientation of the Earth surface map is illustrative rather than a certified geodetic visualization.
+- Tests added for globe coordinate mapping, altitude scaling, missing data and international-dateline split. Manual browser/GPU testing remains necessary.
+
 ## v2.4.0 — Satellite Pass Alert with Sound
 
 - **Satellite Tracker** is a dedicated Observation sidebar page that shares the existing global ISS alert state with Sky Tonight and offers observer coordinates, countdown, sound controls, and true-north direction guidance. The feature currently covers ISS, not arbitrary satellites.
