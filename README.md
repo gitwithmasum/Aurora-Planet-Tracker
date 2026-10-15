@@ -1,6 +1,6 @@
 # Aurora Planet Tracker
 
-**Galactic Intelligence System — v1.8.1**
+**Galactic Intelligence System — v1.8.2**
 
 An immersive interactive space-themed web app with an animated galaxy entry, explorable 3D Solar System, planet intelligence cards, and observer-based astronomical planet coordinates.
 
@@ -82,6 +82,15 @@ Validate with `npm test` and `npm run build`, then test on an actual smartphone 
 In **AR Scanner**, use the field-test checklist to verify HTTPS, rear camera, observer coordinates, compass, portrait/landscape handling, manual reference alignment, fallback controls, and camera restart. Add device/browser model and manual notes, then export a JSON diagnostic report locally. The app **does not upload** these reports and intentionally excludes observer GPS coordinates from the exported data. Reports may include your device/browser details; review before sharing.
 
 A checklist completion is not a scientific accuracy certification. Marker placement remains approximate until device-specific optics and orientation calibration are empirically validated on real phones.
+
+## v1.8.2 — NASA/JPL sourced planet surface maps
+
+- 3D spheres now attempt to load locally hosted JPEG map textures from `public/planet-textures/`; they retain the original procedural fallback if download/import is unavailable.
+- Official source catalog: [NASA/JPL Solar System Simulator](https://maps.jpl.nasa.gov/tmaps/). See `public/planet-textures/SOURCES.json` once the import workflow succeeds for per-planet credit and source URLs.
+- Trigger the **Import NASA/JPL Planet Texture Maps** GitHub Action to download and commit source maps. It also runs when its workflow or import script changes.
+- **Science disclosure:** Mercury is partly reconstructed; Venus is radar/false-color, Earth is a topographic rendering, Jupiter is an older representative Voyager mosaic. Saturn, Uranus and Neptune in this archive are explicitly fictional or representative textures, not raw NASA photographs; those assets improve cinematic appearance but are not authentic optical color measurements.
+- Planet rotations, orbit radii and motion are still visualization art, **not an ephemeris-based 3D simulation**. Astronomy calculations used in Sky Tracker remain independent.
+- No images from stock-photo screenshot or watermarked artwork have been embedded.
 
 ## v1.8.1 — Deep Galaxy theme
 
