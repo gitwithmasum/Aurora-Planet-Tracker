@@ -1,3 +1,10 @@
+## v2.5.4 — Satellite Tracker rendering hotfix
+
+- Fixed a reproducible `TypeError: now.getTime is not a function` in orbit sampling: the 3D globe passed a numeric Unix-millisecond timestamp into a helper that previously required a `Date`.
+- Orbit sampling now accepts both `Date` and timestamp, validating timestamps before propagation.
+- Added an orbit regression test and extended the live Chromium smoke check to open the Satellite Tracker page and fail if its error boundary appears.
+- Other astronomy features and saved preferences are unchanged.
+
 # Aurora Planet Tracker
 
 **Galactic Intelligence System — v2.3.1**
