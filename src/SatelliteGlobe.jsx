@@ -51,7 +51,7 @@ function GlobeScene({telemetry,samples,lowQuality}){
  </Canvas>;
 }
 const format=(number,d=2)=>Number.isFinite(number)?number.toFixed(d):'—';
-export default function SatelliteGlobe({satrec,now,loading=false,error='',onRefresh}){
+export default function SatelliteGlobe({satrec,now,loading=false,error='',onRefresh,satelliteName='ISS',noradId=25544}){
  const [mode,setMode]=useState('3d');
  const [quality,setQuality]=useState('balanced');
  const [offset,setOffset]=useState(0);
@@ -60,25 +60,25 @@ export default function SatelliteGlobe({satrec,now,loading=false,error='',onRefr
  const trackMinute=Math.floor(epoch.getTime()/60000);
  const samples=useMemo(()=>orbitalSamples(satrec,trackMinute*60000,100,quality==='eco'?120:60),[satrec,trackMinute,quality]);
  const groundSegments=useMemo(()=>segmentGroundTrack(samples),[samples]);
- return <section className="satGlobe" aria-label="Live calculated ISS Earth orbit">
-  <div className="satGlobeHeader"><div><span className="eyebrow">AURORA / ORBITAL COMMAND</span><h4><Globe2 size={21}/> Interactive Earth Orbit</h4><p>Calculated ISS position from current orbital elements; not a satellite GPS broadcast.</p></div><div className="satGlobeTabs"><button className={mode==='3d'?'active':''} onClick={()=>setMode('3d')}>3D GLOBE</button><button className={mode==='map'?'active':''} onClick={()=>setMode('map')}><MapIcon size={13}/> GROUND TRACK</button></div></div>
+ return <section className="satGlobe" aria-label="Calculated satellite Earth orbit">
+  <div className="satGlobeHeader"><div><span className="eyebrow">AURORA / ORBITAL COMMAND</span><h4><Globe2 size={21}/> Interactive Earth Orbit</h4><p>Calculated orbital position from recent satellite elements; not a live GPS broadcast.</p></div><div className="satGlobeTabs"><button className={mode==='3d'?'active':''} onClick={()=>setMode('3d')}>3D GLOBE</button><button className={mode==='map'?'active':''} onClick={()=>setMode('map')}><MapIcon size={13}/> GROUND TRACK</button></div></div>
   <div className="satGlobeControls">
    <label>TIME WARP <strong>{offset>0?'+':''}{offset} min</strong><input aria-label="Satellite orbit time warp minutes" type="range" min="-90" max="90" step="5" value={offset} onChange={e=>setOffset(Number(e.target.value))}/></label>
    <button onClick={()=>setOffset(0)}><RotateCcw size={15}/> NOW</button>
    <label>GRAPHICS <select aria-label="Satellite globe graphics quality" value={quality} onChange={e=>setQuality(e.target.value)}><option value="balanced">BALANCED</option><option value="eco">ECO MOBILE</option></select></label>
   </div>
   <div className="satGlobeViewport">
-   {!satrec?<div className="satGlobeEmpty"><Satellite size={39}/><strong>{loading?'Retrieving ISS orbital elements…':'Orbital data unavailable'}</strong><span>{error||'Waiting for fresh orbital elements. No substitute ISS coordinates are fabricated.'}</span>{onRefresh&&<button type="button" className="satOrbitRetry" onClick={onRefresh} disabled={loading}>{loading?'LOADING…':'RETRY ORBIT DATA'}</button>}</div>:
+   {!satrec?<div className="satGlobeEmpty"><Satellite size={39}/><strong>{loading?'Retrieving satellite orbital elements…':'Orbital data unavailable'}</strong><span>{error||'Waiting for fresh orbital elements. No substitute satellite coordinates are fabricated.'}</span>{onRefresh&&<button type="button" className="satOrbitRetry" onClick={onRefresh} disabled={loading}>{loading?'LOADING…':'RETRY ORBIT DATA'}</button>}</div>:
     mode==='3d'?<GlobeErrorBoundary onMap={()=>setMode('map')}><GlobeScene telemetry={telemetry} samples={samples} lowQuality={quality==='eco'}/></GlobeErrorBoundary>:
     <svg className="satGroundMap" viewBox="0 0 800 410" role="img" aria-label="ISS latitude longitude ground track. Map is simplified geographic coordinate grid.">
      <rect width="800" height="410" fill="#081a32"/>
      {Array.from({length:13},(_,i)=><line key={'lon'+i} x1={i*800/12} x2={i*800/12} y1="0" y2="410" stroke="#22506b" strokeDasharray="4 6"/>)}
      {Array.from({length:7},(_,i)=><line key={'lat'+i} y1={i*410/6} y2={i*410/6} x1="0" x2="800" stroke="#22506b" strokeDasharray="4 6"/>)}
      {groundSegments.map((segment,i)=><polyline key={i} points={segment.map(p=>((p.longitude+180)/360*800)+','+((90-p.latitude)/180*410)).join(' ')} fill="none" stroke="#69dbff" strokeWidth="2.5"/>)}
-     {telemetry&&<><circle cx={(telemetry.longitude+180)/360*800} cy={(90-telemetry.latitude)/180*410} r="7" fill="#8dfaff" stroke="#ffffff" strokeWidth="2"/><text x={(telemetry.longitude+180)/360*800+12} y={(90-telemetry.latitude)/180*410-10} fill="#d7ffff" fontSize="15" fontWeight="bold">ISS</text></>}
+     {telemetry&&<><circle cx={(telemetry.longitude+180)/360*800} cy={(90-telemetry.latitude)/180*410} r="7" fill="#8dfaff" stroke="#ffffff" strokeWidth="2"/><text x={(telemetry.longitude+180)/360*800+12} y={(90-telemetry.latitude)/180*410-10} fill="#d7ffff" fontSize="15" fontWeight="bold">{satelliteName}</text></>}
      <text x="14" y="22" fill="#8fc8e0" fontSize="14">90°N</text><text x="14" y="397" fill="#8fc8e0" fontSize="14">90°S</text><text x="736" y="397" fill="#8fc8e0" fontSize="12">180°E</text>
     </svg>}
-   <div className="satGlobeCorner">ISS • NORAD 25544 · {offset===0?'CALCULATED NOW':'SIMULATED TIME OFFSET'}</div>
+   <div className="satGlobeCorner">{satelliteName} • NORAD {noradId} · {offset===0?'CALCULATED NOW':'SIMULATED TIME OFFSET'}</div>
   </div>
   <div className="satTelemetry">
    {[
