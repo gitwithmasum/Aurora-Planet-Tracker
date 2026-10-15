@@ -1,6 +1,6 @@
 # Aurora Planet Tracker
 
-**Galactic Intelligence System — v1.5.0**
+**Galactic Intelligence System — v1.6.0**
 
 An immersive interactive space-themed web app with an animated galaxy entry, explorable 3D Solar System, planet intelligence cards, and observer-based astronomical planet coordinates.
 
@@ -67,8 +67,18 @@ These enhancements are artistic visualizations; precise sky coordinates still us
 
 **QA still required:** a successful CI build does not verify real camera and compass alignment; test physical Android/iPhone devices separately.
 
+## v1.6 — Advanced perspective sky guidance
+
+- Replaces the earlier linear azimuth/altitude screen placement with a perspective camera projection in local East/North/Up coordinates, incorporating heading, elevation, roll, horizontal field of view and measured viewport aspect.
+- Supports manual roll correction and stores only non-location roll/FOV preferences locally.
+- Calibrates experimental compass offset to a **user-confirmed known reference**, with a sensor-freshness safety fallback when device readings cease.
+- Camera lens distortion, exact focal lengths, screen rotation transformations and physical device-camera alignment are **not yet independently calibrated**. This is not verified augmented-reality pointing accuracy.
+- Deterministic node tests for projection center, cardinal direction, above/below, wraparound, roll and aspect; CI now runs these tests before building.
+
+Validate with `npm test` and `npm run build`, then test on an actual smartphone over HTTPS. Do not use the marker alignment as a precision instrument.
+
 ## Roadmap
 
-v1.6 — device-specific orientation calibration and measured camera projection; v1.7 — PWA, offline resilience and internationalization.
+v1.7 — measured camera intrinsics, device-specific optical calibration and field QA; v1.8 — PWA, offline resilience and internationalization.
 
 Built with React, Vite, React Three Fiber, Three.js and Astronomy Engine.
