@@ -1,7 +1,8 @@
 import React,{useEffect,useMemo,useState} from 'react';
 import {Satellite,Sun,Moon,LocateFixed,Compass,Clock3,RefreshCcw,Eye} from 'lucide-react';
 import {useLanguage} from './i18n.jsx';
-import {skySummary,upcomingSunEvents,parseIssTle,predictIssPasses,direction,bodyPosition} from './skyTonightMath.mjs';
+import {skySummary,upcomingSunEvents,predictIssPasses,direction,bodyPosition} from './skyTonightMath.mjs';
+import {fetchIssOrbit} from './issOrbitSource.mjs';
 import './SkyTonight.css';
 import SatellitePassAlert from './SatellitePassAlert.jsx';
 import {assessIssPass,cloudLabel,analyzeFullIssPass,cloudForecastAt} from './issVisibility.mjs';
@@ -20,15 +21,8 @@ export default function SkyTonight({location,onLocation,onOpenSky,passAlert}){
  async function refreshISS(){
   setIssState('loading');setIssError('');
   try{
-   const res=await fetch(ENDPOINT,{cache:'no-store'});
-   if(!res.ok)throw Error('ISS orbital data service returned HTTP '+res.status);
-   const txt=await res.text();
-   const parsed=parseIssTle(txt);
-   const yy=Number(parsed.line1.slice(18,20)),days=Number(parsed.line1.slice(20,32));
-   const epoch=new Date(Date.UTC(yy>=57?1900+yy:2000+yy,0,1)+(days-1)*86400000);
-   const ageDays=(Date.now()-epoch.getTime())/86400000;
-   if(!Number.isFinite(ageDays)||ageDays>5||ageDays<-.5)throw Error('ISS orbital elements are out of date. Predictions withheld.');
-   setTle({satrec:parsed.satrec,epoch,fetched:new Date()});setIssState('ready');
+   const parsed=await fetchIssOrbit();
+   setTle({satrec:parsed.satrec,epoch:parsed.epoch,fetched:new Date()});setIssState('ready');
   }catch(e){setTle(null);setIssState('error');setIssError(e.message||'Live orbital data unavailable.')}
  }
  useEffect(()=>{refreshISS();const id=setInterval(refreshISS,3*3600000);return()=>clearInterval(id)},[]);
