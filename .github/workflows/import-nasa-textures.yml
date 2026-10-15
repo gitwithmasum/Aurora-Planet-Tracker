@@ -2,6 +2,11 @@ name: Import NASA/JPL Planet Texture Maps
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/import_nasa_maps.py'
+      - '.github/workflows/import-nasa-textures.yml'
 
 permissions:
   contents: write
