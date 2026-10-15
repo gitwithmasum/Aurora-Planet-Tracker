@@ -51,7 +51,7 @@ function GlobeScene({telemetry,samples,lowQuality}){
  </Canvas>;
 }
 const format=(number,d=2)=>Number.isFinite(number)?number.toFixed(d):'—';
-export default function SatelliteGlobe({satrec,now,loading=false}){
+export default function SatelliteGlobe({satrec,now,loading=false,error='',onRefresh}){
  const [mode,setMode]=useState('3d');
  const [quality,setQuality]=useState('balanced');
  const [offset,setOffset]=useState(0);
@@ -68,7 +68,7 @@ export default function SatelliteGlobe({satrec,now,loading=false}){
    <label>GRAPHICS <select aria-label="Satellite globe graphics quality" value={quality} onChange={e=>setQuality(e.target.value)}><option value="balanced">BALANCED</option><option value="eco">ECO MOBILE</option></select></label>
   </div>
   <div className="satGlobeViewport">
-   {!satrec?<div className="satGlobeEmpty"><Satellite size={39}/><strong>{loading?'Retrieving ISS orbital elements…':'Orbital data unavailable'}</strong><span>Enable or refresh ISS tracking to load calculated location. No substitute coordinates are fabricated.</span></div>:
+   {!satrec?<div className="satGlobeEmpty"><Satellite size={39}/><strong>{loading?'Retrieving ISS orbital elements…':'Orbital data unavailable'}</strong><span>{error||'Waiting for fresh orbital elements. No substitute ISS coordinates are fabricated.'}</span>{onRefresh&&<button type="button" className="satOrbitRetry" onClick={onRefresh} disabled={loading}>{loading?'LOADING…':'RETRY ORBIT DATA'}</button>}</div>:
     mode==='3d'?<GlobeErrorBoundary onMap={()=>setMode('map')}><GlobeScene telemetry={telemetry} samples={samples} lowQuality={quality==='eco'}/></GlobeErrorBoundary>:
     <svg className="satGroundMap" viewBox="0 0 800 410" role="img" aria-label="ISS latitude longitude ground track. Map is simplified geographic coordinate grid.">
      <rect width="800" height="410" fill="#081a32"/>
