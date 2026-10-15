@@ -1,8 +1,17 @@
 # Aurora Planet Tracker
 
-**Galactic Intelligence System — v1.8.5**
+**Galactic Intelligence System — v2.2.1**
 
 An immersive interactive space-themed web app with an animated galaxy entry, explorable 3D Solar System, planet intelligence cards, and observer-based astronomical planet coordinates.
+
+## v2.2.1 — ISS visibility and local sky weather
+
+- Per-ISS-pass **approximate** sunlight/shadow indication at maximum elevation using a geocentric Sun vector and cylindrical Earth shadow approximation. A sunlit satellite and sufficiently dark observer sky are classified as *potentially visible*, never guaranteed visible.
+- Daytime passes and Earth-shadowed passes are labeled unlikely for naked-eye viewing. This does not substitute for full pass-wise illumination, penumbra modeling, atmospheric refraction, satellite brightness or observing conditions.
+- Optional LOAD LIVE WEATHER explicitly sends selected coordinates to Open-Meteo for current cloud cover and precipitation only after user action; no continuous weather tracking.
+- Cloud cover only influences the classification when the predicted peak is within one hour of the weather fetch. Current cloud cover is not treated as a future-hour forecast.
+- CelesTrak ISS orbital elements may be inaccessible because of connectivity or browser CORS; when unavailable the interface does not invent pass times.
+- Mobile responsive status cards and test coverage for unknown data. Existing Sky Tonight, ISS SGP4, Solar System, AR and Galaxy Observatory remain available.
 
 ## Start locally
 
