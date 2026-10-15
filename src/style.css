@@ -46,3 +46,24 @@
 
 /* NASA/JPL visual upgrade credit line */
 .textureCredit{font-size:10px!important;line-height:1.55!important;color:#8eb4c9!important;padding:8px 11px;border:1px solid #24465e;background:#071a2c;margin-top:7px!important;margin-bottom:5px!important}
+
+
+/* Full Galaxy Nebula — original seamless astronomy theme throughout all routes. */
+.app.theme-nebula{position:relative;isolation:isolate;background:transparent;min-height:100vh}
+.app.theme-nebula::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(115deg,#0207148a,#0808224f 50%,#02071492),var(--nebula-art);background-size:cover,cover;background-position:center center;background-repeat:no-repeat}
+.app.theme-nebula::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,transparent 22%,#00091759 100%)}
+.theme-nebula header{background:#040b20dd;border-bottom:1px solid #6386bb80;backdrop-filter:blur(16px)}
+.theme-nebula .portal{background:linear-gradient(100deg,#020617aa,#090922a2),var(--nebula-art) center/cover no-repeat,#020817}
+.theme-nebula .portal-copy{background:radial-gradient(ellipse,#060d23df,transparent 78%)}
+.theme-nebula .portal-stars{opacity:.4}
+.theme-nebula .glass,.theme-nebula .planetpanel,.theme-nebula .astroMap,.theme-nebula .arModule,.theme-nebula .viewport,.theme-nebula .fieldQa{background:linear-gradient(135deg,#05112ade,#09112acb);border:1px solid #6285b080;backdrop-filter:blur(13px)}
+.theme-nebula .viewport{background:linear-gradient(#0106132f,#03102b70),var(--nebula-art) center/cover no-repeat}
+.theme-nebula .viewport::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse,transparent 22%,#03081777 100%)}
+.theme-nebula .viewport canvas{position:relative;z-index:0}
+.theme-nebula .arViewport,.theme-nebula .astroMapArea{background:linear-gradient(#030c1caf,#06152fa8),var(--nebula-art) center/cover no-repeat}
+.theme-nebula .scene-options label,.theme-nebula .viewport-bottom button,.theme-nebula .timestamp{background:#05142bdc;border-color:#6588ad}
+.theme-nebula .brandmark{box-shadow:0 0 28px #5bdcfb76}
+.theme-nebula .footerline{border-color:#628db56b}
+.theme-nebula .planetPortrait{background:linear-gradient(#05122b7d,#05122b96),var(--nebula-art) center/cover no-repeat}
+@media(max-width:680px){.theme-nebula .glass,.theme-nebula .planetpanel,.theme-nebula .astroMap{backdrop-filter:none}.galaxyThemeControl select{max-width:115px}}
+@media(prefers-reduced-motion:reduce){.theme-nebula *{animation-duration:.01ms!important}}
