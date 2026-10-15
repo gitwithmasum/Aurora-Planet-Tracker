@@ -43,3 +43,6 @@
 @media(max-width:1100px){.galaxyThemeControl span{display:none}}
 @media(max-width:650px){.galaxyThemeControl select{max-width:102px;padding:6px 3px;font-size:10px}.headerTools{gap:3px}.languageSwitch select{max-width:66px}.theme-cosmic{background-attachment:scroll}}
 @media(prefers-reduced-motion:reduce){.theme-cosmic::before{animation:none}}
+
+/* NASA/JPL visual upgrade credit line */
+.textureCredit{font-size:10px!important;line-height:1.55!important;color:#8eb4c9!important;padding:8px 11px;border:1px solid #24465e;background:#071a2c;margin-top:7px!important;margin-bottom:5px!important}
