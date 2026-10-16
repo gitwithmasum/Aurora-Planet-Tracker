@@ -1,3 +1,13 @@
+## v2.9.0 — Orbital Mission Control
+
+- Mission dashboard inside Observation → Satellite Tracker: current catalog count, oldest orbital element age, number of locally recorded observations and comparison capacity.
+- Up to **three satellites** can be compared side-by-side with their calculated latitude, longitude, altitude, velocity and orbit period at the same minute. A VIEW ORBIT action switches the existing globe/AR/pass calendar selection.
+- **Observation history** saves manually initiated calculated snapshots and optional notes (240-character limit), allows record removal and clear-all with confirmation, and supports JSON export. The ledger is stored in localStorage and never uploaded.
+- Validation rejects incomplete snapshots, deduplicates IDs and limits storage to 150 entries. Only the first 15 recent entries are displayed, with bounded history to prevent uncontrolled growth.
+- Existing orbital catalog, alert permissions, Satellite Finder, saved settings and all other modules are preserved.
+- QA includes unit tests for bounded/deduplicated history and comparison rows plus Chromium test for comparison and saving a local observation. Performance is bounded by three compared craft/minute; comprehensive performance benchmarking on real phones is pending.
+- **Important:** These are propagated TLE estimates, not real satellite telemetry or evidence of a visually witnessed sighting.
+
 ## v2.8.1 — Satellite AR Reliability & Mobile Calibration
 
 - Orientation sensor readings now expire after five seconds. An unavailable/stale or non-absolute heading falls back to manually calibrated heading rather than following an unreliable sensor direction.
