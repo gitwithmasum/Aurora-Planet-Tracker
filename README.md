@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="src/assets/Aurora%20Planet%20Tracker%20Dashboard.png" alt="Aurora Planet Tracker — Pink & Gold Dashboard Preview" width="100%" />
+</p>
+
 ## v3.7.0 — Pink & Gold Typography Halftone Theme + Dashboard
 
 - Adds **Halftone · Pink & Gold Text** as a fourth app appearance, selectable from the existing header Theme dropdown and saved in localStorage. Previous Classic Cyber, Deep Galaxy and Full Galaxy Nebula themes remain selectable. New installations default to Halftone; existing stored preferences are respected.
