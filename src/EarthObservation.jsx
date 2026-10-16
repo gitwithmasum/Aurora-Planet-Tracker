@@ -6,6 +6,7 @@ import {Globe2,Satellite,Search,Play,Pause,LocateFixed,RotateCcw,Focus} from 'lu
 import {loadSatelliteCatalog} from './satelliteCatalog.mjs';
 import {orbitalSamples,satelliteTelemetry,EARTH_MODEL_RADIUS,geoToScene} from './satelliteOrbit.mjs';
 import {EARTH_LAYERS,loadEarthScienceData,markerColor,layerValue,ageHours} from './earthScienceData.mjs';
+import {EVENT_WINDOWS,eventCategories,filterEarthEvents,sourceEventLink} from './earthEventsExplorer.mjs';
 import './EarthObservation.css';
 
 const COLORS=['#67edff','#ffb969','#a5ffcb','#ff86c3','#c5acff','#9be7a1'];
@@ -61,20 +62,20 @@ function Follow({target,enabled}){
  });
  return null;
 }
-function EarthScene({records,selectedId,positions,samples,showOrbits,labels,follow,onChoose,eco,science,layer,onScienceChoose}){
+function EarthScene({records,selectedId,positions,samples,showOrbits,labels,follow,onChoose,eco,science,layer,onScienceChoose,focusedEvent,events}){
  const active=positions.find(p=>p.id===selectedId)?.point||null;
  return <Canvas camera={{position:[0,1.2,10.3],fov:44}} dpr={[1,eco?1:1.5]} gl={{alpha:false,antialias:!eco,powerPreference:'low-power'}}>
   <color attach="background" args={['#030a17']}/>
   <ambientLight intensity={.7}/><directionalLight position={[8,5,6]} intensity={2.6}/><hemisphereLight args={['#85b8ff','#131d37',.5]}/>
   {!eco&&<Stars radius={65} depth={45} count={1800} factor={3} saturation={0} fade speed={0}/>}
   <Suspense fallback={null}><EarthBody/></Suspense>
-  {science&&layer==='events'?<EventMarkers events={science.events} onSelect={onScienceChoose}/>:<WeatherMarkers layer={layer} points={science?.weatherSamples||[]} onSelect={onScienceChoose}/>}
+  {science&&layer==='events'?<EventMarkers events={events} onSelect={onScienceChoose}/>:<WeatherMarkers layer={layer} points={science?.weatherSamples||[]} onSelect={onScienceChoose}/>}
   {records.map((record,index)=><React.Fragment key={record.id}>
     {showOrbits&&<OrbitLine points={samples[record.id]||[]} color={COLORS[index%COLORS.length]}/>}
     <Craft record={record} active={selectedId===record.id} color={COLORS[index%COLORS.length]} onChoose={onChoose} showLabel={labels} clock={positions.find(p=>p.id===record.id)?.clock||Date.now()}/>
   </React.Fragment>)}
   <OrbitControls makeDefault enableDamping dampingFactor={.065} enablePan={false} minDistance={4.6} maxDistance={22}/>
-  <Follow target={active} enabled={follow}/>
+  <Follow target={focusedEvent?geoToScene(focusedEvent.lat,focusedEvent.lon,0):active} enabled={Boolean(focusedEvent)||follow}/>
  </Canvas>;
 }
 export default function EarthObservation(){
@@ -84,6 +85,10 @@ export default function EarthObservation(){
  const [labels,setLabels]=useState(true),[showOrbits,setShowOrbits]=useState(true),[follow,setFollow]=useState(false),[eco,setEco]=useState(false),[paused,setPaused]=useState(false);
  const [now,setNow]=useState(Date.now()),[offset,setOffset]=useState(0);
  const [science,setScience]=useState(null),[scienceError,setScienceError]=useState(''),[scienceStatus,setScienceStatus]=useState('loading'),[layer,setLayer]=useState('none'),[scienceChoice,setScienceChoice]=useState(null);
+ const [eventCategory,setEventCategory]=useState('All'),[eventDays,setEventDays]=useState(30),[eventSearch,setEventSearch]=useState(''),[focusedEvent,setFocusedEvent]=useState(null);
+ const filteredEvents=useMemo(()=>filterEarthEvents(science?.events||[],{category:eventCategory,days:eventDays,search:eventSearch}),[science,eventCategory,eventDays,eventSearch]);
+ const categories=useMemo(()=>eventCategories(science?.events||[]),[science]);
+ function chooseScience(item){setScienceChoice(item);if(item?.kind==='event'){setFocusedEvent(item);setFollow(false)}}
  async function refreshScience(){setScienceStatus('loading');setScienceError('');try{const data=await loadEarthScienceData();setScience(data);setScienceStatus('ready')}catch(error){setScienceError(error.message||'Earth data unavailable');setScienceStatus('error')}}
  useEffect(()=>{refreshScience()},[]);
  const reload=async()=>{setStatus('loading');setError('');try{const data=await loadSatelliteCatalog();setCatalog(data.rows);setStatus('ready')}catch(e){setStatus('error');setError(e.message||'Catalog unavailable')}};
@@ -100,11 +105,11 @@ export default function EarthObservation(){
  function choose(id){setSelectedId(id);setVisibleIds(current=>current.includes(id)?current:[...current.slice(-5),id])}
  function toggle(id){setVisibleIds(current=>current.includes(id)?current.filter(x=>x!==id):[...current.slice(-5),id])}
  return <section className="earthMission" aria-label="Earth Observation mission view">
-  <div className="earthMissionTop"><div><span className="eyebrow">AURORA / EARTH OBSERVATION / PHASE B</span><h3><Globe2 size={28}/> Earth Mission View</h3><p>Interactive Earth globe with calculated spacecraft positions, selectable orbital paths and cinematic camera following.</p></div><span className="earthMissionLive">{paused?'SIMULATION PAUSED':offset?'SIMULATED TIME':'CALCULATED NOW'}</span></div>
+  <div className="earthMissionTop"><div><span className="eyebrow">AURORA / EARTH OBSERVATION / PHASE C</span><h3><Globe2 size={28}/> Earth Mission View</h3><p>Interactive Earth globe with calculated spacecraft positions, selectable orbital paths and cinematic camera following.</p></div><span className="earthMissionLive">{paused?'SIMULATION PAUSED':offset?'SIMULATED TIME':'CALCULATED NOW'}</span></div>
   <div className="earthMissionDashboard"><div><small>TRACKED CATALOG</small><b>{catalog.length}</b></div><div><small>VISIBLE ORBITS</small><b>{records.length}</b></div><div><small>FOCUSED MISSION</small><b>{selected?.name||'—'}</b></div><div><small>TIME (LOCAL)</small><b>{new Date(sceneTime).toLocaleTimeString()}</b></div></div>
   <div className="earthMissionStage">
     <div className="earthMissionCanvas" aria-label="Interactive 3D Earth with satellite orbits">
-     {records.length?<EarthScene records={records} selectedId={selectedId} positions={positions} samples={orbitSamples} showOrbits={showOrbits} labels={labels} follow={follow} onChoose={choose} eco={eco} science={science} layer={layer} onScienceChoose={setScienceChoice}/>:<div className="earthMissionEmpty">{status==='loading'?'Loading mission orbits…':error||'Select spacecraft to start mission view.'}</div>}
+     {records.length?<EarthScene records={records} selectedId={selectedId} positions={positions} samples={orbitSamples} showOrbits={showOrbits} labels={labels} follow={follow} onChoose={choose} eco={eco} science={science} layer={layer} onScienceChoose={chooseScience} focusedEvent={focusedEvent} events={filteredEvents}/>:<div className="earthMissionEmpty">{status==='loading'?'Loading mission orbits…':error||'Select spacecraft to start mission view.'}</div>}
      <div className="earthMissionCorner">AURORA · EARTH OBSERVATION<br/>SGP4 / TLE-DERIVED ESTIMATES</div>
     </div>
     <div className="earthMissionPanel">
@@ -113,7 +118,7 @@ export default function EarthObservation(){
      {status==='error'&&<p className="earthMissionError" role="alert">{error} <button onClick={reload}>RETRY</button></p>}
      <div className="earthMissionSatList">{result.map(s=><div key={s.id} className={s.id===selectedId?'active':''}><input type="checkbox" checked={visibleIds.includes(s.id)} aria-label={'Show orbit for '+s.name} onChange={()=>toggle(s.id)}/><button type="button" onClick={()=>choose(s.id)}>{s.name}<small>NORAD {s.noradId} · {s.category}</small></button></div>)}</div>
      <div className="earthMissionFocused"><small>CURRENT SATELLITE</small><strong>{selected?.name||'None selected'}</strong><span>ALT {fmt(info?.altitudeKm)} km · {fmt(info?.speedKmS,2)} km/s</span><span>LAT {fmt(info?.latitude,2)}° · LON {fmt(info?.longitude,2)}°</span></div>
-     <button className={follow?'earthMissionActive':''} type="button" onClick={()=>setFollow(x=>!x)}><Focus size={16}/> {follow?'STOP FOLLOWING':'FOLLOW SATELLITE'}</button>
+     <button className={follow?'earthMissionActive':''} type="button" onClick={()=>{setFocusedEvent(null);setFollow(x=>!x)}}><Focus size={16}/> {follow?'STOP FOLLOWING':'FOLLOW SATELLITE'}</button>
     </div>
   </div>
   <div className="earthMissionControls">
@@ -128,16 +133,25 @@ export default function EarthObservation(){
     <div className="earthScienceHeader"><div><span className="eyebrow">EARTH SCIENCE / VERIFIED SOURCES</span><h4>Earth Data Layers</h4><p>Model-based weather samples at a sparse set of geographic points and timestamped NASA event locations—not a continuous global raster or live satellite image.</p></div><button type="button" onClick={refreshScience} disabled={scienceStatus==='loading'}>REFRESH SOURCE DATA</button></div>
     <div className="earthScienceOptions">
       <button type="button" aria-pressed={layer==='none'} onClick={()=>setLayer('none')}>NONE</button>
-      {EARTH_LAYERS.map(x=><button key={x.id} type="button" aria-pressed={layer===x.id} onClick={()=>{setLayer(x.id);setScienceChoice(null)}}>{x.label.toUpperCase()}</button>)}
+      {EARTH_LAYERS.map(x=><button key={x.id} type="button" aria-pressed={layer===x.id} onClick={()=>{setLayer(x.id);setScienceChoice(null);setFocusedEvent(null)}}>{x.label.toUpperCase()}</button>)}
     </div>
     <div className="earthScienceMeta"><span>DATA: {scienceStatus==='ready'?'AVAILABLE':scienceStatus.toUpperCase()}</span><span>WEATHER SAMPLES: {science?.weatherSamples?.length||0}</span><span>NASA EVENTS: {science?.events?.length||0}</span><span>FETCHED: {science?.fetchedAt?new Date(science.fetchedAt).toLocaleString():'—'}</span></div>
     {scienceError&&<p role="alert" className="earthScienceWarning">{scienceError}</p>}
     {!!science?.errors?.length&&<p role="status" className="earthScienceWarning">Data provider warning: {science.errors.join(' | ')}. Source timestamps are retained; data may be older than refresh time.</p>}
     {science&&layer!=='none'&&<div className="earthScienceResults">
-      {layer==='events'?<div className="earthScienceEvents">
-        {science.events.length?science.events.slice(0,12).map(e=><button key={e.id} type="button" className={scienceChoice?.id===e.id?'active':''} onClick={()=>setScienceChoice({kind:'event',...e})}><strong>{e.title}</strong><span>{e.category||'Natural event'} · {new Date(e.date).toLocaleDateString()}</span></button>):<p>No recent open EONET events available.</p>}
-      </div>:<div className="earthScienceSamples">{science.weatherSamples.map(p=><button key={p.name} type="button" className={scienceChoice?.name===p.name?'active':''} onClick={()=>setScienceChoice({kind:'weather',...p})}><strong>{p.name}</strong><span>{layerValue(layer,p)}</span><small>{new Date(p.observedAt).toLocaleString()} · {ageHours(p.observedAt).toFixed(1)}h old</small></button>)}</div>}
-      {scienceChoice&&<div className="earthScienceSelection"><strong>{scienceChoice.kind==='event'?scienceChoice.title:scienceChoice.name}</strong><span>{scienceChoice.kind==='event'?scienceChoice.category:layerValue(layer,scienceChoice)}</span><span>LAT {scienceChoice.lat.toFixed(2)}° · LON {scienceChoice.lon.toFixed(2)}°</span><span>DATA TIME: {new Date(scienceChoice.kind==='event'?scienceChoice.date:scienceChoice.observedAt).toLocaleString()}</span></div>}
+      {layer==='events'?<div className="earthEventsExplorer">
+        <div className="earthEventsFilters">
+         <label>EVENT CATEGORY <select aria-label="Filter Earth event category" value={eventCategory} onChange={e=>{setEventCategory(e.target.value);setScienceChoice(null);setFocusedEvent(null)}}>{categories.map(c=><option key={c} value={c}>{c}</option>)}</select></label>
+         <label>DATE RANGE <select aria-label="Filter Earth event date range" value={eventDays} onChange={e=>{setEventDays(Number(e.target.value));setScienceChoice(null);setFocusedEvent(null)}}>{EVENT_WINDOWS.map(n=><option key={n} value={n}>Last {n} days</option>)}</select></label>
+         <label>SEARCH <input aria-label="Search Earth events" placeholder="Storms, fires, places…" value={eventSearch} onChange={e=>setEventSearch(e.target.value)}/></label>
+         <span>{filteredEvents.length} events in range</span>
+        </div>
+        <div className="earthScienceEvents">
+          {filteredEvents.length?filteredEvents.map(e=><button key={e.id} type="button" className={scienceChoice?.id===e.id?'active':''} onClick={()=>chooseScience({kind:'event',...e})}><strong>{e.title}</strong><span>{e.category||'Natural event'} · {new Date(e.date).toLocaleDateString()}</span><small>FOCUS ON EARTH</small></button>):<p>No matching recent events in this catalog snapshot.</p>}
+        </div>
+        {focusedEvent&&<div className="earthEventsFocused"><span>CAMERA FOCUSED: {focusedEvent.title}</span><button type="button" onClick={()=>setFocusedEvent(null)}>EXIT EVENT FOCUS</button></div>}
+       </div>:<div className="earthScienceSamples">{science.weatherSamples.map(p=><button key={p.name} type="button" className={scienceChoice?.name===p.name?'active':''} onClick={()=>setScienceChoice({kind:'weather',...p})}><strong>{p.name}</strong><span>{layerValue(layer,p)}</span><small>{new Date(p.observedAt).toLocaleString()} · {ageHours(p.observedAt).toFixed(1)}h old</small></button>)}</div>}
+      {scienceChoice&&<div className="earthScienceSelection"><strong>{scienceChoice.kind==='event'?scienceChoice.title:scienceChoice.name}</strong><span>{scienceChoice.kind==='event'?scienceChoice.category:layerValue(layer,scienceChoice)}</span><span>LAT {scienceChoice.lat.toFixed(2)}° · LON {scienceChoice.lon.toFixed(2)}°</span><span>DATA TIME: {new Date(scienceChoice.kind==='event'?scienceChoice.date:scienceChoice.observedAt).toLocaleString()}</span>{scienceChoice.kind==='event'&&sourceEventLink(scienceChoice)&&<a href={sourceEventLink(scienceChoice)} target="_blank" rel="noopener noreferrer">NASA EONET SOURCE ↗</a>}</div>}
     </div>}
     <p className="earthScienceAttribution">Weather: <a href="https://open-meteo.com/en/docs" target="_blank" rel="noopener noreferrer">Open-Meteo Forecast API</a> (forecast model, sparse point samples). Events: <a href="https://eonet.gsfc.nasa.gov/" target="_blank" rel="noopener noreferrer">NASA EONET</a> (curated event reports, not a real-time disaster alert). Color-coded dots mark sampled locations; dots do not cover regions between sample coordinates.</p>
   </section>
