@@ -1,0 +1,33 @@
+name: Refresh Earth Science Data
+on:
+  schedule:
+    - cron: '15 */3 * * *'
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/refresh_earth_data.py'
+      - '.github/workflows/refresh-earth-data.yml'
+permissions:
+  contents: write
+concurrency:
+  group: earth-science-data
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Request timestamped Earth datasets
+        run: python scripts/refresh_earth_data.py
+      - name: Publish refreshed source data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/earth-data/summary.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: refresh Earth science samples and NASA events"
+            git push
+          fi
