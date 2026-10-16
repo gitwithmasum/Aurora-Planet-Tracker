@@ -9,6 +9,7 @@ import {EARTH_LAYERS,loadEarthScienceData,markerColor,layerValue,ageHours} from 
 import {EVENT_WINDOWS,eventCategories,filterEarthEvents,sourceEventLink} from './earthEventsExplorer.mjs';
 import {loadNasaImageryManifest,imageryAssetUrl,NASA_IMAGERY_ATTRIBUTION} from './earthImageryData.mjs';
 import {timelineDates,comparisonPair,clampComparison,nextTimelineDate,cloudMarkerRadius} from './earthVisualizationMath.mjs';
+import EarthLocationIntelligence from './EarthLocationIntelligence.jsx';
 import './EarthObservation.css';
 
 const COLORS=['#67edff','#ffb969','#a5ffcb','#ff86c3','#c5acff','#9be7a1'];
@@ -86,7 +87,7 @@ function Follow({target,enabled}){
  });
  return null;
 }
-function EarthScene({records,selectedId,positions,samples,showOrbits,labels,follow,onChoose,eco,science,layer,onScienceChoose,focusedEvent,events,imageUrl,imageryOpacity,onImageStatus,cloudDetail}){
+function EarthScene({records,selectedId,positions,samples,showOrbits,labels,follow,onChoose,eco,science,layer,onScienceChoose,focusedEvent,focusedLocation,events,imageUrl,imageryOpacity,onImageStatus,cloudDetail}){
  const active=positions.find(p=>p.id===selectedId)?.point||null;
  return <Canvas camera={{position:[0,1.2,10.3],fov:44}} dpr={[1,eco?1:1.5]} gl={{alpha:false,antialias:!eco,powerPreference:'low-power'}}>
   <color attach="background" args={['#030a17']}/>
@@ -99,7 +100,8 @@ function EarthScene({records,selectedId,positions,samples,showOrbits,labels,foll
     <Craft record={record} active={selectedId===record.id} color={COLORS[index%COLORS.length]} onChoose={onChoose} showLabel={labels} clock={positions.find(p=>p.id===record.id)?.clock||Date.now()}/>
   </React.Fragment>)}
   <OrbitControls makeDefault enableDamping dampingFactor={.065} enablePan={false} minDistance={4.6} maxDistance={22}/>
-  <Follow target={focusedEvent?geoToScene(focusedEvent.lat,focusedEvent.lon,0):active} enabled={Boolean(focusedEvent)||follow}/>
+  {focusedLocation&&<group position={geoToScene(focusedLocation.lat,focusedLocation.lon,38)}><mesh><sphereGeometry args={[.11,12,10]}/><meshBasicMaterial color="#8cf9d9" toneMapped={false}/></mesh></group>}
+  <Follow target={focusedLocation?geoToScene(focusedLocation.lat,focusedLocation.lon,0):focusedEvent?geoToScene(focusedEvent.lat,focusedEvent.lon,0):active} enabled={Boolean(focusedLocation)||Boolean(focusedEvent)||follow}/>
  </Canvas>;
 }
 export default function EarthObservation(){
@@ -121,10 +123,10 @@ export default function EarthObservation(){
  const imageUrl=imageryEnabled&&imageItem?imageryAssetUrl(imageItem.file):null;
  const onImageStatus=React.useCallback(next=>setImageLoadStatus(next),[]);
  const [science,setScience]=useState(null),[scienceError,setScienceError]=useState(''),[scienceStatus,setScienceStatus]=useState('loading'),[layer,setLayer]=useState('none'),[scienceChoice,setScienceChoice]=useState(null);
- const [eventCategory,setEventCategory]=useState('All'),[eventDays,setEventDays]=useState(30),[eventSearch,setEventSearch]=useState(''),[focusedEvent,setFocusedEvent]=useState(null);
+ const [eventCategory,setEventCategory]=useState('All'),[eventDays,setEventDays]=useState(30),[eventSearch,setEventSearch]=useState(''),[focusedEvent,setFocusedEvent]=useState(null),[focusedLocation,setFocusedLocation]=useState(null);
  const filteredEvents=useMemo(()=>filterEarthEvents(science?.events||[],{category:eventCategory,days:eventDays,search:eventSearch}),[science,eventCategory,eventDays,eventSearch]);
  const categories=useMemo(()=>eventCategories(science?.events||[]),[science]);
- function chooseScience(item){setScienceChoice(item);if(item?.kind==='event'){setFocusedEvent(item);setFollow(false)}}
+ function chooseScience(item){setScienceChoice(item);if(item?.kind==='event'){setFocusedEvent(item);setFocusedLocation(null);setFollow(false)}}
  async function refreshScience(){setScienceStatus('loading');setScienceError('');try{const data=await loadEarthScienceData();setScience(data);setScienceStatus('ready')}catch(error){setScienceError(error.message||'Earth data unavailable');setScienceStatus('error')}}
  useEffect(()=>{refreshScience()},[]);
  const reload=async()=>{setStatus('loading');setError('');try{const data=await loadSatelliteCatalog();setCatalog(data.rows);setStatus('ready')}catch(e){setStatus('error');setError(e.message||'Catalog unavailable')}};
@@ -138,14 +140,14 @@ export default function EarthObservation(){
  const selected=catalog.find(item=>item.id===selectedId)||null;
  const info=useMemo(()=>selected?satelliteTelemetry(selected.satrec,new Date(sceneTime)):null,[selected,sceneTime]);
  const result=catalog.filter(s=>s.name.toLowerCase().includes(query.toLowerCase())||String(s.noradId).includes(query)).slice(0,30);
- function choose(id){setSelectedId(id);setVisibleIds(current=>current.includes(id)?current:[...current.slice(-5),id])}
+ function choose(id){setSelectedId(id);setFocusedLocation(null);setFocusedEvent(null);setVisibleIds(current=>current.includes(id)?current:[...current.slice(-5),id])}
  function toggle(id){setVisibleIds(current=>current.includes(id)?current.filter(x=>x!==id):[...current.slice(-5),id])}
  return <section className="earthMission" aria-label="Earth Observation mission view">
-  <div className="earthMissionTop"><div><span className="eyebrow">AURORA / EARTH OBSERVATION / PHASE C</span><h3><Globe2 size={28}/> Earth Mission View</h3><p>Interactive Earth globe with calculated spacecraft positions, selectable orbital paths and cinematic camera following.</p></div><span className="earthMissionLive">{paused?'SIMULATION PAUSED':offset?'SIMULATED TIME':'CALCULATED NOW'}</span></div>
+  <div className="earthMissionTop"><div><span className="eyebrow">AURORA / EARTH OBSERVATION / PHASE D</span><h3><Globe2 size={28}/> Earth Mission View</h3><p>Interactive Earth globe with calculated spacecraft positions, selectable orbital paths and cinematic camera following.</p></div><span className="earthMissionLive">{paused?'SIMULATION PAUSED':offset?'SIMULATED TIME':'CALCULATED NOW'}</span></div>
   <div className="earthMissionDashboard"><div><small>TRACKED CATALOG</small><b>{catalog.length}</b></div><div><small>VISIBLE ORBITS</small><b>{records.length}</b></div><div><small>FOCUSED MISSION</small><b>{selected?.name||'—'}</b></div><div><small>TIME (LOCAL)</small><b>{new Date(sceneTime).toLocaleTimeString()}</b></div></div>
   <div className="earthMissionStage">
     <div className="earthMissionCanvas" aria-label="Interactive 3D Earth with satellite orbits">
-     {records.length?<EarthScene records={records} selectedId={selectedId} positions={positions} samples={orbitSamples} showOrbits={showOrbits} labels={labels} follow={follow} onChoose={choose} eco={eco} science={science} layer={layer} onScienceChoose={chooseScience} focusedEvent={focusedEvent} events={filteredEvents} imageUrl={imageUrl} imageryOpacity={imageryOpacity} onImageStatus={onImageStatus} cloudDetail={cloudDetail}/>:<div className="earthMissionEmpty">{status==='loading'?'Loading mission orbits…':error||'Select spacecraft to start mission view.'}</div>}
+     {records.length?<EarthScene records={records} selectedId={selectedId} positions={positions} samples={orbitSamples} showOrbits={showOrbits} labels={labels} follow={follow} onChoose={choose} eco={eco} science={science} layer={layer} onScienceChoose={chooseScience} focusedEvent={focusedEvent} focusedLocation={focusedLocation} events={filteredEvents} imageUrl={imageUrl} imageryOpacity={imageryOpacity} onImageStatus={onImageStatus} cloudDetail={cloudDetail}/>:<div className="earthMissionEmpty">{status==='loading'?'Loading mission orbits…':error||'Select spacecraft to start mission view.'}</div>}
      <div className="earthMissionCorner">AURORA · EARTH OBSERVATION<br/>SGP4 / TLE-DERIVED ESTIMATES</div>
     </div>
     <div className="earthMissionPanel">
@@ -154,7 +156,7 @@ export default function EarthObservation(){
      {status==='error'&&<p className="earthMissionError" role="alert">{error} <button onClick={reload}>RETRY</button></p>}
      <div className="earthMissionSatList">{result.map(s=><div key={s.id} className={s.id===selectedId?'active':''}><input type="checkbox" checked={visibleIds.includes(s.id)} aria-label={'Show orbit for '+s.name} onChange={()=>toggle(s.id)}/><button type="button" onClick={()=>choose(s.id)}>{s.name}<small>NORAD {s.noradId} · {s.category}</small></button></div>)}</div>
      <div className="earthMissionFocused"><small>CURRENT SATELLITE</small><strong>{selected?.name||'None selected'}</strong><span>ALT {fmt(info?.altitudeKm)} km · {fmt(info?.speedKmS,2)} km/s</span><span>LAT {fmt(info?.latitude,2)}° · LON {fmt(info?.longitude,2)}°</span></div>
-     <button className={follow?'earthMissionActive':''} type="button" onClick={()=>{setFocusedEvent(null);setFollow(x=>!x)}}><Focus size={16}/> {follow?'STOP FOLLOWING':'FOLLOW SATELLITE'}</button>
+     <button className={follow?'earthMissionActive':''} type="button" onClick={()=>{setFocusedEvent(null);setFocusedLocation(null);setFollow(x=>!x)}}><Focus size={16}/> {follow?'STOP FOLLOWING':'FOLLOW SATELLITE'}</button>
     </div>
   </div>
   <div className="earthMissionControls">
@@ -165,6 +167,7 @@ export default function EarthObservation(){
    <label><input type="checkbox" checked={labels} onChange={e=>setLabels(e.target.checked)}/> LABELS</label>
    <label><input type="checkbox" checked={eco} onChange={e=>setEco(e.target.checked)}/> ECO GRAPHICS</label>
   </div>
+  <EarthLocationIntelligence focusedName={focusedLocation?.name} onFocus={city=>{setFocusedLocation(city);setFocusedEvent(null);setFollow(false)}} onClearFocus={()=>setFocusedLocation(null)}/>
   <section className="earthImageryPanel" aria-label="NASA Worldview imagery controls">
     <div className="earthImageryHeader"><div><span className="eyebrow">NASA GIBS / DATED EARTH IMAGERY</span><h4>NASA Worldview Imagery</h4><p>Authentic MODIS Terra true-color daily browse mosaics, layered over the globe. Select a date to view its imagery—not a live camera feed.</p></div><button type="button" onClick={refreshImagery}>REFRESH DATES</button></div>
     <div className="earthImageryControls">
