@@ -10,6 +10,7 @@ import {EVENT_WINDOWS,eventCategories,filterEarthEvents,sourceEventLink} from '.
 import {loadNasaImageryManifest,imageryAssetUrl,NASA_IMAGERY_ATTRIBUTION} from './earthImageryData.mjs';
 import {timelineDates,comparisonPair,clampComparison,nextTimelineDate,cloudMarkerRadius} from './earthVisualizationMath.mjs';
 import EarthLocationIntelligence from './EarthLocationIntelligence.jsx';
+import GlobalLocationExplorer from './GlobalLocationExplorer.jsx';
 import './EarthObservation.css';
 
 const COLORS=['#67edff','#ffb969','#a5ffcb','#ff86c3','#c5acff','#9be7a1'];
@@ -143,7 +144,7 @@ export default function EarthObservation(){
  function choose(id){setSelectedId(id);setFocusedLocation(null);setFocusedEvent(null);setVisibleIds(current=>current.includes(id)?current:[...current.slice(-5),id])}
  function toggle(id){setVisibleIds(current=>current.includes(id)?current.filter(x=>x!==id):[...current.slice(-5),id])}
  return <section className="earthMission" aria-label="Earth Observation mission view">
-  <div className="earthMissionTop"><div><span className="eyebrow">AURORA / EARTH OBSERVATION / PHASE D</span><h3><Globe2 size={28}/> Earth Mission View</h3><p>Interactive Earth globe with calculated spacecraft positions, selectable orbital paths and cinematic camera following.</p></div><span className="earthMissionLive">{paused?'SIMULATION PAUSED':offset?'SIMULATED TIME':'CALCULATED NOW'}</span></div>
+  <div className="earthMissionTop"><div><span className="eyebrow">AURORA / EARTH OBSERVATION / PHASE E</span><h3><Globe2 size={28}/> Earth Mission View</h3><p>Interactive Earth globe with calculated spacecraft positions, selectable orbital paths and cinematic camera following.</p></div><span className="earthMissionLive">{paused?'SIMULATION PAUSED':offset?'SIMULATED TIME':'CALCULATED NOW'}</span></div>
   <div className="earthMissionDashboard"><div><small>TRACKED CATALOG</small><b>{catalog.length}</b></div><div><small>VISIBLE ORBITS</small><b>{records.length}</b></div><div><small>FOCUSED MISSION</small><b>{selected?.name||'—'}</b></div><div><small>TIME (LOCAL)</small><b>{new Date(sceneTime).toLocaleTimeString()}</b></div></div>
   <div className="earthMissionStage">
     <div className="earthMissionCanvas" aria-label="Interactive 3D Earth with satellite orbits">
@@ -167,6 +168,7 @@ export default function EarthObservation(){
    <label><input type="checkbox" checked={labels} onChange={e=>setLabels(e.target.checked)}/> LABELS</label>
    <label><input type="checkbox" checked={eco} onChange={e=>setEco(e.target.checked)}/> ECO GRAPHICS</label>
   </div>
+  <GlobalLocationExplorer focusedName={focusedLocation?.name} onFocus={place=>{setFocusedLocation(place);setFocusedEvent(null);setFollow(false)}} onClearFocus={()=>setFocusedLocation(null)}/>
   <EarthLocationIntelligence focusedName={focusedLocation?.name} onFocus={city=>{setFocusedLocation(city);setFocusedEvent(null);setFollow(false)}} onClearFocus={()=>setFocusedLocation(null)}/>
   <section className="earthImageryPanel" aria-label="NASA Worldview imagery controls">
     <div className="earthImageryHeader"><div><span className="eyebrow">NASA GIBS / DATED EARTH IMAGERY</span><h4>NASA Worldview Imagery</h4><p>Authentic MODIS Terra true-color daily browse mosaics, layered over the globe. Select a date to view its imagery—not a live camera feed.</p></div><button type="button" onClick={refreshImagery}>REFRESH DATES</button></div>
