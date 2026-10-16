@@ -49,3 +49,29 @@
 .earthImageryNote a{color:#9deafc}
 .earthImageryError{color:#ffc4b0;font-size:12px}
 @media(max-width:570px){.earthImageryPanel{padding:10px}.earthImageryControls label{width:100%}}
+
+
+/* v3.4 timeline, CPU-efficient imagery comparison and cloud samples */
+.earthImageryTimeline{border:1px solid #3c7190;background:#071e36;padding:12px;margin:13px 0;border-radius:8px}
+.earthImageryTimeline>strong{font:700 12px Rajdhani;color:#a4e3f0;letter-spacing:.6px}
+.earthImageryTimelineActions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px}
+.earthImageryTimelineActions button,.earthImageryCompareTop select{border:1px solid #4b829e;background:#123c59;color:#e8f8ff;padding:8px;border-radius:5px;font:700 11px Rajdhani;cursor:pointer}
+.earthImageryTimelineActions button:disabled{opacity:.45;cursor:default}
+.earthImageryTimelineActions>input{flex:1;min-width:110px;accent-color:#74e1e9}
+.earthImageryTimelineActions>label{display:flex;gap:8px;align-items:center;color:#b6e4f0;font:700 11px Rajdhani}
+.earthImageryTimelineActions input[type=checkbox]{accent-color:#87e7f2}
+.earthImageryCompare{margin-top:13px;background:#0b2b43;padding:10px;border:1px solid #427d98}
+.earthImageryCompareTop{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:11px}
+.earthImageryCompareTop label{display:flex;align-items:center;gap:8px;font:700 12px Rajdhani;color:#addcea}
+.earthImageryBeforeAfter{position:relative;aspect-ratio:2/1;width:100%;background:#061a31;overflow:hidden;isolation:isolate;border:1px solid #4b8199}
+.earthImageryBeforeAfter>img,.earthImageryAfterClip img{display:block;width:100%;height:100%;object-fit:fill}
+.earthImageryAfterClip{position:absolute;inset:0;overflow:hidden}
+.earthImageryAfterClip img{position:absolute;inset:0}
+.earthImagerySplitLine{position:absolute;top:0;bottom:0;width:2px;background:#9ceeff;box-shadow:0 0 8px #000}
+.earthImagerySplitControl{display:flex;align-items:center;gap:9px;margin-top:12px;color:#b9e3ef;font:700 12px Rajdhani}
+.earthImagerySplitControl input{flex:1;min-width:65px;accent-color:#8be9f0}
+.earthCloudControls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:10px 0;padding:10px;border:1px solid #3f7692;background:#0b2844}
+.earthCloudControls label{display:flex;align-items:center;gap:10px;font:700 11px Rajdhani;color:#b5ecf5}
+.earthCloudControls input{accent-color:#7ef1ee}
+.earthCloudControls p{font:500 11px 'Space Grotesk',sans-serif;color:#9dc3d5}
+@media(max-width:520px){.earthImageryTimeline{padding:8px}.earthImageryTimelineActions button{flex:1}.earthImageryCompareTop label{width:100%;justify-content:space-between}.earthImageryCompareTop select{flex:1}.earthCloudControls label{width:100%}}
