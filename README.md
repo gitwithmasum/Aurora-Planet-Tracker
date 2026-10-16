@@ -1,3 +1,12 @@
+## v2.8.1 — Satellite AR Reliability & Mobile Calibration
+
+- Orientation sensor readings now expire after five seconds. An unavailable/stale or non-absolute heading falls back to manually calibrated heading rather than following an unreliable sensor direction.
+- Automatic sensor-based pitch is now an explicit opt-in, labeled experimental. Manual elevation stays the default because DeviceOrientation beta is not a consistently calibrated rear-camera pitch.
+- Camera tracks are stopped when the browser tab becomes hidden or the finder unmounts; delayed camera permission results are ignored after the user closes the finder.
+- UI exposes fresh/stale sensor status, reported absolute compass status and screen rotation, with more robust narrow-screen HUD and calibration controls.
+- Chromium smoke test checks the default stale sensor state and a 390px mobile viewport. Real Android/iOS camera and magnetic compass alignment are **not yet field verified**.
+- The existing ISS pass alert, multi-satellite catalog, 3D globe and pass calendar remain unchanged.
+
 ## v2.8.0 — AR Satellite Finder
 
 - New **camera-assisted satellite finder** in Observation → Satellite Tracker. Uses the selected ISS, Tiangong, Hubble, NOAA or Starlink craft's SGP4 look angles with the observer's location and time.
