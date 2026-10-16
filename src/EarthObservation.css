@@ -30,3 +30,22 @@
 .earthEventsFocused button{background:#124c61;border:1px solid #7ee3ee;color:#fff;border-radius:5px;padding:8px 11px;cursor:pointer}
 .earthScienceSelection a{color:#92eaff;font:700 11px Rajdhani}
 @media(max-width:620px){.earthEventsFilters label{min-width:100%}.earthEventsFocused{flex-wrap:wrap}}
+
+
+/* v3.3 NASA Worldview imagery controls */
+.earthImageryPanel{margin:15px 0;border:1px solid #477d9c;background:linear-gradient(125deg,#091c34,#0d2c47);border-radius:10px;padding:16px}
+.earthImageryHeader{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.earthImageryHeader h4{font:700 27px Rajdhani;margin:6px 0}
+.earthImageryHeader p,.earthImageryNote{font:500 11px/1.7 'Space Grotesk',sans-serif;color:#a9c9db}
+.earthImageryHeader button{border:1px solid #5387a4;background:#144565;border-radius:6px;color:#e4faff;padding:9px 12px;cursor:pointer}
+.earthImageryControls{display:flex;gap:15px;align-items:center;flex-wrap:wrap;margin:15px 0}
+.earthImageryControls label{display:flex;align-items:center;gap:9px;color:#abd6e5;font:700 12px Rajdhani}
+.earthImageryControls select{background:#071c33;border:1px solid #447f9c;border-radius:5px;padding:10px;color:#e9faff}
+.earthImageryControls input{accent-color:#80ebed}
+.earthImageryControls input[type=range]{width:130px}
+.earthImageryControls strong{min-width:35px;color:#9ff1f6}
+.earthImageryMeta{display:flex;flex-wrap:wrap;gap:13px;padding:10px;background:#081d34;border:1px solid #3a6684;color:#a4d5e3;font:700 11px Rajdhani}
+.earthImageryNote{margin:13px 0 0}
+.earthImageryNote a{color:#9deafc}
+.earthImageryError{color:#ffc4b0;font-size:12px}
+@media(max-width:570px){.earthImageryPanel{padding:10px}.earthImageryControls label{width:100%}}
