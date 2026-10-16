@@ -58,8 +58,10 @@ try{
  if(!planner.includes('FAVORITED')||!planner.includes('VISIBILITY'))throw Error('v2.7 calendar or favorites did not render');
  console.log('PASS: Hubble pass calendar, 15-minute lead option and favorite toggle rendered');
  await page.getByText('AR Satellite Finder',{exact:true}).waitFor({state:'visible',timeout:12000});
- await page.getByLabel('Satellite AR manual heading').fill('180');
- await page.getByLabel('Satellite AR manual elevation').fill('35');
+ await page.getByLabel('Satellite AR manual heading').focus();
+ await page.keyboard.press('ArrowRight');
+ await page.getByLabel('Satellite AR manual elevation').focus();
+ await page.keyboard.press('ArrowUp');
  const arPanel=await page.locator('.satAR').innerText();
  if(!arPanel.includes('TARGET AZIMUTH')||!arPanel.includes('Hubble'))throw Error('Satellite AR guidance not rendered for selected Hubble target');
  if(await page.locator('.satARError').count())throw Error('Satellite AR unexpectedly reported an error without permission request');
