@@ -1,0 +1,33 @@
+name: Refresh NASA Earth Imagery
+on:
+  schedule:
+    - cron: '50 10 * * *'
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/refresh_nasa_imagery.py'
+      - '.github/workflows/refresh-nasa-imagery.yml'
+permissions:
+  contents: write
+concurrency:
+  group: nasa-gibs-imagery
+  cancel-in-progress: false
+jobs:
+  imagery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch and validate NASA GIBS daily Earth imagery
+        run: python scripts/refresh_nasa_imagery.py
+      - name: Publish dated NASA imagery
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/earth-imagery/
+          if ! git diff --cached --quiet; then
+            git commit -m "data: refresh dated NASA MODIS Terra imagery"
+            git push
+          fi
