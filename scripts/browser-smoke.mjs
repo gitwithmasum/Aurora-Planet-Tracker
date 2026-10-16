@@ -107,6 +107,17 @@ try{
  if(!(await science.innerText()).includes('North America'))throw Error('Weather sample locations not rendered');
  await page.getByRole('button',{name:'NASA EARTH EVENTS'}).evaluate(button=>button.click());
  if(!(await science.innerText()).includes('NASA EVENTS'))throw Error('NASA EONET event control missing');
+ await page.getByLabel('Filter Earth event date range').selectOption('365');
+ await page.getByLabel('Filter Earth event category').selectOption('All');
+ const list=page.locator('.earthScienceEvents button');
+ await list.first().evaluate(button=>button.click());
+ await page.getByText(/CAMERA FOCUSED:/).waitFor({state:'visible',timeout:8000});
+ const link=page.getByRole('link',{name:/NASA EONET SOURCE/});
+ if(!(await link.count()))throw Error('Event source link is absent');
+ await page.getByRole('button',{name:'EXIT EVENT FOCUS'}).evaluate(button=>button.click());
+ await page.getByLabel('Search Earth events').fill('not-a-real-event-search-phrase-123456789');
+ if(!(await science.innerText()).includes('No matching recent events'))throw Error('Event search empty state is not working');
+ console.log('PASS: v3.2 event camera focus, NASA source, time filter and search empty state');
  console.log('PASS: Earth science first-party data, weather layer and NASA events switch correctly');
 
  console.log('PASS: Satellite Tracker opened without recovery error');
