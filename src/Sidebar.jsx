@@ -3,6 +3,7 @@ import {Menu,GripVertical,RotateCcw,ChevronUp,ChevronDown} from 'lucide-react';
 import './Sidebar.css';
 const KEY='aurora-sidebar-order-v2';
 const GROUPS=[
+ {id:'home',title:'DASHBOARD',items:['Dashboard']},
  {id:'explore',title:'EXPLORATION',items:['Command Center','Solar System','Planet Intelligence']},
  {id:'observe',title:'OBSERVATION',items:['Sky Tonight','Satellite Tracker','Earth Observation','Sky Tracker','AR Scanner','Galaxy Observatory']}
 ];
