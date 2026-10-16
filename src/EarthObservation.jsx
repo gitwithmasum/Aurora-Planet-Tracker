@@ -93,7 +93,7 @@ function EarthScene({records,selectedId,positions,samples,showOrbits,labels,foll
   <ambientLight intensity={.7}/><directionalLight position={[8,5,6]} intensity={2.6}/><hemisphereLight args={['#85b8ff','#131d37',.5]}/>
   {!eco&&<Stars radius={65} depth={45} count={1800} factor={3} saturation={0} fade speed={0}/>}
   <Suspense fallback={null}><EarthBody imageUrl={imageUrl} imageryOpacity={imageryOpacity} onImageStatus={onImageStatus}/></Suspense>
-  {science&&layer==='events'?<EventMarkers events={events} onSelect={onScienceChoose} cloudDetail={cloudDetail}/>:<WeatherMarkers layer={layer} points={science?.weatherSamples||[]} onSelect={onScienceChoose}/>}
+  {science&&layer==='events'?<EventMarkers events={events} onSelect={onScienceChoose}/>:<WeatherMarkers layer={layer} points={science?.weatherSamples||[]} onSelect={onScienceChoose} cloudDetail={cloudDetail}/>}
   {records.map((record,index)=><React.Fragment key={record.id}>
     {showOrbits&&<OrbitLine points={samples[record.id]||[]} color={COLORS[index%COLORS.length]}/>}
     <Craft record={record} active={selectedId===record.id} color={COLORS[index%COLORS.length]} onChoose={onChoose} showLabel={labels} clock={positions.find(p=>p.id===record.id)?.clock||Date.now()}/>
