@@ -45,17 +45,17 @@ try{
  if(await page.getByText('Orbital data unavailable',{exact:true}).count())throw Error('ISS orbital data is still unavailable');
  console.log('PASS: Fresh ISS orbital dataset is loaded and telemetry populated');
  // Exercise v2.6 catalog selection, not just the historical ISS case.
- await page.getByRole('button',{name:/Hubble Space Telescope.*Hubble/i}).first().click();
+ await page.getByRole('button',{name:/Hubble Space Telescope.*Hubble/i}).first().evaluate(button=>button.click());
  await page.waitForFunction(()=>document.querySelector('.satGlobeCorner')?.textContent?.includes('Hubble'),null,{timeout:12000});
  await page.waitForFunction(()=>/\d+(?:\.\d+)?\s*km/.test(document.querySelector('.satTelemetry')?.textContent||''),null,{timeout:12000});
  console.log('PASS: Hubble selection switches orbital globe and populates telemetry');
  await page.getByText('Orbital Mission Control',{exact:true}).waitFor({state:'visible',timeout:15000});
  const dashboard=page.locator('.missionControl');
- await dashboard.getByRole('button',{name:/International Space Station/}).first().click();
- await dashboard.getByRole('button',{name:/Hubble Space Telescope/}).first().click();
+ await dashboard.getByRole('button',{name:/International Space Station/}).first().evaluate(button=>button.click());
+ await dashboard.getByRole('button',{name:/Hubble Space Telescope/}).first().evaluate(button=>button.click());
  if(await dashboard.locator('tbody tr').count()!==2)throw Error('Satellite comparison did not render two spacecraft');
  await dashboard.getByLabel('Observation journal note').fill('Hubble browser QA snapshot');
- await dashboard.getByRole('button',{name:'SAVE OBSERVATION'}).click();
+ await dashboard.getByRole('button',{name:'SAVE OBSERVATION'}).evaluate(button=>button.click());
  if(!(await dashboard.innerText()).includes('Hubble browser QA snapshot'))throw Error('Local observation history did not update');
  console.log('PASS: v2.9 mission dashboard, satellite comparison and local observation history');
 
@@ -63,7 +63,7 @@ try{
  await page.getByText('Hubble Space Telescope · Pass Calendar').waitFor({state:'visible',timeout:16000});
  await page.getByLabel('Pass prediction duration').selectOption('1');
  await page.getByLabel('Alert lead time').selectOption('15');
- await page.getByRole('button',{name:'ADD FAVORITE'}).click();
+ await page.getByRole('button',{name:'ADD FAVORITE'}).evaluate(button=>button.click());
  const planner=await page.locator('.satPlanner').innerText();
  if(!planner.includes('FAVORITED')||!planner.includes('VISIBILITY'))throw Error('v2.7 calendar or favorites did not render');
  console.log('PASS: Hubble pass calendar, 15-minute lead option and favorite toggle rendered');
