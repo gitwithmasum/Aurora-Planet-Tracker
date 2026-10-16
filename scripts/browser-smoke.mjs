@@ -119,10 +119,10 @@ try{
  if(!(await science.innerText()).includes('No matching recent events'))throw Error('Event search empty state is not working');
  console.log('PASS: v3.2 event camera focus, NASA source, time filter and search empty state');
  await page.getByRole('heading',{name:'NASA Worldview Imagery'}).waitFor({state:'visible',timeout:16000});
- await page.getByLabel('NASA imagery date').waitFor({state:'visible',timeout:12000});
+ await page.getByLabel('NASA imagery date',{exact:true}).waitFor({state:'visible',timeout:12000});
  await page.getByLabel('Enable NASA Earth imagery overlay').evaluate(input=>input.click());
  await page.waitForFunction(()=>document.querySelector('.earthImageryMeta')?.textContent?.includes('TEXTURE: READY'),null,{timeout:22000});
- await page.getByLabel('NASA imagery date').selectOption({index:1});
+ await page.getByLabel('NASA imagery date',{exact:true}).selectOption({index:1});
  await page.waitForFunction(()=>document.querySelector('.earthImageryMeta')?.textContent?.includes('TEXTURE: READY'),null,{timeout:22000});
  if(await page.locator('.earthImageryError').count())throw Error('NASA GIBS imagery reported an error');
  console.log('PASS: NASA GIBS Earth imagery loads, overlays and switches date on the 3D globe');
@@ -131,7 +131,7 @@ try{
  await page.getByRole('button',{name:'NEXT ▶'}).evaluate(button=>button.click());
  await page.getByLabel('Compare NASA imagery dates').evaluate(input=>input.click());
  await page.getByLabel('NASA before imagery date').waitFor({state:'visible',timeout:8000});
- const dates=await page.getByLabel('NASA imagery date').locator('option').allTextContents();
+ const dates=await page.getByLabel('NASA imagery date',{exact:true}).locator('option').allTextContents();
  if(dates.length<2)throw Error('v3.4 comparison needs two NASA imagery dates');
  await page.getByLabel('NASA before imagery date').selectOption({index:0});
  await page.getByLabel('NASA after imagery date').selectOption({index:dates.length-1});
