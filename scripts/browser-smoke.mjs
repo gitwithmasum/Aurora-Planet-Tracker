@@ -118,6 +118,15 @@ try{
  await page.getByLabel('Search Earth events').fill('not-a-real-event-search-phrase-123456789');
  if(!(await science.innerText()).includes('No matching recent events'))throw Error('Event search empty state is not working');
  console.log('PASS: v3.2 event camera focus, NASA source, time filter and search empty state');
+ await page.getByRole('heading',{name:'NASA Worldview Imagery'}).waitFor({state:'visible',timeout:16000});
+ await page.getByLabel('NASA imagery date').waitFor({state:'visible',timeout:12000});
+ await page.getByLabel('Enable NASA Earth imagery overlay').check();
+ await page.waitForFunction(()=>document.querySelector('.earthImageryMeta')?.textContent?.includes('TEXTURE: READY'),null,{timeout:22000});
+ await page.getByLabel('NASA imagery date').selectOption({index:1});
+ await page.waitForFunction(()=>document.querySelector('.earthImageryMeta')?.textContent?.includes('TEXTURE: READY'),null,{timeout:22000});
+ if(await page.locator('.earthImageryError').count())throw Error('NASA GIBS imagery reported an error');
+ console.log('PASS: NASA GIBS Earth imagery loads, overlays and switches date on the 3D globe');
+
  console.log('PASS: Earth science first-party data, weather layer and NASA events switch correctly');
 
  console.log('PASS: Satellite Tracker opened without recovery error');
