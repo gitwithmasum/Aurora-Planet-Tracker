@@ -88,6 +88,17 @@ try{
 
 
 
+ // Earth Observation must be a separate page from the existing tracker.
+ const earthNav=page.locator('.sidebarLinks button[title="Earth Observation"]');
+ await earthNav.waitFor({state:'attached',timeout:12000});
+ await earthNav.evaluate(button=>button.click());
+ await page.getByRole('heading',{name:'Earth Mission View'}).waitFor({state:'visible',timeout:18000});
+ await page.getByLabel('Search Earth Observation satellites').fill('Hubble');
+ await page.getByRole('button',{name:/Hubble Space Telescope.*NORAD 20580/}).last().evaluate(button=>button.click());
+ if(!(await page.locator('.earthMissionFocused').innerText()).includes('Hubble'))throw Error('Earth Observation satellite selection did not work');
+ await page.getByRole('button',{name:'FOLLOW SATELLITE'}).evaluate(button=>button.click());
+ if(!(await page.locator('.earthMissionPanel').innerText()).includes('STOP FOLLOWING'))throw Error('Follow camera control failed');
+ console.log('PASS: standalone Earth Observation navigation, satellite selection and follow-camera toggle');
  console.log('PASS: Satellite Tracker opened without recovery error');
  console.log('PASS: Chromium rendered Aurora root and dismissed loader');
 }catch(e){
