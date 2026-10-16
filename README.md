@@ -1,3 +1,12 @@
+## v3.2.0 — NASA Earth Events Explorer
+
+- Filter **NASA EONET** events by category, date range (7, 14, 30, 90, 365 days), or case-insensitive search.
+- Select a dated event to highlight its coordinates and smoothly center the interactive 3D Earth camera on the reported point. Exit event focus to resume regular orbit viewing.
+- Event details link to the official NASA EONET source record. An event location is a reported point, not a verified hazard footprint.
+- Existing weather layers, six-craft satellite mission view, pass predictors, alerts and AR Finder are unchanged.
+- New unit and live Chromium browser tests cover filtering, event selection, camera focus, source link and empty state.
+- NASA Worldview raster imagery is **not included in this release**: use only after dataset/time licensing, projection and tile-delivery checks. EONET events can be updated retrospectively and this view is not an emergency alert service.
+
 ## v3.1.0 — Earth Science Data Layers
 
 - **Independent Earth Observation** page gains optional cloud coverage, 2m air temperature and precipitation sample-marker overlays, plus recent NASA EONET event locations on the existing 3D Earth.
