@@ -1,3 +1,14 @@
+## v3.1.0 — Earth Science Data Layers
+
+- **Independent Earth Observation** page gains optional cloud coverage, 2m air temperature and precipitation sample-marker overlays, plus recent NASA EONET event locations on the existing 3D Earth.
+- Weather data comes from **Open-Meteo current model estimates** at **20 intentionally sparse world reference points**—not a uniform raster, satellite-derived global cloud texture, or direct real-time measurements. Source-specific timestamps are shown.
+- NASA EONET v3 provides curated open event reports with dated geographic coordinates. Not all events represent live activity and the Earth markers are approximate event-report locations, **not** emergency alerts or footprints.
+- A scheduled GitHub Actions ingestion job refreshes the first-party dataset approximately every three hours. Each upstream provider's values and original timestamps remain intact when a provider is temporarily unavailable; the UI displays warnings.
+- Dataset markers, a searchable-looking sample card collection, source attribution, date readouts, selected-sample details and enabled/disabled overlays improve the Earth observation explorer.
+- Browser tests validate cloud and event layer switching and first-party data loading. Unit tests validate ranges, coordinates, timestamps and layer labels.
+- Existing 3D Earth, satellite labels, follow-camera, time offset, Satellite Tracker, AR Finder and alerts are preserved.
+- Source references: https://open-meteo.com/en/docs and https://eonet.gsfc.nasa.gov/docs/v3 .
+
 ## v3.0.0 — Earth Observation, Phase A
 
 - Introduces **Earth Observation** as a dedicated page in the Observation sidebar. The existing Satellite Tracker and other modules remain independent.
