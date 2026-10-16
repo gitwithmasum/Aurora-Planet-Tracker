@@ -19,6 +19,24 @@ try{
  // Smoke-test the navigation path that previously triggered Satellite Tracker recovery mode.
  const enter=page.getByText('ENTER THE GALAXY',{exact:true});
  if(await enter.count())await enter.first().click();
+ // v3.7: verify actual selectable Halftone theme and functional Dashboard, not a generated mockup.
+ const themeSelect=page.getByLabel('Galaxy theme');
+ await themeSelect.waitFor({state:'visible',timeout:16000});
+ await themeSelect.selectOption('halftone');
+ await page.waitForFunction(()=>document.querySelector('.app')?.classList.contains('theme-halftone'),null,{timeout:6000});
+ const wallpaper=await page.evaluate(()=>getComputedStyle(document.querySelector('.app')).backgroundImage);
+ if(!wallpaper.includes('aurora-halftone'))throw Error('Halftone wallpaper is not applied to the app background: '+wallpaper.slice(0,170));
+ await page.locator('.auroraDashboard').waitFor({state:'visible',timeout:18000});
+ await page.locator('.auroraDashHero').waitFor({state:'visible',timeout:8000});
+ const dashboardSearch=page.getByLabel('Search dashboard modules');
+ await dashboardSearch.fill('Earth Observation');
+ const destination=page.locator('.auroraDashMatches button').filter({hasText:'Earth Observation'});
+ await destination.first().evaluate(button=>button.click());
+ await page.getByRole('heading',{name:'Earth Mission View'}).waitFor({state:'visible',timeout:16000});
+ await page.locator('.sidebarLinks button[title="Dashboard"]').evaluate(button=>button.click());
+ await page.locator('.auroraDashboard').waitFor({state:'visible',timeout:12000});
+ if(await page.locator('.auroraDashFeatures .auroraDashFeature').count()!==4)throw Error('Dashboard mission cards missing');
+ console.log('PASS: v3.7 full-page halftone theme, live Dashboard, module search, route navigation and return');
  const satellite=page.locator('.sidebarLinks button[title="Satellite Tracker"]');
  await satellite.waitFor({state:'attached',timeout:10000});
  // Activate the page's own button handler. Avoid hover overlays and canvas pointer capture
