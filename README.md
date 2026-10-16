@@ -1,3 +1,13 @@
+## v3.6.0 — Global Location Explorer
+
+- A separate worldwide **Global Location Explorer** panel inside Earth Observation: on-demand city/place search via Open-Meteo Geocoding API, country/admin labels, validated manual latitude and longitude coordinates, and location-specific globe focusing.
+- Search is debounced and stale network requests are canceled, preventing excessive browser requests. Coordinate focus works without a geocoding/weather response.
+- On selecting a location, requests current model-estimated temperature, cloud coverage, precipitation and wind, plus dated recent daily temperature/precipitation history and a lightweight chart.
+- The existing v3.5 curated offline-friendly 18-city summary remains available below; historical dates and source attribution are preserved.
+- Global search and selected coordinates make direct requests to Open-Meteo servers. No geolocation permission, camera upload or persistent location collection is added.
+- Unit tests validate coordinate boundaries, geocoding normalization and dated weather response; Chromium smoke checks manual coordinate focus, Kyoto geocoding and current weather.
+- Live global queries depend on third-party availability and connection; the Earth globe and other modules continue functioning when those services fail.
+
 ## v3.5.0 — Earth Observation Intelligence
 
 - Independent Earth Observation page gains a searchable **curated city/country location explorer** (18 supported cities), country filter, smooth 3D city camera focus, and a selected-location map marker. This is not a worldwide geocoding service.
