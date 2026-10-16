@@ -1,3 +1,13 @@
+## v3.4.0 — Advanced Earth Visualization
+
+- NASA MODIS Terra imagery gains an **archive timeline**, previous/next controls and optional playback cycling through **available actual dated mosaics only**.
+- **Before/After** uses a responsive 2D swipe-preview with independent dates and adjustable split; the 3D globe continues showing the selected AFTER date. No costly second WebGL renderer.
+- A cloud-coverage marker-size slider visualizes sparse **Open-Meteo estimated cloud percentages**—not a continuous weather-satellite cloud sheet. NONE correctly removes weather point markers.
+- ECO graphics now defaults on for smaller screens or reduced-motion preferences. Existing manual ECO control remains available.
+- New unit tests cover archive ordering, comparison validation and marker bounds. Live browser smoke test covers date comparison and cloud controls.
+- Imagery layers, NASA events, orbital trajectories, AR Finder, observations and earlier user preferences are preserved.
+- Image differences can represent cloud variability, imaging swath gaps, viewing geometry and acquisition changes—not necessarily physical changes on Earth.
+
 ## v3.3.0 — NASA Worldview Imagery (NASA GIBS)
 
 - NASA GIBS WMS provides actual **MODIS Terra corrected-reflectance true-color daily browse mosaics** for the Earth Observation globe, saved as date-specific JPEG snapshots on GitHub Pages.
