@@ -126,6 +126,23 @@ try{
  await page.waitForFunction(()=>document.querySelector('.earthImageryMeta')?.textContent?.includes('TEXTURE: READY'),null,{timeout:22000});
  if(await page.locator('.earthImageryError').count())throw Error('NASA GIBS imagery reported an error');
  console.log('PASS: NASA GIBS Earth imagery loads, overlays and switches date on the 3D globe');
+ // v3.4: verify timeline, two dated mosaics, before/after split and cloud marker controls.
+ await page.getByLabel('NASA imagery timeline').evaluate(input=>{input.value='0';input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}))});
+ await page.getByRole('button',{name:'NEXT ▶'}).evaluate(button=>button.click());
+ await page.getByLabel('Compare NASA imagery dates').evaluate(input=>input.click());
+ await page.getByLabel('NASA before imagery date').waitFor({state:'visible',timeout:8000});
+ const dates=await page.getByLabel('NASA imagery date').locator('option').allTextContents();
+ if(dates.length<2)throw Error('v3.4 comparison needs two NASA imagery dates');
+ await page.getByLabel('NASA before imagery date').selectOption({index:0});
+ await page.getByLabel('NASA after imagery date').selectOption({index:dates.length-1});
+ const compare=page.getByLabel('NASA imagery before and after comparison');
+ await compare.waitFor({state:'visible',timeout:12000});
+ if(await compare.locator('img').count()!==2)throw Error('Missing before/after NASA imagery snapshots');
+ await page.getByLabel('NASA imagery before after comparison split').evaluate(input=>{input.value='65';input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}))});
+ await page.getByRole('button',{name:'CLOUD COVERAGE'}).evaluate(button=>button.click());
+ await page.getByLabel('Cloud coverage marker size').waitFor({state:'visible',timeout:8000});
+ console.log('PASS: v3.4 NASA date comparison and cloud control rendering');
+
 
  console.log('PASS: Earth science first-party data, weather layer and NASA events switch correctly');
 
