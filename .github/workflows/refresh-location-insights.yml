@@ -1,0 +1,33 @@
+name: Refresh Earth Location Insights
+on:
+  schedule:
+    - cron: '25 */4 * * *'
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/refresh_location_insights.py'
+      - '.github/workflows/refresh-location-insights.yml'
+permissions:
+  contents: write
+concurrency:
+  group: earth-location-insights
+  cancel-in-progress: false
+jobs:
+  insights:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch current and historical weather estimates
+        run: python scripts/refresh_location_insights.py
+      - name: Commit validated Earth intelligence data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/earth-data/locations.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: refresh Earth location weather insights"
+            git push
+          fi
