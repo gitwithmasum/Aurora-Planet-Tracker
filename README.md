@@ -1,3 +1,13 @@
+## v3.5.0 — Earth Observation Intelligence
+
+- Independent Earth Observation page gains a searchable **curated city/country location explorer** (18 supported cities), country filter, smooth 3D city camera focus, and a selected-location map marker. This is not a worldwide geocoding service.
+- Open-Meteo model-based current estimates for temperature, cloud coverage, precipitation, humidity and wind, with a dated 7-day daily-min/max temperature history chart and precipitation table.
+- A historical comparison tool displays recent daily-midpoint averages and 7-day rainfall totals for two selected cities.
+- First-party validated JSON is updated using scheduled GitHub Actions every ~4 hours. The observedAt source timestamp is shown and values are not presented as guaranteed station measurements.
+- Existing satellite controls, NASA EONET events, imagery mosaics, timelines, browser permissions and AR systems are preserved.
+- Unit and Chromium smoke tests cover source validation, country filtering, Dhaka focus, Tokyo comparison, and prior satellite/imagery workflows.
+- No GPS location access is requested; the user selects from fixed named cities.
+
 ## v3.4.0 — Advanced Earth Visualization
 
 - NASA MODIS Terra imagery gains an **archive timeline**, previous/next controls and optional playback cycling through **available actual dated mosaics only**.
