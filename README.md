@@ -1,3 +1,13 @@
+## v3.3.0 — NASA Worldview Imagery (NASA GIBS)
+
+- NASA GIBS WMS provides actual **MODIS Terra corrected-reflectance true-color daily browse mosaics** for the Earth Observation globe, saved as date-specific JPEG snapshots on GitHub Pages.
+- A scheduled GitHub Actions workflow refreshes up to three dated equirectangular mosaics daily; first-party static imagery paths avoid browser cross-origin dependencies.
+- In Earth Observation, the user can opt into the NASA imagery overlay, select an archived date, and adjust the overlay opacity from 20% to 100%. The original Earth texture remains if imagery fails or is disabled.
+- Source, provider, dataset, mosaic date and texture loading state are explicit. GIBS daily browse imagery can contain gaps or missing swaths and is **not a live stream or a single instant global photograph**.
+- NASA MODIS Terra imagery and NASA Worldview are separate from the Open-Meteo forecast-based cloud percentage markers; prior overlays and tracking features remain unaffected.
+- Ingestion verifies JPEG content and only publishes dated images; unit and browser tests check manifest validation, archive switching and successful WebGL texture loading.
+- NASA GIBS API: https://nasa-gibs.github.io/gibs-api-docs/access-basics/ ; Worldview: https://worldview.earthdata.nasa.gov/.
+
 ## v3.2.0 — NASA Earth Events Explorer
 
 - Filter **NASA EONET** events by category, date range (7, 14, 30, 90, 365 days), or case-insensitive search.
