@@ -111,6 +111,17 @@ try{
  await page.getByLabel('Filter Earth country').selectOption('Bangladesh');
  if(!(await page.locator('.earthIntelligenceCities').innerText()).includes('Dhaka'))throw Error('v3.5 country filter failed');
  console.log('PASS: v3.5 curated city lookup, globe focus, weather history comparison and country filtering');
+ await page.getByRole('heading',{name:'Global Location Explorer'}).waitFor({state:'visible',timeout:12000});
+ await page.getByLabel('Global Earth latitude').fill('35.0116');
+ await page.getByLabel('Global Earth longitude').fill('135.7681');
+ await page.getByRole('button',{name:'FOCUS COORDINATES'}).evaluate(button=>button.click());
+ if(!(await page.locator('.globalEarthDetails').innerText()).includes('Custom coordinates'))throw Error('v3.6 manual coordinates did not focus Earth');
+ await page.getByLabel('Search worldwide cities').fill('Kyoto');
+ await page.waitForFunction(()=>document.querySelector('.globalEarthResults')?.textContent?.includes('Kyoto'),null,{timeout:18000});
+ await page.locator('.globalEarthResults button').first().evaluate(button=>button.click());
+ await page.waitForFunction(()=>document.querySelector('.globalEarthMetrics')?.textContent?.includes('TEMPERATURE'),null,{timeout:18000});
+ console.log('PASS: v3.6 global city search, coordinate focus and on-demand weather');
+
 
  await page.getByRole('heading',{name:'Earth Data Layers'}).waitFor({state:'visible',timeout:18000});
  await page.waitForFunction(()=>document.querySelector('.earthScienceMeta')?.textContent?.includes('DATA: AVAILABLE'),null,{timeout:15000});
