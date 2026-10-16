@@ -2,6 +2,7 @@ import React,{useCallback,useEffect,useMemo,useState} from 'react';
 import {Satellite,Compass,Clock3,MapPin,ArrowUpRight} from 'lucide-react';
 import SatellitePassAlert from './SatellitePassAlert.jsx';
 import SatelliteGlobe from './SatelliteGlobe.jsx';
+import SatelliteARFinder from './SatelliteARFinder.jsx';
 import SatellitePassPlanner from './SatellitePassPlanner.jsx';
 import './SatelliteTracker.css';
 import {SATELLITE_CATEGORIES,DEFAULT_SATELLITES,satelliteSearch,loadSatelliteCatalog} from './satelliteCatalog.mjs';
@@ -26,7 +27,7 @@ export default function SatelliteTracker({alert,location,onLocation,onOpenSky}){
   if(Number.isFinite(n)&&n>=min&&n<=max)onLocation({...location,[key]:n,label:'Manual observer coordinates'});
  };
  return <section className="satTracker">
-  <div className="satTrackerIntro"><div><span className="eyebrow">AURORA / OBSERVATION / v2.7</span><h3>Satellite Tracker</h3><p>Search and visualize ISS, Tiangong, Hubble, NOAA and selected Starlink orbits. ISS pass alerts remain available.</p></div><Satellite size={42}/></div>
+  <div className="satTrackerIntro"><div><span className="eyebrow">AURORA / OBSERVATION / v2.8</span><h3>Satellite Tracker</h3><p>Search and visualize ISS, Tiangong, Hubble, NOAA and selected Starlink orbits. ISS pass alerts remain available.</p></div><Satellite size={42}/></div>
   <div className="satTrackerLocation"><MapPin size={17}/><span>{location.label}</span><label>LAT <input aria-label="Satellite observer latitude" type="number" min="-90" max="90" step=".0001" value={location.lat} onChange={e=>change('lat',e.target.value,-90,90)}/></label><label>LON <input aria-label="Satellite observer longitude" type="number" min="-180" max="180" step=".0001" value={location.lon} onChange={e=>change('lon',e.target.value,-180,180)}/></label></div>
   <div className="satCatalog">
     <div className="satCatalogHeading"><strong>MULTI-SATELLITE CATALOG</strong><span>{catalogStatus==='ready'?catalog.length+' recent orbital records':catalogStatus==='loading'?'Fetching catalog…':'Orbital catalog unavailable'}</span><button type="button" onClick={reloadCatalog} disabled={catalogStatus==='loading'}>REFRESH CATALOG</button></div>
@@ -40,6 +41,7 @@ export default function SatelliteTracker({alert,location,onLocation,onOpenSky}){
     <p className="satCatalogNote">Only spacecraft with current validated TLE records are selectable. Starlink entries represent a small current sample, not the entire constellation.</p>
   </div>
   <SatelliteGlobe key={selectedId} satrec={targetSatrec} now={alert.tick} loading={catalogStatus==='loading'||(selectedId==='iss'&&alert.status==='loading')} error={catalogError||(selectedId==='iss'?alert.error:'No recent orbital elements are available for this spacecraft.')} onRefresh={selectedId==='iss'?alert.refresh:reloadCatalog} satelliteName={metadata.name} noradId={metadata.noradId}/>
+  <SatelliteARFinder key={'ar-'+metadata.noradId} satrec={targetSatrec} now={alert.tick} location={location} onLocation={onLocation} name={metadata.name}/>
   <SatellitePassPlanner key={metadata.noradId} satrec={targetSatrec} now={alert.tick} location={location} satellite={metadata}/>
   <SatellitePassAlert alert={alert}/>
   <div className="satTrackerDetails">
