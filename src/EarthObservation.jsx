@@ -59,7 +59,7 @@ function Craft({record,active,color,onChoose,showLabel,clock}){
  </group>;
 }
 function WeatherMarkers({layer,points,onSelect,cloudDetail=1}){
- if(!layer||layer==='events')return null;
+ if(!layer||layer==='none'||layer==='events')return null;
  return <group>{points.map((p,i)=><group key={p.name+'-'+i} position={geoToScene(p.lat,p.lon,22)}>
   <mesh onClick={e=>{e.stopPropagation();onSelect({kind:'weather',...p})}}>
    <sphereGeometry args={[layer==='cloud'?cloudMarkerRadius(p.cloudPercent)*cloudDetail:.046+p.cloudPercent/6000,10,8]}/><meshBasicMaterial color={markerColor(layer,p)} depthTest={true} toneMapped={false}/>
