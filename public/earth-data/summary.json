@@ -1,0 +1,408 @@
+{
+  "fetchedAt": "2026-10-16T17:20:32.533724+00:00",
+  "weatherSource": "Open-Meteo Forecast API (model-based point samples)",
+  "weatherUrl": "https://open-meteo.com/en/docs",
+  "eventSource": "NASA EONET v3",
+  "eventUrl": "https://eonet.gsfc.nasa.gov/",
+  "weatherSamples": [
+    {
+      "name": "North America",
+      "lat": 40,
+      "lon": -100,
+      "observedAt": "2026-10-16T17:15Z",
+      "temperatureC": 7.9,
+      "cloudPercent": 49,
+      "precipitationMm": 0.0
+    },
+    {
+      "name": "South America",
+      "lat": -15,
+      "lon": -60,
+      "observedAt": "2026-10-16T17:15Z",
+      "temperatureC": 25.8,
+      "cloudPercent": 99,
+      "precipitationMm": 0.0
+    },
+    {
+      "name": "Europe",
+      "lat": 50,
+      "lon": 12,
+      "observedAt": "2026-10-16T17:15Z",
+      "temperatureC": 10.9,
+      "cloudPercent": 100,
+      "precipitationMm": 0.0
+    },
+    {
+      "name": "West Africa",
+      "lat": 8,
+      "lon": -3,
+      "observedAt": "2026-10-16T17:15Z",
+      "temperatureC": 23.8,
+      "cloudPercent": 97,
+      "precipitationMm": 0.2
+    },
+    {
+      "name": "East Africa",
+      "lat": -5,
+      "lon": 36,
+      "observedAt": "2026-10-16T17:15Z",
+      "temperatureC": 21.6,
+      "cloudPercent": 100,
+      "precipitationMm": 0.0
+    },
+    {
+      "name": "South Asia",
+      "lat": 23,
+      "lon": 80,
+      "observedAt": "2026-10-16T17:15Z",
+      "temperatureC": 24.3,
+      "cloudPercent": 3,
+      "precipitationMm": 0.0
+    },
+    {
+      "name": "East Asia",
+      "lat": 35,
+      "lon": 120,
+      "observedAt": "2026-10-16T17:15Z",
+      "temperatureC": 22.2,
+      "cloudPercent": 92,
+      "precipitationMm": 0.0
+    },
+    {
+      "name": "Southeast Asia",
+      "lat": 2,
+      "lon": 114,
+      "observedAt": "2026-10-16T17:15Z",
+      "temperatureC": 20.3,
+      "cloudPercent": 100,
+      "precipitationMm": 0.0
+    },
+    {
+      "name": "Australia",
+      "lat": -25,
+      "lon": 135,
+      "observedAt": "2026-10-16T17:15Z",
+      "temperatureC": 17.5,
+      "cloudPercent": 1,
+      "precipitationMm": 0.0
+    },
+    {
+      "name": "Arctic",
+      "lat": 75,
+      "lon": 0,
+      "observedAt": "2026-10-16T17:15Z",
+      "temperatureC": -3.4,
+      "cloudPercent": 100,
+      "precipitationMm": 0.0
+    },
+    {
+      "name": "Antarctic",
+      "lat": -72,
+      "lon": 35,
+      "observedAt": "2026-10-16T17:15Z",
+      "temperatureC": -27.6,
+      "cloudPercent": 92,
+      "precipitationMm": 0.0
+    },
+    {
+      "name": "North Pacific",
+      "lat": 25,
+      "lon": -155,
+      "observedAt": "2026-10-16T17:15Z",
+      "temperatureC": 26.2,
+      "cloudPercent": 64,
+      "precipitationMm": 0.0
+    },
+    {
+      "name": "South Pacific",
+      "lat": -25,
+      "lon": -135,
+      "observedAt": "2026-10-16T17:15Z",
+      "temperatureC": 20.4,
+      "cloudPercent": 90,
+      "precipitationMm": 0.0
+    },
+    {
+      "name": "Atlantic",
+      "lat": 12,
+      "lon": -35,
+      "observedAt": "2026-10-16T17:15Z",
+      "temperatureC": 27.2,
+      "cloudPercent": 22,
+      "precipitationMm": 0.0
+    },
+    {
+      "name": "Indian Ocean",
+      "lat": -20,
+      "lon": 80,
+      "observedAt": "2026-10-16T17:15Z",
+      "temperatureC": 22.2,
+      "cloudPercent": 69,
+      "precipitationMm": 0.0
+    },
+    {
+      "name": "North Asia",
+      "lat": 60,
+      "lon": 90,
+      "observedAt": "2026-10-16T17:15Z",
+      "temperatureC": -1.9,
+      "cloudPercent": 61,
+      "precipitationMm": 0.0
+    },
+    {
+      "name": "Central America",
+      "lat": 15,
+      "lon": -90,
+      "observedAt": "2026-10-16T17:15Z",
+      "temperatureC": 22.8,
+      "cloudPercent": 87,
+      "precipitationMm": 0.1
+    },
+    {
+      "name": "Middle East",
+      "lat": 29,
+      "lon": 48,
+      "observedAt": "2026-10-16T17:15Z",
+      "temperatureC": 29.8,
+      "cloudPercent": 1,
+      "precipitationMm": 0.0
+    },
+    {
+      "name": "Southern Africa",
+      "lat": -27,
+      "lon": 25,
+      "observedAt": "2026-10-16T17:15Z",
+      "temperatureC": 24.2,
+      "cloudPercent": 7,
+      "precipitationMm": 0.0
+    },
+    {
+      "name": "North Atlantic",
+      "lat": 55,
+      "lon": -36,
+      "observedAt": "2026-10-16T17:15Z",
+      "temperatureC": 10.0,
+      "cloudPercent": 100,
+      "precipitationMm": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "EONET_25340",
+      "title": "Tropical Cyclone 01P",
+      "category": "Severe Storms",
+      "lat": -10.8,
+      "lon": -163.3,
+      "date": "2026-10-16T06:00:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25340"
+    },
+    {
+      "id": "EONET_25339",
+      "title": "Tropical Storm Champi",
+      "category": "Severe Storms",
+      "lat": 11.4,
+      "lon": 151.4,
+      "date": "2026-10-16T12:00:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339"
+    },
+    {
+      "id": "EONET_25310",
+      "title": "Prescribed Fire Newman Piles RX, Coconino, Arizona",
+      "category": "Wildfires",
+      "lat": 35.016667,
+      "lon": -111.65,
+      "date": "2026-10-14T10:42:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25310"
+    },
+    {
+      "id": "EONET_25290",
+      "title": "Hurricane Trudy",
+      "category": "Severe Storms",
+      "lat": 14.4,
+      "lon": -102.4,
+      "date": "2026-10-16T12:00:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25290"
+    },
+    {
+      "id": "EONET_25311",
+      "title": "Prescribed Fire Jane 102 RX, Harney, Oregon",
+      "category": "Wildfires",
+      "lat": 44.025847,
+      "lon": -118.766432,
+      "date": "2026-10-13T10:24:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25311"
+    },
+    {
+      "id": "EONET_25312",
+      "title": "Prescribed Fire SRF 2026 Rx Implementation, Humboldt, California",
+      "category": "Wildfires",
+      "lat": 41.300685,
+      "lon": -123.540573,
+      "date": "2026-10-12T16:27:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25312"
+    },
+    {
+      "id": "EONET_25238",
+      "title": "Wildfire Buckhorn 2, Cassia, Idaho",
+      "category": "Wildfires",
+      "lat": 42.337217,
+      "lon": -114.102967,
+      "date": "2026-10-10T14:58:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25238"
+    },
+    {
+      "id": "EONET_25233",
+      "title": "Wildfire PK, Sheridan, Wyoming",
+      "category": "Wildfires",
+      "lat": 44.7516,
+      "lon": -107.2199,
+      "date": "2026-10-09T19:26:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25233"
+    },
+    {
+      "id": "EONET_25232",
+      "title": "Wildfire CYRUS, Kern, California",
+      "category": "Wildfires",
+      "lat": 35.69875,
+      "lon": -118.418,
+      "date": "2026-10-09T17:15:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25232"
+    },
+    {
+      "id": "EONET_25234",
+      "title": "Prescribed Fire Bridger Trail Unit - KPERP Rx NKRD CY26, Coconino, Arizona",
+      "category": "Wildfires",
+      "lat": 36.73752,
+      "lon": -112.185988,
+      "date": "2026-10-09T11:49:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25234"
+    },
+    {
+      "id": "EONET_25268",
+      "title": "Iceberg B52",
+      "category": "Sea and Lake Ice",
+      "lat": -74.4,
+      "lon": -130.24,
+      "date": "2026-10-09T00:00:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25268"
+    },
+    {
+      "id": "EONET_25309",
+      "title": "Wildfire Craig Lake 1, Baraga, Michigan",
+      "category": "Wildfires",
+      "lat": 46.63331342,
+      "lon": -88.16960353,
+      "date": "2026-10-08T18:05:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25309"
+    },
+    {
+      "id": "EONET_25235",
+      "title": "Prescribed Fire COOPER UNIT - KPERP RX NKRD  CY26, Coconino, Arizona",
+      "category": "Wildfires",
+      "lat": 36.754175,
+      "lon": -112.214205,
+      "date": "2026-10-08T12:16:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25235"
+    },
+    {
+      "id": "EONET_25094",
+      "title": "Hurricane Simon",
+      "category": "Severe Storms",
+      "lat": 20.4,
+      "lon": -109.2,
+      "date": "2026-10-16T12:00:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25094"
+    },
+    {
+      "id": "EONET_25119",
+      "title": "Prescribed Fire CON BSE13 RX, Covington, Alabama",
+      "category": "Wildfires",
+      "lat": 31.124246,
+      "lon": -86.526643,
+      "date": "2026-10-07T10:45:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25119"
+    },
+    {
+      "id": "EONET_25063",
+      "title": "Hurricane Isaias",
+      "category": "Severe Storms",
+      "lat": 37.5,
+      "lon": -84,
+      "date": "2026-10-11T15:00:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25063"
+    },
+    {
+      "id": "EONET_25240",
+      "title": "Prescribed Fire Bartlett Creek RX, Custer, Idaho",
+      "category": "Wildfires",
+      "lat": 43.9,
+      "lon": -114.2,
+      "date": "2026-10-06T11:34:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25240"
+    },
+    {
+      "id": "EONET_25117",
+      "title": "Wildfire Jones, Elko, Nevada",
+      "category": "Wildfires",
+      "lat": 41.02195,
+      "lon": -115.20765,
+      "date": "2026-10-05T23:14:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25117"
+    },
+    {
+      "id": "EONET_25239",
+      "title": "Prescribed Fire West Fork RX, Wasatch, Utah",
+      "category": "Wildfires",
+      "lat": 40.4646,
+      "lon": -111.058383,
+      "date": "2026-10-05T14:54:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25239"
+    },
+    {
+      "id": "EONET_25046",
+      "title": "Typhoon Koguma",
+      "category": "Severe Storms",
+      "lat": 38.3,
+      "lon": 157.2,
+      "date": "2026-10-13T18:00:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25046"
+    },
+    {
+      "id": "EONET_25118",
+      "title": "Wildfire BOUQUET, Los Angeles, California",
+      "category": "Wildfires",
+      "lat": 34.561835,
+      "lon": -118.40183,
+      "date": "2026-10-03T17:30:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25118"
+    },
+    {
+      "id": "EONET_25043",
+      "title": "Prescribed Fire D3 Bear RX, Greenlee, Arizona",
+      "category": "Wildfires",
+      "lat": 33.447133,
+      "lon": -109.401883,
+      "date": "2026-10-02T17:58:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25043"
+    },
+    {
+      "id": "EONET_25042",
+      "title": "Wildfire Bull, Washoe, Nevada",
+      "category": "Wildfires",
+      "lat": 39.539067,
+      "lon": -119.987683,
+      "date": "2026-10-02T14:26:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25042"
+    },
+    {
+      "id": "EONET_25236",
+      "title": "Prescribed Fire McCRAKEN RX-WRD CY26, Coconino, Arizona",
+      "category": "Wildfires",
+      "lat": 35.116944,
+      "lon": -112.266889,
+      "date": "2026-10-01T17:00:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25236"
+    }
+  ],
+  "errors": []
+}
