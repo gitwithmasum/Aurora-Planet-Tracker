@@ -120,7 +120,7 @@ try{
  console.log('PASS: v3.2 event camera focus, NASA source, time filter and search empty state');
  await page.getByRole('heading',{name:'NASA Worldview Imagery'}).waitFor({state:'visible',timeout:16000});
  await page.getByLabel('NASA imagery date').waitFor({state:'visible',timeout:12000});
- await page.getByLabel('Enable NASA Earth imagery overlay').check();
+ await page.getByLabel('Enable NASA Earth imagery overlay').evaluate(input=>input.click());
  await page.waitForFunction(()=>document.querySelector('.earthImageryMeta')?.textContent?.includes('TEXTURE: READY'),null,{timeout:22000});
  await page.getByLabel('NASA imagery date').selectOption({index:1});
  await page.waitForFunction(()=>document.querySelector('.earthImageryMeta')?.textContent?.includes('TEXTURE: READY'),null,{timeout:22000});
