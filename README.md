@@ -1,3 +1,13 @@
+## v2.8.0 — AR Satellite Finder
+
+- New **camera-assisted satellite finder** in Observation → Satellite Tracker. Uses the selected ISS, Tiangong, Hubble, NOAA or Starlink craft's SGP4 look angles with the observer's location and time.
+- Rear-camera live preview requests camera permission only when the user taps START CAMERA. Live camera tracks stop when turned off or the component unmounts.
+- Optional DeviceOrientation compass permission uses absolute headings when reported. Relative (uncalibrated) alpha readings are not treated as verified north headings; manually adjustable compass offset and elevation remain available.
+- Transparent on-camera HUD provides horizontal bearing, predicted elevation, left/right and up/down correction, and a projected marker when the target is above the horizon and within the estimated field of view.
+- Manual heading, elevation, camera HFOV and sensor offset calibrations, with reset and browser-persisted heading/elevation/offset.
+- Sensors and camera have explicit permission requests and fallback UI; no automatic video uploads, recordings or location sharing. GPS coordinates are requested only by an explicit user action.
+- Camera alignment is educational and approximate: rear-camera pitch, optical field of view, magnetic interference and device orientation differ. Browser tests validate fallback/manual mode; actual phone sensor/camera field QA remains pending.
+
 ## v2.7.0 — Multi-Satellite Pass Predictor
 
 - Dedicated **per-satellite pass calendar** under Satellite Tracker, available for any craft with validated TLE data in the v2.6 catalog (ISS, Tiangong, Hubble, NOAA, selected Starlink).
