@@ -1,0 +1,119 @@
+/* Aurora v3.7 — reference-matched WHITE / AQUA HALFTONE background. */
+/* PINK and GOLD are reserved for TEXT. Surfaces stay white/translucent; outlines and icons use teal. */
+.app.theme-halftone{
+ --aurora-pink:#dc2279;--aurora-gold:#a87423;--aurora-ink:#24394d;
+ color:var(--aurora-ink);
+ min-height:100vh;
+ background-color:#fafffd;
+ background-image:linear-gradient(110deg,#ffffff15,#ffffff1f),var(--halftone-art);
+ background-size:cover,cover;
+ background-position:center top,center top;
+ background-attachment:fixed,fixed;
+ isolation:isolate;
+}
+.theme-halftone .noise{opacity:.025}
+.theme-halftone>header{
+ background:#fffffff1;
+ border-bottom:1px solid #a4d9d1;
+ box-shadow:0 7px 20px #42726c1e;
+ backdrop-filter:blur(18px);
+}
+.theme-halftone .brand{color:var(--aurora-pink)}
+.theme-halftone .brand strong,.theme-halftone .brand small{color:var(--aurora-gold)}
+.theme-halftone .brandmark{border:1px solid #86cbbb;background:#fff9;color:#148f83;box-shadow:none}
+.theme-halftone .galaxyThemeControl,.theme-halftone .languageSwitch{color:var(--aurora-gold)}
+.theme-halftone :is(.galaxyThemeControl,.languageSwitch) select{
+ background:#ffffffee;border-color:#9cd5cc;color:var(--aurora-pink);box-shadow:0 3px 13px #62a89b1c
+}
+.theme-halftone .status{color:var(--aurora-gold)}.theme-halftone .status .dot{background:#28bb99;box-shadow:0 0 8px #49cebd}
+.theme-halftone .auroraSidebar{
+ background:linear-gradient(180deg,#fffffff2,#f9fffded);
+ border-right:1px solid #aeddd5;
+ box-shadow:4px 0 24px #4f9e8e20;
+ color:var(--aurora-ink);
+ backdrop-filter:blur(17px)
+}
+.theme-halftone .sidebarHeading,.theme-halftone .sidebarFooter,.theme-halftone .sidebarGroup+.sidebarGroup{border-color:#b4ddd4}
+.theme-halftone .sidebarHeadingText,.theme-halftone .sidebarGroupLabel{color:var(--aurora-gold)}
+.theme-halftone .sidebarCollapseToggle,.theme-halftone .sidebarQuickTools button{
+ background:#faffff;border:1px solid #a4d6d1;color:var(--aurora-gold)
+}
+.theme-halftone .sidebarLinks button{color:#364b5a}
+.theme-halftone .sidebarLinks button svg{color:#138d82}
+.theme-halftone .sidebarLinks button:hover,.theme-halftone .sidebarLinks button.active{
+ background:#e7faf5e8!important;
+ border-color:#8ccec2!important;
+ color:var(--aurora-pink)!important
+}
+.theme-halftone .sidebarLinks button.active{box-shadow:inset 3px 0 #2ab3a4,0 5px 19px #278f8422}
+.theme-halftone .sidebarFooter{color:var(--aurora-gold)}
+.theme-halftone .sidebarPulse{background:#23c19f;box-shadow:0 0 8px #5ae0c6}
+.theme-halftone .sidebarLinks .sidebarMove button{background:#e9f8f5!important;color:#1b9185;border-color:#97cfc6!important}
+.theme-halftone .auroraMain{color:var(--aurora-ink)}
+.theme-halftone .topline .eyebrow{color:var(--aurora-gold)}
+.theme-halftone .topline h2{color:var(--aurora-pink)}
+.theme-halftone .topline p{color:#4a6371}
+.theme-halftone .timestamp{
+ background:#ffffffd9;border:1px solid #a3d5cf;color:var(--aurora-gold);
+ border-radius:11px;padding:10px
+}
+.theme-halftone .timestamp span{color:var(--aurora-pink)}
+.theme-halftone .footerline{border-color:#9cd1ca;color:var(--aurora-gold)}
+.theme-halftone .footerline span:nth-child(2){color:#4a6673}
+.theme-halftone .glass,.theme-halftone .planetpanel{
+ background:#ffffffdb;color:var(--aurora-ink);
+ border:1px solid #acdcd5;border-radius:14px;
+ box-shadow:0 12px 35px #336a6422;backdrop-filter:blur(13px)
+}
+.theme-halftone :is(.glass,.planetpanel) :is(h2,h3,h4,.classification,.eyebrow){color:var(--aurora-pink)}
+.theme-halftone .planetpanel>.paneltitle .eyebrow,.theme-halftone .lighttag{color:var(--aurora-gold)}
+.theme-halftone .planetpanel>p,.theme-halftone .intelligenceDetail>p{color:#4f6975}
+.theme-halftone .statgrid>div{background:#ffffffc9;border:1px solid #acdad1;border-radius:9px}
+.theme-halftone .statgrid small{color:var(--aurora-gold)}
+.theme-halftone .statgrid strong{color:var(--aurora-pink)}
+.theme-halftone .planetlist button{background:#ffffffdf;color:#435d66;border-color:#9ecfc7;border-radius:8px}
+.theme-halftone .planetlist button.chosen,.theme-halftone .planetlist button:hover{background:#e7f9f5;border-color:#58bbaa;color:var(--aurora-pink)}
+.theme-halftone .search,.theme-halftone .location,.theme-halftone .manual input{
+ background:#ffffffec;color:#384f5b;border:1px solid #a2d2ca
+}
+.theme-halftone .search input,.theme-halftone .manual input{color:#25394e}
+.theme-halftone .location button{background:#effbf9;color:var(--aurora-pink)}
+.theme-halftone .manual label,.theme-halftone .classification{color:var(--aurora-gold)}
+.theme-halftone .primary{
+ background:#ffffffed;border:1px solid #83cfc4;
+ box-shadow:0 6px 22px #45817a2b;color:var(--aurora-pink)
+}
+.theme-halftone .outline{border-color:#92cac3;color:var(--aurora-gold);background:#ffffffb9}
+.theme-halftone .outline:hover,.theme-halftone .primary:hover{background:#e4f8f3}
+.theme-halftone .viewport{border-color:#a0d8cc;box-shadow:0 12px 30px #3b68602e;border-radius:13px}
+.theme-halftone .scene-options label,.theme-halftone .scenecontrols button{background:#f8fffded;border:1px solid #8fcbbf;color:var(--aurora-gold)}
+.theme-halftone .scene-options select{background:#ffffff;color:var(--aurora-pink);border-color:#a7d9d2}
+.theme-halftone .scenecontrols button:hover{background:#e6f7f5;box-shadow:0 4px 12px #3ca59c22}
+.theme-halftone .scene-options :is(.coord,.eyebrow),.theme-halftone .viewport-bottom{color:var(--aurora-gold)}
+.theme-halftone :is(button,input,select):focus-visible{outline-color:#21b6a6}
+.theme-halftone .portal{
+ background:linear-gradient(#ffffff22,#ffffff22),var(--halftone-art) center/cover no-repeat,#fbfffc
+}
+.theme-halftone .portal-copy{background:#ffffffb9;border-radius:22px;border:1px solid #c5e8df;box-shadow:0 18px 40px #629c8c28}
+.theme-halftone .portal-copy .eyebrow,.theme-halftone .portal-copy small{color:var(--aurora-gold)}
+.theme-halftone .portal-copy h1{color:var(--aurora-pink);text-shadow:0 8px 22px #ca548936}
+.theme-halftone .portal-copy h1 em{color:var(--aurora-gold);text-shadow:none}
+.theme-halftone .portal-copy p{color:#324858}
+.theme-halftone .portal-stars{opacity:.10}
+.theme-halftone .portal-orbit{border-color:#38bbaa77;box-shadow:0 0 22px #30bca92d}
+.theme-halftone .portal-planet{box-shadow:0 0 40px #5fbbad66,inset -45px -23px 60px #081f46}
+.theme-halftone .portal-copy .enter{background:#fffffff2;border-color:#83cfc4;color:var(--aurora-pink)}
+.theme-halftone .sidebarBackdrop{background:#325a5a64}
+.theme-halftone header .sidebarMobileToggle{border-color:#99d4ca;background:#ffffffdc;color:#208b7e}
+/* Complex scientific 3D canvases remain naturally dark for celestial contrast; full-page background remains the halftone artwork. */
+.theme-halftone .skyLocationBar{background:#ffffffdf;border:1px solid #a5d5ce;border-radius:10px;color:var(--aurora-gold)}
+.theme-halftone .skyLocationBar button{background:#effaf7;color:var(--aurora-pink)}
+.theme-halftone .skyLocationBar input{background:#f9ffff;color:#314c58;border-color:#97d1c6}
+.theme-halftone .textureCredit{background:#effbf9;color:#5d737f!important;border-color:#acdad2}
+@media(max-width:768px){
+ .app.theme-halftone{background-attachment:scroll,scroll;background-position:43% top}
+ .theme-halftone .auroraSidebar{background:#fffffffa}
+ .theme-halftone .auroraMain{padding-top:17px}
+ .theme-halftone .glass,.theme-halftone .planetpanel{backdrop-filter:none}
+}
+@media(prefers-reduced-motion:reduce){.theme-halftone .portal-stars,.theme-halftone .portal-orbit{animation:none}}
