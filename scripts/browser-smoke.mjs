@@ -99,6 +99,16 @@ try{
  await page.getByRole('button',{name:'FOLLOW SATELLITE'}).evaluate(button=>button.click());
  if(!(await page.locator('.earthMissionPanel').innerText()).includes('STOP FOLLOWING'))throw Error('Follow camera control failed');
  console.log('PASS: standalone Earth Observation navigation, satellite selection and follow-camera toggle');
+ await page.getByRole('heading',{name:'Earth Data Layers'}).waitFor({state:'visible',timeout:18000});
+ await page.waitForFunction(()=>document.querySelector('.earthScienceMeta')?.textContent?.includes('DATA: AVAILABLE'),null,{timeout:15000});
+ const weatherChoice=page.getByRole('button',{name:'CLOUD COVERAGE'});
+ await weatherChoice.evaluate(button=>button.click());
+ const science=page.locator('.earthSciencePanel');
+ if(!(await science.innerText()).includes('North America'))throw Error('Weather sample locations not rendered');
+ await page.getByRole('button',{name:'NASA EARTH EVENTS'}).evaluate(button=>button.click());
+ if(!(await science.innerText()).includes('NASA EVENTS'))throw Error('NASA EONET event control missing');
+ console.log('PASS: Earth science first-party data, weather layer and NASA events switch correctly');
+
  console.log('PASS: Satellite Tracker opened without recovery error');
  console.log('PASS: Chromium rendered Aurora root and dismissed loader');
 }catch(e){
