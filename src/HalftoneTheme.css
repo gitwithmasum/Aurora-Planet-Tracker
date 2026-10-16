@@ -117,3 +117,10 @@
  .theme-halftone .glass,.theme-halftone .planetpanel{backdrop-filter:none}
 }
 @media(prefers-reduced-motion:reduce){.theme-halftone .portal-stars,.theme-halftone .portal-orbit{animation:none}}
+
+/* Keep decorative icons teal; reserve the pink/gold pairing for typography. */
+.theme-halftone .auroraDashboard svg{color:#258f83}
+.theme-halftone .auroraDashboard .auroraDashHeroStats>div svg{color:#258f83}
+.theme-halftone .auroraDashHeroStats strong,.theme-halftone .auroraDashFeature>strong,
+.theme-halftone .auroraDashPanelTitle strong,.theme-halftone .auroraDashSky strong{color:var(--aurora-pink)}
+.theme-halftone .auroraDashboard :is(.auroraDashOverline,.auroraDashHeroCopy h2 strong,.auroraDashFeatureFooter,.auroraDashSource){color:var(--aurora-gold)}
