@@ -1,3 +1,13 @@
+## v3.0.0 — Earth Observation, Phase A
+
+- Introduces **Earth Observation** as a dedicated page in the Observation sidebar. The existing Satellite Tracker and other modules remain independent.
+- A full-size interactive WebGL Earth globe uses the bundled Earth texture and calculates locations/colored orbital paths from validated public TLEs. Search the catalog, select a craft, show/hide individual orbits, enable labels, and smoothly follow the selected satellite.
+- Maximum six visible satellite orbit tracks, plus reduced star count/DPR eco mode, to bound graphics and SGP4 update work on mobile devices. Time offset can vary ±90 minutes; pause/resume simulation and reset time.
+- Shows mission info, current estimated altitude, speed, coordinates and NORAD ID. This is educational, computed SGP4 telemetry—not direct live spacecraft tracking or NASA affiliation.
+- NASA-style Earth-science data layers and recent-event feeds are **not** included in Phase A; they require properly sourced timestamped datasets and separate QA.
+- A Chromium browser regression test navigates into the independent Earth Observation page, selects Hubble and verifies Follow Satellite toggle.
+- Actual Android GPU stability and camera behavior remain device QA items.
+
 ## v2.9.0 — Orbital Mission Control
 
 - Mission dashboard inside Observation → Satellite Tracker: current catalog count, oldest orbital element age, number of locally recorded observations and comparison capacity.
