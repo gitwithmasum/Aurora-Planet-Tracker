@@ -1,6 +1,6 @@
 /* Aurora Planet Tracker offline navigation and immutable build assets cache.
    Same-origin only; no user GPS, camera streams, tokens, or reports stored. */
-const VERSION='aurora-v2.9.0';
+const VERSION='aurora-v3.0.0';
 const SHELL=VERSION+'-shell',RUNTIME=VERSION+'-runtime';
 const scope=self.registration.scope;
 const home=new URL('./',scope).pathname;
