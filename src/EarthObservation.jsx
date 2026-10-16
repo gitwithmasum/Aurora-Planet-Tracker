@@ -7,18 +7,41 @@ import {loadSatelliteCatalog} from './satelliteCatalog.mjs';
 import {orbitalSamples,satelliteTelemetry,EARTH_MODEL_RADIUS,geoToScene} from './satelliteOrbit.mjs';
 import {EARTH_LAYERS,loadEarthScienceData,markerColor,layerValue,ageHours} from './earthScienceData.mjs';
 import {EVENT_WINDOWS,eventCategories,filterEarthEvents,sourceEventLink} from './earthEventsExplorer.mjs';
+import {loadNasaImageryManifest,imageryAssetUrl,NASA_IMAGERY_ATTRIBUTION} from './earthImageryData.mjs';
 import './EarthObservation.css';
 
 const COLORS=['#67edff','#ffb969','#a5ffcb','#ff86c3','#c5acff','#9be7a1'];
 const textureUrl=import.meta.env.BASE_URL+'planet-textures/earth.jpg';
 const fmt=(x,n=1)=>Number.isFinite(x)?x.toFixed(n):'—';
-function EarthBody(){
+function EarthBody({imageUrl,imageryOpacity,onImageStatus}){
  const texture=useMemo(()=>{const map=new THREE.TextureLoader().load(textureUrl);map.colorSpace=THREE.SRGBColorSpace;map.anisotropy=4;return map},[]);
  useEffect(()=>()=>texture.dispose(),[texture]);
  return <group>
   <mesh><sphereGeometry args={[EARTH_MODEL_RADIUS,72,48]}/><meshStandardMaterial map={texture} roughness={.91} metalness={0}/></mesh>
+  {imageUrl&&<DatedEarthOverlay key={imageUrl} url={imageUrl} opacity={imageryOpacity} onStatus={onImageStatus}/>}
   <mesh><sphereGeometry args={[EARTH_MODEL_RADIUS*1.024,48,32]}/><meshBasicMaterial color="#4f9bff" transparent opacity={.07} side={THREE.BackSide} depthWrite={false}/></mesh>
  </group>;
+}
+function DatedEarthOverlay({url,opacity,onStatus}){
+ const [map,setMap]=useState(null);
+ useEffect(()=>{
+  let active=true;
+  onStatus('loading');
+  const loader=new THREE.TextureLoader();
+  loader.load(url,texture=>{
+   if(!active){texture.dispose();return}
+   texture.colorSpace=THREE.SRGBColorSpace;
+   texture.anisotropy=4;
+   setMap(texture);
+   onStatus('ready');
+  },undefined,()=>{
+   if(active){setMap(null);onStatus('error')}
+  });
+  return()=>{active=false};
+ },[url,onStatus]);
+ useEffect(()=>()=>{map?.dispose()},[map]);
+ if(!map)return null;
+ return <mesh><sphereGeometry args={[EARTH_MODEL_RADIUS*1.007,72,48]}/><meshBasicMaterial map={map} transparent opacity={opacity} depthWrite={false} polygonOffset polygonOffsetFactor={-1}/></mesh>;
 }
 function OrbitLine({points,color}){
  const geometry=useMemo(()=>points.length>1?new THREE.BufferGeometry().setFromPoints(points.map(p=>new THREE.Vector3(...p.point))):null,[points]);
@@ -62,13 +85,13 @@ function Follow({target,enabled}){
  });
  return null;
 }
-function EarthScene({records,selectedId,positions,samples,showOrbits,labels,follow,onChoose,eco,science,layer,onScienceChoose,focusedEvent,events}){
+function EarthScene({records,selectedId,positions,samples,showOrbits,labels,follow,onChoose,eco,science,layer,onScienceChoose,focusedEvent,events,imageUrl,imageryOpacity,onImageStatus}){
  const active=positions.find(p=>p.id===selectedId)?.point||null;
  return <Canvas camera={{position:[0,1.2,10.3],fov:44}} dpr={[1,eco?1:1.5]} gl={{alpha:false,antialias:!eco,powerPreference:'low-power'}}>
   <color attach="background" args={['#030a17']}/>
   <ambientLight intensity={.7}/><directionalLight position={[8,5,6]} intensity={2.6}/><hemisphereLight args={['#85b8ff','#131d37',.5]}/>
   {!eco&&<Stars radius={65} depth={45} count={1800} factor={3} saturation={0} fade speed={0}/>}
-  <Suspense fallback={null}><EarthBody/></Suspense>
+  <Suspense fallback={null}><EarthBody imageUrl={imageUrl} imageryOpacity={imageryOpacity} onImageStatus={onImageStatus}/></Suspense>
   {science&&layer==='events'?<EventMarkers events={events} onSelect={onScienceChoose}/>:<WeatherMarkers layer={layer} points={science?.weatherSamples||[]} onSelect={onScienceChoose}/>}
   {records.map((record,index)=><React.Fragment key={record.id}>
     {showOrbits&&<OrbitLine points={samples[record.id]||[]} color={COLORS[index%COLORS.length]}/>}
@@ -84,6 +107,12 @@ export default function EarthObservation(){
  const [visibleIds,setVisibleIds]=useState(['iss','tiangong','hubble','noaa19','noaa20']);
  const [labels,setLabels]=useState(true),[showOrbits,setShowOrbits]=useState(true),[follow,setFollow]=useState(false),[eco,setEco]=useState(false),[paused,setPaused]=useState(false);
  const [now,setNow]=useState(Date.now()),[offset,setOffset]=useState(0);
+ const [imagery,setImagery]=useState(null),[imageryError,setImageryError]=useState(''),[imageryEnabled,setImageryEnabled]=useState(false),[imageryDate,setImageryDate]=useState(''),[imageryOpacity,setImageryOpacity]=useState(.85),[imageLoadStatus,setImageLoadStatus]=useState('idle');
+ async function refreshImagery(){setImageryError('');try{const x=await loadNasaImageryManifest();setImagery(x);setImageryDate(previous=>x.snapshots.some(s=>s.date===previous)?previous:x.snapshots[0].date)}catch(e){setImageryError(e.message||'NASA imagery not available')}}
+ useEffect(()=>{refreshImagery()},[]);
+ const imageItem=imagery?.snapshots.find(x=>x.date===imageryDate);
+ const imageUrl=imageryEnabled&&imageItem?imageryAssetUrl(imageItem.file):null;
+ const onImageStatus=React.useCallback(next=>setImageLoadStatus(next),[]);
  const [science,setScience]=useState(null),[scienceError,setScienceError]=useState(''),[scienceStatus,setScienceStatus]=useState('loading'),[layer,setLayer]=useState('none'),[scienceChoice,setScienceChoice]=useState(null);
  const [eventCategory,setEventCategory]=useState('All'),[eventDays,setEventDays]=useState(30),[eventSearch,setEventSearch]=useState(''),[focusedEvent,setFocusedEvent]=useState(null);
  const filteredEvents=useMemo(()=>filterEarthEvents(science?.events||[],{category:eventCategory,days:eventDays,search:eventSearch}),[science,eventCategory,eventDays,eventSearch]);
@@ -109,7 +138,7 @@ export default function EarthObservation(){
   <div className="earthMissionDashboard"><div><small>TRACKED CATALOG</small><b>{catalog.length}</b></div><div><small>VISIBLE ORBITS</small><b>{records.length}</b></div><div><small>FOCUSED MISSION</small><b>{selected?.name||'—'}</b></div><div><small>TIME (LOCAL)</small><b>{new Date(sceneTime).toLocaleTimeString()}</b></div></div>
   <div className="earthMissionStage">
     <div className="earthMissionCanvas" aria-label="Interactive 3D Earth with satellite orbits">
-     {records.length?<EarthScene records={records} selectedId={selectedId} positions={positions} samples={orbitSamples} showOrbits={showOrbits} labels={labels} follow={follow} onChoose={choose} eco={eco} science={science} layer={layer} onScienceChoose={chooseScience} focusedEvent={focusedEvent} events={filteredEvents}/>:<div className="earthMissionEmpty">{status==='loading'?'Loading mission orbits…':error||'Select spacecraft to start mission view.'}</div>}
+     {records.length?<EarthScene records={records} selectedId={selectedId} positions={positions} samples={orbitSamples} showOrbits={showOrbits} labels={labels} follow={follow} onChoose={choose} eco={eco} science={science} layer={layer} onScienceChoose={chooseScience} focusedEvent={focusedEvent} events={filteredEvents} imageUrl={imageUrl} imageryOpacity={imageryOpacity} onImageStatus={onImageStatus}/>:<div className="earthMissionEmpty">{status==='loading'?'Loading mission orbits…':error||'Select spacecraft to start mission view.'}</div>}
      <div className="earthMissionCorner">AURORA · EARTH OBSERVATION<br/>SGP4 / TLE-DERIVED ESTIMATES</div>
     </div>
     <div className="earthMissionPanel">
@@ -129,6 +158,18 @@ export default function EarthObservation(){
    <label><input type="checkbox" checked={labels} onChange={e=>setLabels(e.target.checked)}/> LABELS</label>
    <label><input type="checkbox" checked={eco} onChange={e=>setEco(e.target.checked)}/> ECO GRAPHICS</label>
   </div>
+  <section className="earthImageryPanel" aria-label="NASA Worldview imagery controls">
+    <div className="earthImageryHeader"><div><span className="eyebrow">NASA GIBS / DATED EARTH IMAGERY</span><h4>NASA Worldview Imagery</h4><p>Authentic MODIS Terra true-color daily browse mosaics, layered over the globe. Select a date to view its imagery—not a live camera feed.</p></div><button type="button" onClick={refreshImagery}>REFRESH DATES</button></div>
+    <div className="earthImageryControls">
+      <label className="earthImageryToggle"><input type="checkbox" aria-label="Enable NASA Earth imagery overlay" checked={imageryEnabled} disabled={!imagery?.snapshots?.length} onChange={e=>setImageryEnabled(e.target.checked)}/> NASA IMAGERY OVERLAY</label>
+      <label>IMAGERY DATE <select aria-label="NASA imagery date" value={imageryDate} onChange={e=>setImageryDate(e.target.value)} disabled={!imagery?.snapshots?.length}>{(imagery?.snapshots||[]).map(x=><option key={x.date} value={x.date}>{x.date}</option>)}</select></label>
+      <label>OPACITY <input type="range" min=".2" max="1" step=".05" aria-label="NASA imagery opacity" value={imageryOpacity} onChange={e=>setImageryOpacity(Number(e.target.value))}/><strong>{Math.round(imageryOpacity*100)}%</strong></label>
+    </div>
+    <div className="earthImageryMeta"><span>PROVIDER: NASA GIBS / MODIS TERRA</span><span>SELECTED DATE: {imageItem?.date||'—'}</span><span>TEXTURE: {imageUrl?imageLoadStatus.toUpperCase():'DISABLED'}</span><span>ARCHIVED IMAGERY: {imagery?.snapshots.length||0} DAYS</span></div>
+    {imageryError&&<p role="alert" className="earthImageryError">{imageryError}</p>}
+    {imageryEnabled&&imageLoadStatus==='error'&&<p role="alert" className="earthImageryError">NASA imagery texture failed to load. The base Earth globe is still available; try another date.</p>}
+    <p className="earthImageryNote">{NASA_IMAGERY_ATTRIBUTION}. Browse imagery mosaics may have gaps and are not a timestamp-perfect single satellite photograph. Data coverage and acquisition vary by location. <a href="https://worldview.earthdata.nasa.gov/" target="_blank" rel="noopener noreferrer">Explore official NASA Worldview ↗</a></p>
+  </section>
   <section className="earthSciencePanel" aria-label="Earth science data layers">
     <div className="earthScienceHeader"><div><span className="eyebrow">EARTH SCIENCE / VERIFIED SOURCES</span><h4>Earth Data Layers</h4><p>Model-based weather samples at a sparse set of geographic points and timestamped NASA event locations—not a continuous global raster or live satellite image.</p></div><button type="button" onClick={refreshScience} disabled={scienceStatus==='loading'}>REFRESH SOURCE DATA</button></div>
     <div className="earthScienceOptions">
@@ -155,6 +196,6 @@ export default function EarthObservation(){
     </div>}
     <p className="earthScienceAttribution">Weather: <a href="https://open-meteo.com/en/docs" target="_blank" rel="noopener noreferrer">Open-Meteo Forecast API</a> (forecast model, sparse point samples). Events: <a href="https://eonet.gsfc.nasa.gov/" target="_blank" rel="noopener noreferrer">NASA EONET</a> (curated event reports, not a real-time disaster alert). Color-coded dots mark sampled locations; dots do not cover regions between sample coordinates.</p>
   </section>
-  <p className="earthMissionDisclaimer">NASA-inspired visualization, not affiliated with or endorsed by NASA. Uses bundled Earth imagery and recent public satellite orbital elements. Positions are computed estimates, not a live spacecraft GPS stream. Only a curated sample of the catalog is rendered at once to limit GPU load. Weather model samples and NASA EONET event markers are provided with source dates in the Earth Data Layers panel. These are not continuously observed global satellite imagery.</p>
+  <p className="earthMissionDisclaimer">NASA-inspired visualization, not affiliated with or endorsed by NASA. Uses bundled Earth imagery and recent public satellite orbital elements. Positions are computed estimates, not a live spacecraft GPS stream. Only a curated sample of the catalog is rendered at once to limit GPU load. Weather model samples, NASA EONET event markers and dated GIBS browse imagery are attributed in their respective panels. These are not continuously observed global satellite imagery.</p>
  </section>;
 }
