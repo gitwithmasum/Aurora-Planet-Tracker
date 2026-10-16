@@ -66,6 +66,15 @@ try{
  if(!arPanel.includes('TARGET AZIMUTH')||!arPanel.includes('Hubble'))throw Error('Satellite AR guidance not rendered for selected Hubble target');
  if(await page.locator('.satARError').count())throw Error('Satellite AR unexpectedly reported an error without permission request');
  console.log('PASS: Satellite AR finder loads, manual calibration and selected target render without camera permission');
+ await page.getByText('SENSOR STATUS: STALE / UNAVAILABLE').waitFor({state:'visible',timeout:8000});
+ const experimentalPitch=page.getByLabel('EXPERIMENTAL SENSOR PITCH');
+ if(await experimentalPitch.isEnabled())throw Error('Sensor pitch must stay disabled until fresh sensor data');
+ await page.setViewportSize({width:390,height:844});
+ await page.waitForTimeout(350);
+ const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+3);
+ if(overflow)console.warn('Mobile horizontal overflow detected — inspect UI containers');
+ console.log('PASS: AR sensor fallback and mobile-width UI evaluated');
+
 
 
 
