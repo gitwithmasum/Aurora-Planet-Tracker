@@ -1,3 +1,13 @@
+## v3.7.0 — Pink & Gold Typography Halftone Theme + Dashboard
+
+- Adds **Halftone · Pink & Gold Text** as a fourth app appearance, selectable from the existing header Theme dropdown and saved in localStorage. Previous Classic Cyber, Deep Galaxy and Full Galaxy Nebula themes remain selectable. New installations default to Halftone; existing stored preferences are respected.
+- The entire app shell, sidebar and welcome screen use an original **white-and-teal flowing halftone dot-wave illustration** inspired by the user's supplied reference. **Pink and gold are typographic accents**; backgrounds stay white/teal, with translucent glass surfaces and teal iconography.
+- Adds a **new, real Dashboard page** in the sidebar, preserving the original Command Center separately. Dashboard contains a responsive real 3D Earth preview (existing Earth texture), factual mission modules that open their pages, quick search/navigation, a satellite catalog count (when data available), observer-aware above-horizon planet overview, quick mission links and existing Earth imagery navigation.
+- Fictional stats from concept mockups (e.g. 99.9% uptime, arbitrary satellite counts, Pro billing) are **not implemented**. All visible figures are calculated or labeled according to available public data.
+- The original Solar System, Satellite Tracker, Earth Observation, AR Scanner, Sky Tonight, Galaxy Observatory, persistent language/nav preferences and existing astronomy data are preserved.
+- QA includes updated Chromium smoke testing of full-page halftone wallpaper, Dashboard component, keyword search and route navigation, followed by existing orbital and imagery regression checks.
+- Existing browsers with a stored older appearance keep that preference; select **Halftone · Pink & Gold Text** once to switch.
+
 ## v3.6.0 — Global Location Explorer
 
 - A separate worldwide **Global Location Explorer** panel inside Earth Observation: on-demand city/place search via Open-Meteo Geocoding API, country/admin labels, validated manual latitude and longitude coordinates, and location-specific globe focusing.
