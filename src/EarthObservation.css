@@ -19,3 +19,14 @@
 .earthScienceWarning{color:#ffd3a7;font-size:12px}
 .earthScienceAttribution a{color:#91e6ff}
 @media(max-width:520px){.earthSciencePanel{padding:10px}.earthScienceSamples,.earthScienceEvents{grid-template-columns:repeat(2,minmax(0,1fr))}.earthScienceHeader button{width:100%}}
+
+/* v3.2 Earth event explorer */
+.earthEventsFilters{display:flex;align-items:flex-end;flex-wrap:wrap;gap:12px;padding:12px;background:#0c304a;border:1px solid #3b7794;margin:12px 0}
+.earthEventsFilters label{display:grid;gap:5px;min-width:145px;flex:1;color:#a9d4e3;font:700 11px Rajdhani}
+.earthEventsFilters input,.earthEventsFilters select{background:#06182a;color:#e4f5ff;border:1px solid #477b97;border-radius:5px;padding:10px;min-width:0;width:100%}
+.earthEventsFilters>span{color:#a5f2dd;font:700 12px Rajdhani}
+.earthScienceEvents button small{color:#8cddf3;font:700 10px Rajdhani}
+.earthEventsFocused{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;background:#163f58;border:1px solid #68c7e0;color:#c9f8ff;font:700 12px Rajdhani}
+.earthEventsFocused button{background:#124c61;border:1px solid #7ee3ee;color:#fff;border-radius:5px;padding:8px 11px;cursor:pointer}
+.earthScienceSelection a{color:#92eaff;font:700 11px Rajdhani}
+@media(max-width:620px){.earthEventsFilters label{min-width:100%}.earthEventsFocused{flex-wrap:wrap}}
