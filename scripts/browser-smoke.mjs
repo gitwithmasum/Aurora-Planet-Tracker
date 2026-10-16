@@ -99,6 +99,19 @@ try{
  await page.getByRole('button',{name:'FOLLOW SATELLITE'}).evaluate(button=>button.click());
  if(!(await page.locator('.earthMissionPanel').innerText()).includes('STOP FOLLOWING'))throw Error('Follow camera control failed');
  console.log('PASS: standalone Earth Observation navigation, satellite selection and follow-camera toggle');
+ await page.getByRole('heading',{name:'Location & Weather Intelligence'}).waitFor({state:'visible',timeout:16000});
+ await page.waitForFunction(()=>document.querySelector('.earthIntelligenceCities')?.textContent?.includes('Dhaka'),null,{timeout:16000});
+ await page.getByLabel('Search Earth cities').fill('Dhaka');
+ await page.locator('.earthIntelligenceCities button').filter({hasText:'Dhaka'}).first().evaluate(button=>button.click());
+ await page.getByText('FOCUS EARTH ON DHAKA').evaluate(button=>button.click());
+ if(!(await page.locator('.earthIntelligence').innerText()).includes('EXIT CITY FOCUS'))throw Error('v3.5 city focus failed');
+ await page.getByLabel('Compare city weather history').evaluate(input=>input.click());
+ await page.getByLabel('Comparison Earth city').selectOption('Tokyo');
+ if(!(await page.locator('.earthIntelligenceTwoCities').innerText()).includes('Tokyo'))throw Error('v3.5 city history comparison failed');
+ await page.getByLabel('Filter Earth country').selectOption('Bangladesh');
+ if(!(await page.locator('.earthIntelligenceCities').innerText()).includes('Dhaka'))throw Error('v3.5 country filter failed');
+ console.log('PASS: v3.5 curated city lookup, globe focus, weather history comparison and country filtering');
+
  await page.getByRole('heading',{name:'Earth Data Layers'}).waitFor({state:'visible',timeout:18000});
  await page.waitForFunction(()=>document.querySelector('.earthScienceMeta')?.textContent?.includes('DATA: AVAILABLE'),null,{timeout:15000});
  const weatherChoice=page.getByRole('button',{name:'CLOUD COVERAGE'});
