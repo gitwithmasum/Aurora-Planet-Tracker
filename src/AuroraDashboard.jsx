@@ -27,8 +27,11 @@ function SpinningEarth(){
    value.anisotropy=2;
    setMap(value);
   };
-  // A failed network request must not leave a permanently blank globe.
-  loader.load(TRUE_COLOR_EARTH,accept,undefined,()=>loader.load(tex('earth.jpg'),accept,undefined,()=>{}));
+  // Prefer the bundled true-color file (works offline); fall back to the upstream
+  // true-color source during first deployment, then to the original local JPL map.
+  loader.load(tex('earth-blue-marble.jpg'),accept,undefined,()=>
+   loader.load(TRUE_COLOR_EARTH,accept,undefined,()=>
+    loader.load(tex('earth.jpg'),accept,undefined,()=>{})));
   return()=>{active=false};
  },[]);
  useEffect(()=>()=>map?.dispose(),[map]);
