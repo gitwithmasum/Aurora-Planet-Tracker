@@ -1,6 +1,5 @@
-import React,{Suspense,useEffect,useMemo,useRef,useState} from 'react';
-import {Canvas,useFrame} from '@react-three/fiber';
-import * as THREE from 'three';
+import React,{useEffect,useMemo,useState} from 'react';
+import {andromedaHero} from './andromedaHero.mjs';
 import {Orbit,Satellite,Globe2,ScanLine,ArrowUpRight,ChevronRight,Search,Clock3,MapPin,Compass,Stars,Layers3,Activity,BookOpen,Play} from 'lucide-react';
 import {loadSatelliteCatalog} from './satelliteCatalog.mjs';
 import './AuroraDashboard.css';
@@ -13,50 +12,10 @@ const LINKS=[
 ];
 const MORE=[{name:'Sky Tonight',icon:Stars,subtitle:'Your night-sky outlook'},{name:'Solar System',icon:Orbit,subtitle:'Interactive solar system'},{name:'Galaxy Observatory',icon:Compass,subtitle:'Deep-sky exploration'},{name:'Command Center',icon:Activity,subtitle:'Live orbital visualization'}];
 const tex=asset=>import.meta.env.BASE_URL+'planet-textures/'+asset;
-// True-color Earth (Three.js example imagery); retain the bundled JPL map as an offline fallback.
-// The dashboard intentionally remains an interactive 3D scene, not a flattened screenshot.
-const TRUE_COLOR_EARTH='https://raw.githubusercontent.com/mrdoob/three.js/r175/examples/textures/planets/earth_atmos_2048.jpg';
-function SpinningEarth(){
- const mesh=useRef(),[map,setMap]=useState(null);
- useEffect(()=>{
-  let active=true;
-  const loader=new THREE.TextureLoader();
-  const accept=value=>{
-   if(!active){value.dispose();return}
-   value.colorSpace=THREE.SRGBColorSpace;
-   value.anisotropy=2;
-   setMap(value);
-  };
-  // Prefer the bundled true-color file (works offline); fall back to the upstream
-  // true-color source during first deployment, then to the original local JPL map.
-  loader.load(tex('earth-blue-marble.jpg'),accept,undefined,()=>
-   loader.load(TRUE_COLOR_EARTH,accept,undefined,()=>
-    loader.load(tex('earth.jpg'),accept,undefined,()=>{})));
-  return()=>{active=false};
- },[]);
- useEffect(()=>()=>map?.dispose(),[map]);
- useFrame((_,delta)=>{if(mesh.current)mesh.current.rotation.y+=Math.min(delta,.05)*.042});
- return <group rotation={[.12,0,.12]}>
-  <mesh ref={mesh} rotation={[0,.36,0]}>
-   <sphereGeometry args={[2.45,64,48]}/>
-   <meshStandardMaterial map={map} color={map?'#ffffff':'#297fc2'} roughness={.91} metalness={0}/>
-  </mesh>
-  <mesh><sphereGeometry args={[2.52,48,32]}/><meshBasicMaterial color="#35b7ff" transparent opacity={.105} side={THREE.BackSide} depthWrite={false}/></mesh>
-  {[0,.75,-.74].map((angle,i)=><mesh key={i} rotation={[.55+angle/3,angle,.19+i*.18]}>
-   <torusGeometry args={[3.16,.008,4,120]}/>
-   <meshBasicMaterial color={i===1?'#e74388':'#bf8636'} transparent opacity={i===1?.44:.53} depthWrite={false}/>
-  </mesh>)}
- </group>;
-}
-function EarthPreview(){
- return <div className="auroraDashEarth" role="img" aria-label="Rotating true-color Earth preview with decorative orbital rings">
-  <Canvas camera={{position:[0,.6,8.7],fov:43}} dpr={[1,1.4]} gl={{antialias:true,alpha:true,powerPreference:'low-power'}}>
-   <ambientLight intensity={.72}/><directionalLight position={[5,6,7]} color="#fff0df" intensity={2.7}/>
-   <directionalLight position={[-4,-2,-6]} color="#459bff" intensity={.46}/>
-   <hemisphereLight args={['#f3fbff','#17385c',.38]}/>
-   <Suspense fallback={null}><SpinningEarth/></Suspense>
-  </Canvas>
-  <span className="auroraDashEarthTag"><Globe2 size={14}/> EARTH / 3D PREVIEW</span>
+function AndromedaPreview(){
+ return <div className="auroraDashEarth auroraDashAndromeda">
+  <img className="auroraDashAndromedaImage" src={andromedaHero} width="256" height="256" loading="eager" decoding="async" alt="Futuristic illustrated Andromeda galaxy in purple, pink and gold with orbital graphics"/>
+  <span className="auroraDashEarthTag"><Stars size={14}/> ANDROMEDA / GALAXY ART</span>
  </div>;
 }
 export default function AuroraDashboard({onNavigate,sky,observer,now}){
@@ -74,7 +33,7 @@ export default function AuroraDashboard({onNavigate,sky,observer,now}){
    <h2><span>AURORA</span><strong>PLANET TRACKER</strong></h2>
    <p className="auroraDashTagline">A CLEARER UNIVERSE,<br/><em>A BRIGHTER TOMORROW.</em></p>
    <button type="button" className="auroraDashExplore" onClick={()=>onNavigate('Solar System')}>START EXPLORING <ArrowUpRight size={19}/></button>
-  </div><EarthPreview/>
+  </div><AndromedaPreview/>
    <div className="auroraDashHeroStats">
     <div><Satellite size={19}/><strong>{catalogCount===null?'—':catalogCount}</strong><span>Catalogued satellites</span></div>
     <div><Orbit size={19}/><strong>8</strong><span>Solar system planets</span></div>
