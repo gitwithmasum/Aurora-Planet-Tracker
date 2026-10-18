@@ -12,3 +12,10 @@ test('production Vite HTML references bundled existing JS/CSS with correct deplo
  assert.ok(entries.some(x=>x.endsWith('.js')),'expected JS entry');
  for(const entry of entries){assert.ok(entry.startsWith(BASE),'Asset must use correct deployment base: '+entry);const name=entry.slice(BASE.length);assert.ok(existsSync(join(root,'dist',name)),'Built file must exist for '+entry)}
 });
+
+test('dashboard true-color Earth artwork is bundled for offline/static deployment',{skip:!existsSync(join(root,'dist/index.html'))},()=>{
+ const image=join(root,'dist/planet-textures/earth-blue-marble.jpg');
+ assert.ok(existsSync(image),'True-color Earth must ship with the site and not depend on a third-party host');
+ const signature=readFileSync(image).subarray(0,3);
+ assert.deepEqual([...signature],[0xff,0xd8,0xff],'Bundled Earth artwork must be a JPEG');
+});
