@@ -6,8 +6,8 @@
 .auroraDashMatches{display:flex;gap:7px;flex-wrap:wrap;align-items:center;padding:12px;border:1px solid #acdad7;border-radius:10px;background:#fffffff2}
 .auroraDashMatches button{display:flex;gap:7px;align-items:center;color:var(--dash-pink);border:1px solid #bedbd7;background:#f9ffff;padding:9px 13px;border-radius:9px;font:700 13px Rajdhani;cursor:pointer}
 .auroraDashMatches>span{font:600 12px 'Space Grotesk';color:#406576}
-.auroraDashHero{position:relative;min-height:355px;display:grid;grid-template-columns:minmax(0,.93fr) minmax(260px,1.1fr) minmax(145px,.43fr);align-items:center;gap:8px;isolation:isolate}
-.auroraDashHeroCopy{position:relative;z-index:2;padding:14px 0 16px clamp(4px,2vw,27px)}
+.auroraDashHero{position:relative;min-height:385px;display:grid;grid-template-columns:minmax(0,1fr) minmax(170px,225px);align-items:center;gap:clamp(14px,3vw,32px);padding:clamp(18px,3vw,36px);isolation:isolate;overflow:hidden;border:1px solid #d2b8c6;border-radius:24px;box-shadow:0 18px 48px #41235b3d}
+.auroraDashHeroCopy{position:relative;z-index:2;min-width:0;max-width:590px;padding:10px 0 16px}
 .auroraDashOverline{letter-spacing:3px;color:var(--dash-gold);font:700 11px Rajdhani}
 .auroraDashHeroCopy h2{display:grid;gap:0;margin:11px 0 14px}
 .auroraDashHeroCopy h2>span{font:800 clamp(57px,7vw,105px)/.88 Rajdhani;color:#d51b79;letter-spacing:-2px;text-shadow:0 8px 25px #df477c21}
@@ -16,13 +16,8 @@
 .auroraDashTagline em{font-style:normal;color:var(--dash-pink)}
 .auroraDashExplore{display:flex;align-items:center;justify-content:center;gap:9px;border:1px solid #a9d9d2;border-radius:24px;background:#ffffffec;padding:12px 23px;box-shadow:0 9px 20px #51857a26;color:var(--dash-pink);font:800 15px Rajdhani;letter-spacing:1px;margin-top:18px}
 .auroraDashExplore:hover{border-color:#40bbac;transform:translateY(-1px)}
-.auroraDashEarth{position:relative;height:345px;min-width:0;z-index:1;isolation:isolate}
-.auroraDashEarth:before{content:"";position:absolute;pointer-events:none;inset:9% 4%;border-radius:50%;background:radial-gradient(circle,#4bc3ef16 0%,#bff6ff0d 46%,transparent 72%);box-shadow:inset 0 0 0 1px #d19b6b22;z-index:-1}
-.auroraDashEarth:after{content:"";position:absolute;pointer-events:none;left:8%;top:8%;width:84%;height:84%;border:1px solid #c6985836;border-left-color:#e9418838;border-right-color:#4cc9e733;border-radius:50%;transform:rotate(-22deg);z-index:-1}
-.auroraDashEarth canvas{display:block;position:relative;z-index:1;touch-action:pan-y}
-.auroraDashEarthTag{pointer-events:none;position:absolute;z-index:2;left:7%;bottom:15px;display:flex;align-items:center;gap:7px;padding:9px 12px;border-radius:18px;background:#ffffffd5;border:1px solid #9ddbd1;color:var(--dash-gold);font:700 11px Rajdhani}
-.auroraDashHeroStats{display:grid;gap:10px;z-index:2}
-.auroraDashHeroStats>div{min-height:89px;display:grid;grid-template-columns:30px 1fr;grid-template-rows:auto auto;align-content:center;gap:3px 8px;padding:14px 10px;background:#ffffffdf;border:1px solid #dcc29a;border-radius:13px;box-shadow:0 8px 26px #174e4e12;backdrop-filter:blur(12px)}
+ .auroraDashHeroStats{display:grid;gap:11px;position:relative;z-index:2;min-width:0}
+.auroraDashHeroStats>div{min-height:89px;display:grid;grid-template-columns:30px minmax(0,1fr);grid-template-rows:auto auto;align-content:center;gap:3px 8px;padding:14px 10px;background:#ffffffed;border:1px solid #dfc6a8;border-radius:13px;box-shadow:0 8px 26px #174e4e18;backdrop-filter:blur(7px)}
 .auroraDashHeroStats svg{grid-row:span 2;color:#238d83;align-self:center}
 .auroraDashHeroStats strong{font:800 22px Rajdhani;color:var(--dash-pink);line-height:1}
 .auroraDashHeroStats span{font:600 11px Rajdhani;color:var(--dash-gold);line-height:1.2}
@@ -59,8 +54,8 @@
 .auroraDashMiniEarth img{width:100%;height:100%;object-fit:cover}
 .auroraDashSource{font:800 10px Rajdhani;color:var(--dash-gold)}
 .auroraDashCredits{display:flex;align-items:center;gap:8px;font:600 11px Rajdhani;color:#536879;border-top:1px solid #9fdacf;padding:12px 0}
-@media(max-width:1320px){.auroraDashHero{grid-template-columns:1fr 1fr}.auroraDashHeroStats{grid-column:1/-1;grid-template-columns:repeat(3,minmax(0,1fr))}.auroraDashFeatures{grid-template-columns:repeat(2,minmax(0,1fr))}.auroraDashBottom{grid-template-columns:repeat(2,minmax(0,1fr))}.auroraDashBottom>section:last-child{grid-column:1/-1}}
-@media(max-width:810px){.auroraDashHero{grid-template-columns:minmax(0,1fr);gap:0}.auroraDashEarth{height:300px}.auroraDashHeroStats{grid-column:auto}.auroraDashHeroCopy h2>span{font-size:75px}.auroraDashHeroCopy h2 strong{font-size:29px}.auroraDashBottom{grid-template-columns:1fr}.auroraDashBottom>section:last-child{grid-column:auto}}
+@media(max-width:1320px){.auroraDashHero{grid-template-columns:minmax(0,1fr) minmax(165px,210px)}.auroraDashHeroStats{grid-column:auto;grid-template-columns:1fr}.auroraDashFeatures{grid-template-columns:repeat(2,minmax(0,1fr))}.auroraDashBottom{grid-template-columns:repeat(2,minmax(0,1fr))}.auroraDashBottom>section:last-child{grid-column:1/-1}}
+@media(max-width:810px){.auroraDashHero{grid-template-columns:minmax(0,1fr);gap:16px}.auroraDashHeroStats{grid-column:auto;grid-template-columns:repeat(3,minmax(0,1fr))}.auroraDashHeroCopy h2>span{font-size:clamp(58px,12vw,75px)}.auroraDashHeroCopy h2 strong{font-size:clamp(24px,5vw,29px)}.auroraDashBottom{grid-template-columns:1fr}.auroraDashBottom>section:last-child{grid-column:auto}}
 @media(max-width:540px){.auroraDashHeroCopy h2>span{font-size:clamp(49px,15vw,74px)}.auroraDashHeroCopy h2 strong{font-size:clamp(21px,6vw,29px);letter-spacing:3px}.auroraDashSearchBar{padding:8px}.auroraDashLocation{display:none}.auroraDashFeatures{grid-template-columns:1fr}.auroraDashFeature{height:270px}.auroraDashHeroStats>div{min-height:72px;padding:8px 5px;grid-template-columns:1fr;text-align:center}.auroraDashHeroStats svg{display:none}.auroraDashHeroStats strong{font-size:17px}.auroraDashHeroStats span{font-size:9px}}
 @media(prefers-reduced-motion:reduce){.auroraDashFeature{transition:none}}
 /* Dark theme support if the user switches away from the new halftone look. */
@@ -69,48 +64,53 @@
 .app:not(.theme-halftone) .auroraDashboard :is(.auroraDashSearchBar input,.auroraDashFeature p,.auroraDashPanel>p){color:#e3f3fc}
 .app:not(.theme-halftone) .auroraDashFeatureFooter,.app:not(.theme-halftone) .auroraDashQuickList button{background:#0c2e47dd;border-color:#3a6c8a}
 
-/* Blue-Marble hero tuning: full-color Earth stays crisp against the white halftone theme. */
+
+/* The existing Andromeda illustration now fills the entire hero. This is an art
+   background, not a separate image card; interactive buttons remain above it. */
+.auroraDashHero--andromeda{
+ background-image:
+  linear-gradient(90deg,rgba(255,253,252,.98) 0%,rgba(255,252,253,.94) 24%,rgba(255,251,253,.69) 49%,rgba(255,250,251,.08) 80%),
+  var(--hero-art);
+ background-color:#160d2b;
+ background-position:center center,center 52%;
+ background-size:cover,cover;
+ background-repeat:no-repeat;
+}
+.auroraDashHero--andromeda::before{
+ content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+ background:linear-gradient(0deg,rgba(71,11,89,.13),transparent 35%);
+}
+.auroraDashHero--andromeda .auroraDashHeroCopy,
+.auroraDashHero--andromeda .auroraDashHeroStats{position:relative;z-index:1}
+.auroraDashHero--andromeda .auroraDashExplore{
+ background:#fffffff0;box-shadow:0 8px 25px #20071d30;border-color:#e7bacf
+}
 .theme-halftone .auroraDashHeroCopy h2>span{
  background:linear-gradient(105deg,#f1186a 10%,#db157e 62%,#b72583 100%);
  -webkit-background-clip:text;background-clip:text;color:transparent;
 }
-.theme-halftone .auroraDashEarthTag{box-shadow:0 4px 16px #e1a65a19}
-@media(max-width:810px){
- .auroraDashEarth:before{inset:8% 18%}
- .auroraDashEarth:after{left:20%;width:60%}
-}
-@media(max-width:540px){
- .auroraDashEarth{height:275px}
- .auroraDashEarthTag{left:5%;bottom:5px;font-size:10px}
-}
-
-/* Andromeda artwork replaces the GPU-intensive dark Earth globe on the home hero.
-   Keep the image crisp, readable and static; scientific 3D modules are unchanged. */
-.auroraDashAndromeda{display:flex;align-items:center;justify-content:center;overflow:hidden}
-.auroraDashAndromedaImage{
- display:block;position:relative;z-index:1;
- width:min(93%,340px);height:auto;aspect-ratio:1;object-fit:contain;
- border-radius:24px;
- border:1px solid #de9a75aa;
- box-shadow:0 13px 46px #9c3b8e35,0 0 0 5px #ffffff55;
-}
-.auroraDashAndromeda:before{
- inset:6% 1%;background:radial-gradient(ellipse,#e744aa12,transparent 70%);box-shadow:none
-}
-.auroraDashAndromeda:after{
- left:6%;top:1%;width:88%;height:98%;
- border-color:#c7965d4d;border-left-color:#ed419059;border-right-color:#8c39c24b;
- transform:rotate(-19deg)
-}
-.auroraDashAndromeda .auroraDashEarthTag{
- left:7%;bottom:13px;background:#ffffffee;border-color:#e3bd8e;z-index:3
+/* Dark modes keep sufficient contrast, without altering other modules. */
+.app:not(.theme-halftone) .auroraDashHero--andromeda{
+ background-image:
+  linear-gradient(90deg,rgba(5,10,28,.96) 0%,rgba(5,10,28,.89) 31%,rgba(5,10,28,.46) 59%,rgba(5,10,28,.05) 100%),
+  var(--hero-art);
+ border-color:#9159a182;
 }
 @media(max-width:810px){
- .auroraDashAndromedaImage{width:min(88%,290px)}
- .auroraDashAndromeda:after{left:17%;top:1%;width:66%;height:98%}
+ .auroraDashHero--andromeda{
+  background-image:
+   linear-gradient(180deg,rgba(255,253,252,.96) 0%,rgba(255,253,252,.83) 40%,rgba(255,252,253,.36) 100%),
+   var(--hero-art);
+  background-position:center,center;
+ }
+ .app:not(.theme-halftone) .auroraDashHero--andromeda{
+  background-image:linear-gradient(180deg,#060a1ef0 0%,#060a1eaa 50%,#060a1e70 100%),var(--hero-art);
+ }
+ .auroraDashHero--andromeda .auroraDashHeroStats>div{backdrop-filter:none}
 }
 @media(max-width:540px){
- .auroraDashAndromedaImage{width:min(82%,265px);border-radius:19px}
- .auroraDashAndromeda .auroraDashEarthTag{left:5%;bottom:6px;font-size:10px}
+ .auroraDashHero--andromeda{min-height:395px;padding:20px 16px;border-radius:18px}
+ .auroraDashHero--andromeda .auroraDashHeroCopy{padding:4px 0 10px}
+ .auroraDashHero--andromeda .auroraDashHeroStats{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+ .auroraDashHero--andromeda .auroraDashHeroStats>div{min-width:0;padding:8px 4px;min-height:70px}
 }
-@media(prefers-reduced-motion:reduce){.auroraDashAndromedaImage{transition:none}}
