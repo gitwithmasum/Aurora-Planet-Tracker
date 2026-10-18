@@ -83,3 +83,34 @@
  .auroraDashEarth{height:275px}
  .auroraDashEarthTag{left:5%;bottom:5px;font-size:10px}
 }
+
+/* Andromeda artwork replaces the GPU-intensive dark Earth globe on the home hero.
+   Keep the image crisp, readable and static; scientific 3D modules are unchanged. */
+.auroraDashAndromeda{display:flex;align-items:center;justify-content:center;overflow:hidden}
+.auroraDashAndromedaImage{
+ display:block;position:relative;z-index:1;
+ width:min(93%,340px);height:auto;aspect-ratio:1;object-fit:contain;
+ border-radius:24px;
+ border:1px solid #de9a75aa;
+ box-shadow:0 13px 46px #9c3b8e35,0 0 0 5px #ffffff55;
+}
+.auroraDashAndromeda:before{
+ inset:6% 1%;background:radial-gradient(ellipse,#e744aa12,transparent 70%);box-shadow:none
+}
+.auroraDashAndromeda:after{
+ left:6%;top:1%;width:88%;height:98%;
+ border-color:#c7965d4d;border-left-color:#ed419059;border-right-color:#8c39c24b;
+ transform:rotate(-19deg)
+}
+.auroraDashAndromeda .auroraDashEarthTag{
+ left:7%;bottom:13px;background:#ffffffee;border-color:#e3bd8e;z-index:3
+}
+@media(max-width:810px){
+ .auroraDashAndromedaImage{width:min(88%,290px)}
+ .auroraDashAndromeda:after{left:17%;top:1%;width:66%;height:98%}
+}
+@media(max-width:540px){
+ .auroraDashAndromedaImage{width:min(82%,265px);border-radius:19px}
+ .auroraDashAndromeda .auroraDashEarthTag{left:5%;bottom:6px;font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){.auroraDashAndromedaImage{transition:none}}
