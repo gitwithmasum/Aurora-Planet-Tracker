@@ -23,7 +23,8 @@ import {AXIAL_TILT,solarOrbitRadius,solarPlanetRadius,spinRate} from './solarPhy
 import PWAStatus from './PWAStatus.jsx';
 import galaxyBackdrop from './assets/deep-galaxy.svg';
 import fullGalaxyBackdrop from './assets/full-galaxy.svg';
-import halftoneArtwork from './assets/aurora-halftone.svg';
+// Raster wallpaper preserves the original halftone design without costly SVG repaint on scroll.
+import halftoneArtwork from './assets/aurora-halftone.webp';
 import './HalftoneTheme.css';
 import {useLanguage} from './i18n.jsx';
 import {Orbit,Compass,MapPin,Search,Clock3,ScanLine,Globe2,Layers3,Info,ArrowUpRight,LocateFixed,ChevronRight,Menu,X,Pause,Play,Volume2,VolumeX,Maximize2,Satellite,Eye} from 'lucide-react';
