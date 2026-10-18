@@ -10,17 +10,19 @@
 .auroraDashHeroCopy{position:relative;z-index:2;padding:14px 0 16px clamp(4px,2vw,27px)}
 .auroraDashOverline{letter-spacing:3px;color:var(--dash-gold);font:700 11px Rajdhani}
 .auroraDashHeroCopy h2{display:grid;gap:0;margin:11px 0 14px}
-.auroraDashHeroCopy h2>span{font:800 clamp(57px,7vw,105px)/.88 Rajdhani;color:var(--dash-pink);letter-spacing:-2px;text-shadow:0 8px 25px #df477c21}
+.auroraDashHeroCopy h2>span{font:800 clamp(57px,7vw,105px)/.88 Rajdhani;color:#d51b79;letter-spacing:-2px;text-shadow:0 8px 25px #df477c21}
 .auroraDashHeroCopy h2 strong{font:800 clamp(25px,3vw,42px)/1 Rajdhani;color:var(--dash-gold);letter-spacing:6px}
 .auroraDashTagline{font:700 12px/1.8 Rajdhani;letter-spacing:3px;color:var(--dash-gold)}
 .auroraDashTagline em{font-style:normal;color:var(--dash-pink)}
 .auroraDashExplore{display:flex;align-items:center;justify-content:center;gap:9px;border:1px solid #a9d9d2;border-radius:24px;background:#ffffffec;padding:12px 23px;box-shadow:0 9px 20px #51857a26;color:var(--dash-pink);font:800 15px Rajdhani;letter-spacing:1px;margin-top:18px}
 .auroraDashExplore:hover{border-color:#40bbac;transform:translateY(-1px)}
-.auroraDashEarth{position:relative;height:345px;min-width:0;z-index:1}
-.auroraDashEarth canvas{display:block;touch-action:pan-y}
-.auroraDashEarthTag{pointer-events:none;position:absolute;left:7%;bottom:15px;display:flex;align-items:center;gap:7px;padding:9px 12px;border-radius:18px;background:#ffffffd5;border:1px solid #9ddbd1;color:var(--dash-gold);font:700 11px Rajdhani}
+.auroraDashEarth{position:relative;height:345px;min-width:0;z-index:1;isolation:isolate}
+.auroraDashEarth:before{content:"";position:absolute;pointer-events:none;inset:9% 4%;border-radius:50%;background:radial-gradient(circle,#4bc3ef16 0%,#bff6ff0d 46%,transparent 72%);box-shadow:inset 0 0 0 1px #d19b6b22;z-index:-1}
+.auroraDashEarth:after{content:"";position:absolute;pointer-events:none;left:8%;top:8%;width:84%;height:84%;border:1px solid #c6985836;border-left-color:#e9418838;border-right-color:#4cc9e733;border-radius:50%;transform:rotate(-22deg);z-index:-1}
+.auroraDashEarth canvas{display:block;position:relative;z-index:1;touch-action:pan-y}
+.auroraDashEarthTag{pointer-events:none;position:absolute;z-index:2;left:7%;bottom:15px;display:flex;align-items:center;gap:7px;padding:9px 12px;border-radius:18px;background:#ffffffd5;border:1px solid #9ddbd1;color:var(--dash-gold);font:700 11px Rajdhani}
 .auroraDashHeroStats{display:grid;gap:10px;z-index:2}
-.auroraDashHeroStats>div{min-height:89px;display:grid;grid-template-columns:30px 1fr;grid-template-rows:auto auto;align-content:center;gap:3px 8px;padding:14px 10px;background:#ffffffd9;border:1px solid #b3dcd5;border-radius:13px;box-shadow:0 8px 26px #174e4e12;backdrop-filter:blur(12px)}
+.auroraDashHeroStats>div{min-height:89px;display:grid;grid-template-columns:30px 1fr;grid-template-rows:auto auto;align-content:center;gap:3px 8px;padding:14px 10px;background:#ffffffdf;border:1px solid #dcc29a;border-radius:13px;box-shadow:0 8px 26px #174e4e12;backdrop-filter:blur(12px)}
 .auroraDashHeroStats svg{grid-row:span 2;color:#238d83;align-self:center}
 .auroraDashHeroStats strong{font:800 22px Rajdhani;color:var(--dash-pink);line-height:1}
 .auroraDashHeroStats span{font:600 11px Rajdhani;color:var(--dash-gold);line-height:1.2}
@@ -66,3 +68,18 @@
 .app:not(.theme-halftone) .auroraDashSearchBar,.app:not(.theme-halftone) .auroraDashFeature,.app:not(.theme-halftone) .auroraDashPanel,.app:not(.theme-halftone) .auroraDashHeroStats>div{background:#091a32e8;border-color:#386384}
 .app:not(.theme-halftone) .auroraDashboard :is(.auroraDashSearchBar input,.auroraDashFeature p,.auroraDashPanel>p){color:#e3f3fc}
 .app:not(.theme-halftone) .auroraDashFeatureFooter,.app:not(.theme-halftone) .auroraDashQuickList button{background:#0c2e47dd;border-color:#3a6c8a}
+
+/* Blue-Marble hero tuning: full-color Earth stays crisp against the white halftone theme. */
+.theme-halftone .auroraDashHeroCopy h2>span{
+ background:linear-gradient(105deg,#f1186a 10%,#db157e 62%,#b72583 100%);
+ -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.theme-halftone .auroraDashEarthTag{box-shadow:0 4px 16px #e1a65a19}
+@media(max-width:810px){
+ .auroraDashEarth:before{inset:8% 18%}
+ .auroraDashEarth:after{left:20%;width:60%}
+}
+@media(max-width:540px){
+ .auroraDashEarth{height:275px}
+ .auroraDashEarthTag{left:5%;bottom:5px;font-size:10px}
+}
