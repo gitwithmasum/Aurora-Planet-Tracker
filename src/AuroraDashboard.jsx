@@ -12,12 +12,6 @@ const LINKS=[
 ];
 const MORE=[{name:'Sky Tonight',icon:Stars,subtitle:'Your night-sky outlook'},{name:'Solar System',icon:Orbit,subtitle:'Interactive solar system'},{name:'Galaxy Observatory',icon:Compass,subtitle:'Deep-sky exploration'},{name:'Command Center',icon:Activity,subtitle:'Live orbital visualization'}];
 const tex=asset=>import.meta.env.BASE_URL+'planet-textures/'+asset;
-function AndromedaPreview(){
- return <div className="auroraDashEarth auroraDashAndromeda">
-  <img className="auroraDashAndromedaImage" src={andromedaHero} width="256" height="256" loading="eager" decoding="async" alt="Futuristic illustrated Andromeda galaxy in purple, pink and gold with orbital graphics"/>
-  <span className="auroraDashEarthTag"><Stars size={14}/> ANDROMEDA / GALAXY ART</span>
- </div>;
-}
 export default function AuroraDashboard({onNavigate,sky,observer,now}){
  const [text,setText]=useState(''),[catalogCount,setCatalogCount]=useState(null);
  useEffect(()=>{let active=true;loadSatelliteCatalog().then(d=>{if(active)setCatalogCount(d.rows.length)}).catch(()=>{});return()=>{active=false}},[]);
@@ -28,12 +22,12 @@ export default function AuroraDashboard({onNavigate,sky,observer,now}){
   {text.trim()&&<div className="auroraDashMatches" role="region" aria-label="Dashboard search results">
    {matches.length?matches.map(x=><button key={x.name} type="button" onClick={()=>{onNavigate(x.name);setText('')}}>{x.name}<ArrowUpRight size={14}/></button>):<span>No matching module. Try “Earth” or “Satellite”.</span>}
   </div>}
-  <section className="auroraDashHero"><div className="auroraDashHeroCopy">
+  <section className="auroraDashHero auroraDashHero--andromeda" style={{'--hero-art':`url("${andromedaHero}")`}} aria-label="Aurora Planet Tracker Andromeda galaxy hero"><div className="auroraDashHeroCopy">
    <span className="auroraDashOverline">EXPLORE &nbsp; · &nbsp; TRACK &nbsp; · &nbsp; DISCOVER</span>
    <h2><span>AURORA</span><strong>PLANET TRACKER</strong></h2>
    <p className="auroraDashTagline">A CLEARER UNIVERSE,<br/><em>A BRIGHTER TOMORROW.</em></p>
    <button type="button" className="auroraDashExplore" onClick={()=>onNavigate('Solar System')}>START EXPLORING <ArrowUpRight size={19}/></button>
-  </div><AndromedaPreview/>
+  </div>
    <div className="auroraDashHeroStats">
     <div><Satellite size={19}/><strong>{catalogCount===null?'—':catalogCount}</strong><span>Catalogued satellites</span></div>
     <div><Orbit size={19}/><strong>8</strong><span>Solar system planets</span></div>
