@@ -25,7 +25,7 @@
 .auroraDashHeading span{font:800 18px Rajdhani;letter-spacing:2px;color:var(--dash-pink)}
 .auroraDashHeading p{font:600 12px 'Space Grotesk';color:#496674;margin:0}
 .auroraDashFeatures{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;min-width:0}
-.auroraDashFeature{display:flex;flex-direction:column;gap:7px;position:relative;min-width:0;height:288px;overflow:hidden;border:1px solid #b5dedb;border-radius:19px;padding:15px;text-align:left;background:#ffffffd5;box-shadow:0 12px 28px #335a5931;backdrop-filter:blur(12px);transition:transform .2s,box-shadow .2s}
+.auroraDashFeature{display:flex;flex-direction:column;gap:7px;position:relative;min-width:0;height:288px;overflow:hidden;content-visibility:auto;contain-intrinsic-size:auto 288px;border:1px solid #b5dedb;border-radius:19px;padding:15px;text-align:left;background:#ffffffd5;box-shadow:0 12px 28px #335a5931;backdrop-filter:blur(12px);transition:transform .2s,box-shadow .2s}
 .auroraDashFeature:hover,.auroraDashFeature:focus-visible{transform:translateY(-4px);box-shadow:0 16px 38px #376b6345}
 .auroraDashFeatureHeader{display:flex;align-items:center;gap:8px;color:var(--dash-gold);font:800 10px Rajdhani;letter-spacing:1px}
 .auroraDashFeatureHeader>svg:last-child{margin-left:auto;color:var(--dash-pink)}
@@ -113,4 +113,16 @@
  .auroraDashHero--andromeda .auroraDashHeroCopy{padding:4px 0 10px}
  .auroraDashHero--andromeda .auroraDashHeroStats{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
  .auroraDashHero--andromeda .auroraDashHeroStats>div{min-width:0;padding:8px 4px;min-height:70px}
+}
+
+/* Browser can skip rendering offscreen mission modules until they are needed;
+   their fixed card height avoids layout jumps while scrolling. */
+@media(max-width:540px){
+ .auroraDashFeature{contain-intrinsic-size:auto 270px}
+}
+@media(max-width:1024px){
+ .auroraDashHeroStats>div,.auroraDashFeature{
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+ }
 }
