@@ -1,0 +1,36 @@
+name: Cache True-Color Earth Preview
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/cache-dashboard-earth.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  cache-earth-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Download version-pinned true-color Earth artwork
+        run: |
+          mkdir -p public/planet-textures
+          curl --fail --location --retry 3 --silent --show-error \
+            'https://raw.githubusercontent.com/mrdoob/three.js/r175/examples/textures/planets/earth_atmos_2048.jpg' \
+            --output public/planet-textures/earth-blue-marble.jpg
+          test "$(wc -c < public/planet-textures/earth-blue-marble.jpg)" -gt 100000
+          test "$(file --mime-type -b public/planet-textures/earth-blue-marble.jpg)" = 'image/jpeg'
+      - name: Commit bundled Earth artwork
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/planet-textures/earth-blue-marble.jpg
+          if ! git diff --cached --quiet; then
+            git commit -m 'assets: bundle true-color Earth hero texture for offline use'
+            git push origin HEAD:main
+          fi
