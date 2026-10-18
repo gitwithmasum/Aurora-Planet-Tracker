@@ -13,26 +13,44 @@ const LINKS=[
 ];
 const MORE=[{name:'Sky Tonight',icon:Stars,subtitle:'Your night-sky outlook'},{name:'Solar System',icon:Orbit,subtitle:'Interactive solar system'},{name:'Galaxy Observatory',icon:Compass,subtitle:'Deep-sky exploration'},{name:'Command Center',icon:Activity,subtitle:'Live orbital visualization'}];
 const tex=asset=>import.meta.env.BASE_URL+'planet-textures/'+asset;
+// True-color Earth (Three.js example imagery); retain the bundled JPL map as an offline fallback.
+// The dashboard intentionally remains an interactive 3D scene, not a flattened screenshot.
+const TRUE_COLOR_EARTH='https://raw.githubusercontent.com/mrdoob/three.js/r175/examples/textures/planets/earth_atmos_2048.jpg';
 function SpinningEarth(){
  const mesh=useRef(),[map,setMap]=useState(null);
  useEffect(()=>{
   let active=true;
   const loader=new THREE.TextureLoader();
-  loader.load(tex('earth.jpg'),value=>{if(!active){value.dispose();return}value.colorSpace=THREE.SRGBColorSpace;setMap(value)},undefined,()=>{});
+  const accept=value=>{
+   if(!active){value.dispose();return}
+   value.colorSpace=THREE.SRGBColorSpace;
+   value.anisotropy=2;
+   setMap(value);
+  };
+  // A failed network request must not leave a permanently blank globe.
+  loader.load(TRUE_COLOR_EARTH,accept,undefined,()=>loader.load(tex('earth.jpg'),accept,undefined,()=>{}));
   return()=>{active=false};
  },[]);
  useEffect(()=>()=>map?.dispose(),[map]);
- useFrame((_,delta)=>{if(mesh.current)mesh.current.rotation.y+=delta*.055});
+ useFrame((_,delta)=>{if(mesh.current)mesh.current.rotation.y+=Math.min(delta,.05)*.042});
  return <group rotation={[.12,0,.12]}>
-  <mesh ref={mesh}><sphereGeometry args={[2.2,56,42]}/><meshStandardMaterial map={map} color={map?'#ffffff':'#569bd2'} roughness={.9}/></mesh>
-  <mesh><sphereGeometry args={[2.25,40,24]}/><meshBasicMaterial color="#83d9fd" transparent opacity={.065} side={THREE.BackSide} depthWrite={false}/></mesh>
-  {[0,.75,-.74].map((angle,i)=><mesh key={i} rotation={[.55+angle/3,angle,.19+i*.18]}><torusGeometry args={[3.0,.008,4,110]}/><meshBasicMaterial color="#bd9771" transparent opacity={.45} depthWrite={false}/></mesh>)}
+  <mesh ref={mesh} rotation={[0,.36,0]}>
+   <sphereGeometry args={[2.45,64,48]}/>
+   <meshStandardMaterial map={map} color={map?'#ffffff':'#297fc2'} roughness={.91} metalness={0}/>
+  </mesh>
+  <mesh><sphereGeometry args={[2.52,48,32]}/><meshBasicMaterial color="#35b7ff" transparent opacity={.105} side={THREE.BackSide} depthWrite={false}/></mesh>
+  {[0,.75,-.74].map((angle,i)=><mesh key={i} rotation={[.55+angle/3,angle,.19+i*.18]}>
+   <torusGeometry args={[3.16,.008,4,120]}/>
+   <meshBasicMaterial color={i===1?'#e74388':'#bf8636'} transparent opacity={i===1?.44:.53} depthWrite={false}/>
+  </mesh>)}
  </group>;
 }
 function EarthPreview(){
- return <div className="auroraDashEarth" role="img" aria-label="Rotating three-dimensional Earth preview with decorative orbital rings">
-  <Canvas camera={{position:[0,.6,8],fov:43}} dpr={[1,1.4]} gl={{antialias:true,alpha:true,powerPreference:'low-power'}}>
-   <ambientLight intensity={1.05}/><directionalLight position={[5,6,7]} intensity={2.3}/><hemisphereLight args={['#eefeff','#274674',.5]}/>
+ return <div className="auroraDashEarth" role="img" aria-label="Rotating true-color Earth preview with decorative orbital rings">
+  <Canvas camera={{position:[0,.6,8.7],fov:43}} dpr={[1,1.4]} gl={{antialias:true,alpha:true,powerPreference:'low-power'}}>
+   <ambientLight intensity={.72}/><directionalLight position={[5,6,7]} color="#fff0df" intensity={2.7}/>
+   <directionalLight position={[-4,-2,-6]} color="#459bff" intensity={.46}/>
+   <hemisphereLight args={['#f3fbff','#17385c',.38]}/>
    <Suspense fallback={null}><SpinningEarth/></Suspense>
   </Canvas>
   <span className="auroraDashEarthTag"><Globe2 size={14}/> EARTH / 3D PREVIEW</span>
