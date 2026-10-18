@@ -1,4 +1,4 @@
-/* Aurora v3.7 — reference-matched WHITE / AQUA HALFTONE background. */
+/* Aurora v3.7 — WHITE / AQUA HALFTONE; scrolling performance pass. */
 /* PINK and GOLD are reserved for TEXT. Surfaces stay white/translucent; outlines and icons use teal. */
 .app.theme-halftone{
  --aurora-pink:#dc2279;--aurora-gold:#a87423;--aurora-ink:#24394d;
@@ -8,15 +8,15 @@
  background-image:linear-gradient(110deg,#ffffff15,#ffffff1f),var(--halftone-art);
  background-size:cover,cover;
  background-position:center top,center top;
- background-attachment:fixed,fixed;
+ background-attachment:scroll,scroll;
  isolation:isolate;
 }
-.theme-halftone .noise{opacity:.025}
+.theme-halftone .noise{display:none}
 .theme-halftone>header{
- background:#fffffff1;
+ background:#fffffff8;
  border-bottom:1px solid #a4d9d1;
  box-shadow:0 7px 20px #42726c1e;
- backdrop-filter:blur(18px);
+ backdrop-filter:none;
 }
 .theme-halftone .brand{color:var(--aurora-pink)}
 .theme-halftone .brand strong,.theme-halftone .brand small{color:var(--aurora-gold)}
@@ -27,11 +27,11 @@
 }
 .theme-halftone .status{color:var(--aurora-gold)}.theme-halftone .status .dot{background:#28bb99;box-shadow:0 0 8px #49cebd}
 .theme-halftone .auroraSidebar{
- background:linear-gradient(180deg,#fffffff2,#f9fffded);
+ background:linear-gradient(180deg,#fffffffd,#f9fffdfb);
  border-right:1px solid #aeddd5;
  box-shadow:4px 0 24px #4f9e8e20;
  color:var(--aurora-ink);
- backdrop-filter:blur(17px)
+ backdrop-filter:none
 }
 .theme-halftone .sidebarHeading,.theme-halftone .sidebarFooter,.theme-halftone .sidebarGroup+.sidebarGroup{border-color:#b4ddd4}
 .theme-halftone .sidebarHeadingText,.theme-halftone .sidebarGroupLabel{color:var(--aurora-gold)}
@@ -61,9 +61,9 @@
 .theme-halftone .footerline{border-color:#9cd1ca;color:var(--aurora-gold)}
 .theme-halftone .footerline span:nth-child(2){color:#4a6673}
 .theme-halftone .glass,.theme-halftone .planetpanel{
- background:#ffffffdb;color:var(--aurora-ink);
+ background:#ffffffed;color:var(--aurora-ink);
  border:1px solid #acdcd5;border-radius:14px;
- box-shadow:0 12px 35px #336a6422;backdrop-filter:blur(13px)
+ box-shadow:0 12px 35px #336a6422;backdrop-filter:none
 }
 .theme-halftone :is(.glass,.planetpanel) :is(h2,h3,h4,.classification,.eyebrow){color:var(--aurora-pink)}
 .theme-halftone .planetpanel>.paneltitle .eyebrow,.theme-halftone .lighttag{color:var(--aurora-gold)}
@@ -124,3 +124,31 @@
 .theme-halftone .auroraDashHeroStats strong,.theme-halftone .auroraDashFeature>strong,
 .theme-halftone .auroraDashPanelTitle strong,.theme-halftone .auroraDashSky strong{color:var(--aurora-pink)}
 .theme-halftone .auroraDashboard :is(.auroraDashOverline,.auroraDashHeroCopy h2 strong,.auroraDashFeatureFooter,.auroraDashSource){color:var(--aurora-gold)}
+
+/* Keep the textured theme but let the browser scroll it as ordinary content.
+   Translucent paint is fine; blurring sticky layers and cards is costly. */
+.theme-halftone .auroraDashboard .auroraDashHeroStats>div,
+.theme-halftone .auroraDashboard .auroraDashFeature,
+.theme-halftone .auroraDashboard .auroraDashPanel,
+.theme-halftone .auroraDashboard .auroraDashSearchBar{
+ backdrop-filter:none;
+ -webkit-backdrop-filter:none;
+}
+.theme-halftone .auroraDashboard .auroraDashFeature{background:#fffffff0}
+.theme-halftone .auroraDashboard .auroraDashPanel{background:#fffffff2}
+.theme-halftone .auroraDashboard .auroraDashHeroStats>div{background:#fffffff0}
+.theme-halftone > header,
+.theme-halftone .auroraSidebar,
+.theme-halftone .glass,
+.theme-halftone .planetpanel{
+ -webkit-backdrop-filter:none;
+}
+/* On narrow screens all themes avoid GPU-intensive backdrop effects. */
+@media(max-width:1024px){
+ .app header,.app .auroraSidebar,.app .glass,.app .planetpanel,
+ .app .auroraDashboard .auroraDashFeature,
+ .app .auroraDashboard .auroraDashHeroStats>div{
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+ }
+}
