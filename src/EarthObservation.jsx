@@ -77,20 +77,21 @@ function EventMarkers({events,onSelect}){
 }
 function Follow({target,enabled}){
  const {camera,controls}=useThree();
+ const desired=useRef(new THREE.Vector3()),diff=useRef(new THREE.Vector3());
  useFrame((_,delta)=>{
   if(!enabled||!target||!controls)return;
-  const desired=new THREE.Vector3(...target);
-  const diff=desired.clone().sub(controls.target);
+  desired.current.set(target[0],target[1],target[2]);
+  diff.current.subVectors(desired.current,controls.target);
   const factor=1-Math.exp(-delta*2.2);
-  camera.position.addScaledVector(diff,factor);
-  controls.target.lerp(desired,factor);
+  camera.position.addScaledVector(diff.current,factor);
+  controls.target.lerp(desired.current,factor);
   controls.update();
  });
  return null;
 }
-function EarthScene({records,selectedId,positions,samples,showOrbits,labels,follow,onChoose,eco,science,layer,onScienceChoose,focusedEvent,focusedLocation,events,imageUrl,imageryOpacity,onImageStatus,cloudDetail}){
+function EarthScene({records,selectedId,positions,samples,showOrbits,labels,follow,onChoose,eco,foreground,paused,science,layer,onScienceChoose,focusedEvent,focusedLocation,events,imageUrl,imageryOpacity,onImageStatus,cloudDetail}){
  const active=positions.find(p=>p.id===selectedId)?.point||null;
- return <Canvas camera={{position:[0,1.2,10.3],fov:44}} dpr={[1,eco?1:1.5]} gl={{alpha:false,antialias:!eco,powerPreference:'low-power'}}>
+ return <Canvas frameloop={!foreground||paused?'demand':'always'} camera={{position:[0,1.2,10.3],fov:44}} dpr={[1,eco?1:1.5]} gl={{alpha:false,antialias:!eco,powerPreference:'low-power'}}>
   <color attach="background" args={['#030a17']}/>
   <ambientLight intensity={.7}/><directionalLight position={[8,5,6]} intensity={2.6}/><hemisphereLight args={['#85b8ff','#131d37',.5]}/>
   {!eco&&<Stars radius={65} depth={45} count={1800} factor={3} saturation={0} fade speed={0}/>}
@@ -105,11 +106,11 @@ function EarthScene({records,selectedId,positions,samples,showOrbits,labels,foll
   <Follow target={focusedLocation?geoToScene(focusedLocation.lat,focusedLocation.lon,0):focusedEvent?geoToScene(focusedEvent.lat,focusedEvent.lon,0):active} enabled={Boolean(focusedLocation)||Boolean(focusedEvent)||follow}/>
  </Canvas>;
 }
-export default function EarthObservation(){
+export default function EarthObservation({initialEco=false,foreground=true}){
  const [catalog,setCatalog]=useState([]),[error,setError]=useState(''),[status,setStatus]=useState('loading');
  const [selectedId,setSelectedId]=useState('iss'),[query,setQuery]=useState('');
  const [visibleIds,setVisibleIds]=useState(['iss','tiangong','hubble','noaa19','noaa20']);
- const [labels,setLabels]=useState(true),[showOrbits,setShowOrbits]=useState(true),[follow,setFollow]=useState(false),[eco,setEco]=useState(()=>typeof window!=='undefined'&&window.matchMedia?.('(max-width: 720px), (prefers-reduced-motion: reduce)')?.matches===true),[paused,setPaused]=useState(false);
+ const [labels,setLabels]=useState(true),[showOrbits,setShowOrbits]=useState(true),[follow,setFollow]=useState(false),[eco,setEco]=useState(()=>initialEco||(typeof window!=='undefined'&&window.matchMedia?.('(max-width: 720px), (prefers-reduced-motion: reduce)')?.matches===true)),[paused,setPaused]=useState(false);
  const [now,setNow]=useState(Date.now()),[offset,setOffset]=useState(0);
  const [imagery,setImagery]=useState(null),[imageryError,setImageryError]=useState(''),[imageryEnabled,setImageryEnabled]=useState(false),[imageryDate,setImageryDate]=useState(''),[imageryOpacity,setImageryOpacity]=useState(.85),[imageLoadStatus,setImageLoadStatus]=useState('idle');
  const [timelinePlaying,setTimelinePlaying]=useState(false),[compareEnabled,setCompareEnabled]=useState(false),[beforeDate,setBeforeDate]=useState(''),[compareSplit,setCompareSplit]=useState(50),[cloudDetail,setCloudDetail]=useState(1);
@@ -120,7 +121,7 @@ export default function EarthObservation(){
  const pair=comparisonPair(imagery?.snapshots||[],beforeDate,imageryDate);
  const beforeImage=pair?imageryAssetUrl(imagery.snapshots.find(x=>x.date===pair.before).file):null;
  const afterImage=pair?imageryAssetUrl(imagery.snapshots.find(x=>x.date===pair.after).file):null;
- useEffect(()=>{if(!timelinePlaying||dates.length<2||compareEnabled)return;const timer=setInterval(()=>setImageryDate(previous=>nextTimelineDate(imagery.snapshots,previous)),2400);return()=>clearInterval(timer)},[timelinePlaying,dates.length,imagery,compareEnabled]);
+ useEffect(()=>{if(!timelinePlaying||dates.length<2||compareEnabled||!foreground)return;const timer=setInterval(()=>setImageryDate(previous=>nextTimelineDate(imagery.snapshots,previous)),2400);return()=>clearInterval(timer)},[timelinePlaying,dates.length,imagery,compareEnabled,foreground]);
  const imageUrl=imageryEnabled&&imageItem?imageryAssetUrl(imageItem.file):null;
  const onImageStatus=React.useCallback(next=>setImageLoadStatus(next),[]);
  const [science,setScience]=useState(null),[scienceError,setScienceError]=useState(''),[scienceStatus,setScienceStatus]=useState('loading'),[layer,setLayer]=useState('none'),[scienceChoice,setScienceChoice]=useState(null);
@@ -132,7 +133,7 @@ export default function EarthObservation(){
  useEffect(()=>{refreshScience()},[]);
  const reload=async()=>{setStatus('loading');setError('');try{const data=await loadSatelliteCatalog();setCatalog(data.rows);setStatus('ready')}catch(e){setStatus('error');setError(e.message||'Catalog unavailable')}};
  useEffect(()=>{reload()},[]);
- useEffect(()=>{if(paused)return;const id=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(id)},[paused]);
+ useEffect(()=>{if(paused||!foreground)return;setNow(Date.now());const id=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(id)},[paused,foreground]);
  const sceneTime=now+offset*60000;
  const records=useMemo(()=>catalog.filter(s=>visibleIds.includes(s.id)).slice(0,6),[catalog,visibleIds]);
  const epochMinute=Math.floor(sceneTime/60000);
@@ -148,7 +149,7 @@ export default function EarthObservation(){
   <div className="earthMissionDashboard"><div><small>TRACKED CATALOG</small><b>{catalog.length}</b></div><div><small>VISIBLE ORBITS</small><b>{records.length}</b></div><div><small>FOCUSED MISSION</small><b>{selected?.name||'—'}</b></div><div><small>TIME (LOCAL)</small><b>{new Date(sceneTime).toLocaleTimeString()}</b></div></div>
   <div className="earthMissionStage">
     <div className="earthMissionCanvas" aria-label="Interactive 3D Earth with satellite orbits">
-     {records.length?<EarthScene records={records} selectedId={selectedId} positions={positions} samples={orbitSamples} showOrbits={showOrbits} labels={labels} follow={follow} onChoose={choose} eco={eco} science={science} layer={layer} onScienceChoose={chooseScience} focusedEvent={focusedEvent} focusedLocation={focusedLocation} events={filteredEvents} imageUrl={imageUrl} imageryOpacity={imageryOpacity} onImageStatus={onImageStatus} cloudDetail={cloudDetail}/>:<div className="earthMissionEmpty">{status==='loading'?'Loading mission orbits…':error||'Select spacecraft to start mission view.'}</div>}
+     {records.length?<EarthScene records={records} selectedId={selectedId} positions={positions} samples={orbitSamples} showOrbits={showOrbits} labels={labels} follow={follow} onChoose={choose} eco={eco} foreground={foreground} paused={paused} science={science} layer={layer} onScienceChoose={chooseScience} focusedEvent={focusedEvent} focusedLocation={focusedLocation} events={filteredEvents} imageUrl={imageUrl} imageryOpacity={imageryOpacity} onImageStatus={onImageStatus} cloudDetail={cloudDetail}/>:<div className="earthMissionEmpty">{status==='loading'?'Loading mission orbits…':error||'Select spacecraft to start mission view.'}</div>}
      <div className="earthMissionCorner">AURORA · EARTH OBSERVATION<br/>SGP4 / TLE-DERIVED ESTIMATES</div>
     </div>
     <div className="earthMissionPanel">
