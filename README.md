@@ -2,6 +2,18 @@
   <img src="src/assets/Aurora%20Planet%20Tracker%20Dashboard.png" alt="Aurora Planet Tracker — Pink & Gold Dashboard Preview" width="100%" />
 </p>
 
+## v4.4.0 — Observation Analytics & Research Dashboard
+
+- Adds the dedicated **SCIENCE → Observation Analytics** module to the existing Sidebar, Dashboard Mission shortcuts and Universal Space Search. **VIEW ANALYTICS** in Field Journal opens the new panel; **OPEN FIELD JOURNAL** returns directly to the source records. Preserves v4.3 sessions, v4.2 weather, v4.1 planning, themes, localization, PWA and science modules.
+- All analytical results are derived from the user's **local browser Field Journal** using the existing validated session format; no cloud account, artificial sample data, telemetry or background task is introduced. Cross-tab edits refresh this view through the local storage event and there is an explicit refresh control.
+- **Filtering:** last 7, 30 or 90 local calendar days, or all recorded sessions; category filters for planet, galaxy, satellite and custom objects. Date filters are based on the session's originally **scheduled local date** and exclude future sessions from historical ranges. A separate metric counts future planned sessions from all journal dates.
+- **Research breakdowns:** planned / in-progress / completed, *self-reported* seen / not seen / unknown, distinct targets, category distribution, user-entered sky conditions, number of sessions with field notes and observing equipment, plus a top-20 target summary. Outcomes are not derived from astronomical predictions.
+- **Responsible rate:** the displayed seen/explicit-attempts ratio is **seen / (seen + not seen)** among completed sessions with a specifically answered outcome. It is **unknown (—)** when the denominator is zero; completed-but-unknown and unattempted sessions are excluded. This is not a detection-efficiency or scientific forecast-accuracy score.
+- **Low-overhead charts:** a bounded local-day timeline displays counts of *scheduled sessions* and currently marked self-reported sightings for those scheduled dates, with up to 30 days displayed at once. Interactive controls update on demand using memoized pure calculations; the chart uses HTML/CSS, not heavy WebGL.
+- **Aggregate research export:** downloadable JSON, CSV and TXT contain **aggregated counts**, target names and a daily timeline, but **never export raw session notes, observer names or GPS coordinates**. Beware that user-supplied custom target names may contain identifying information. CSV quoting protects custom target names beginning with spreadsheet formula characters. For complete individual-record backups use the existing Field Journal exporter instead.
+- **Responsive UI:** existing galaxy/nebula themes and Halftone Pink & Gold are supported, including mobile screens and reduced-motion settings; bilingual text for primary controls and explanations.
+- **Tests:** `tests/observationAnalytics.test.mjs` covers a truly empty journal, date range handling, target filtering, self-reported outcome denominators, timeline consistency, notes/equipment coverage, invalid inputs and privacy-preserving JSON/CSV/TXT output. Separate production browser tests, GitHub Pages checks and full regression suite remain necessary.
+
 ## v4.3.0 — Astronomy Observation Sessions & Field Log
 
 - Adds a dedicated **SCIENCE → Field Journal** module to the Sidebar, Dashboard shortcuts and Universal Space Search; preserves Planet/Galaxy Observation Planner, Satellite Weather, Space Intelligence, AR and themes.
