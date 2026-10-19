@@ -67,3 +67,23 @@
 .theme-nebula .planetPortrait{background:linear-gradient(#05122b7d,#05122b96),var(--nebula-art) center/cover no-repeat}
 @media(max-width:680px){.theme-nebula .glass,.theme-nebula .planetpanel,.theme-nebula .astroMap{backdrop-filter:none}.galaxyThemeControl select{max-width:115px}}
 @media(prefers-reduced-motion:reduce){.theme-nebula *{animation-duration:.01ms!important}}
+
+
+/* v3.8: avoid compositing fixed noise and large backdrop blurs on ECO devices.
+   Preserve theme palette and layout; only skip expensive visual effects. */
+.app.graphics-eco .noise{display:none}
+.app.graphics-eco header,
+.app.graphics-eco .auroraSidebar,
+.app.graphics-eco .glass,
+.app.graphics-eco .planetpanel,
+.app.graphics-eco .auroraDashboard .auroraDashSearchBar,
+.app.graphics-eco .auroraDashboard .auroraDashHeroStats>div,
+.app.graphics-eco .auroraDashboard .auroraDashFeature,
+.app.graphics-eco .auroraDashboard .auroraDashPanel{
+ backdrop-filter:none!important;
+ -webkit-backdrop-filter:none!important;
+}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+ .auroraDashFeature,.auroraDashExplore{transition:none!important}
+}
