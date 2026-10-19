@@ -2,6 +2,17 @@
   <img src="src/assets/Aurora%20Planet%20Tracker%20Dashboard.png" alt="Aurora Planet Tracker — Pink & Gold Dashboard Preview" width="100%" />
 </p>
 
+## v4.2.0 — Satellite Observation Planner & Weather Intelligence
+
+- Adds a dedicated **SCIENCE → Satellite Weather** module, reachable via Sidebar, Dashboard quick links, or Universal Space Search. All prior satellite visualization, ISS alert, research dashboard, AR, Earth Observation, v4.1 observation planner, themes, and PWA functionality remain.
+- **Validated 24-hour satellite pass planner:** uses the existing curated, recent satellite TLE catalog and shared `satellitePassPlanner.mjs` 30-second SGP4 pass sampling. Selecting a satellite and minimum peak elevation (10°/15°/20°/30°) displays approximate pass start/end, peak elevation, and direction from true north. No invented live spacecraft telemetry.
+- **Estimated satellite sunlight at pass peak** reuses the educational simplified Earth-shadow model from `issVisibility.mjs`, and compares observer Sun altitude with the civil-twilight (−6°) threshold. This is not apparent magnitude, precise Earth penumbra, or a guarantee that a satellite can be seen.
+- **On-demand Open-Meteo weather:** click **LOAD WEATHER** to send the already selected observer coordinates to the provider; no new GPS permission is requested. A three-day UTC hourly forecast provides cloud cover, precipitation and precipitation probability, which are matched to each predicted pass **only if an hourly sample is within 70 minutes of the pass peak**. No extrapolation, and mismatched coordinates cannot reuse forecast results.
+- **Honest assessment:** distinguishes `Potential window`, `Mixed conditions`, `Cloud limited`, `Rain risk`, `Earth shadow`, `Sky too bright`, `Low horizon`, `Geometry favorable` (weather unknown), and `Unknown`. These are descriptive, qualitative heuristics, **not probability scores**. Missing, expired (older than three hours since fetching), or unsuccessful weather forecasts cannot produce a weather-supported `Potential window`.
+- **Data provenance and limitations:** satellite provider and fetch timestamp are displayed when available; each selected spacecraft shows TLE epoch age and freshness category. Real atmospheric visibility, light pollution, terrain and local cloud variability are unmodeled. Predictions are not background monitoring and this page does not schedule notifications; the existing Satellite Tracker alert system remains separate.
+- **Performance and UI:** only loads satellite TLE when this route is visited; only propagates the **selected** satellite for 24 hours, memoized per minute; weather is loaded only through an explicit user action, with cancellation on route/unmount. Fits galaxy themes and Halftone Pink & Gold, with responsive cards and Bangla/English interface text.
+- **Regression coverage:** `tests/satelliteWeatherMath.test.mjs` includes 8 test groups for hourly UTC parsing and rejection of invalid data, strictly bounded forecast matching, observer-coordinate cache protection, Sun/shadow qualification, missing weather, rain/cloud classes and expiry. Live browser/FPS and complete CI test suite are tracked separately.
+
 ## v4.1.0 — Smart Astronomy Observation Planner
 
 - **Science → Observation Planner** is a dedicated observing-session planner, accessible through Sidebar, Dashboard quick links and Universal Space Search. Existing scientific modules, themes and PWA settings remain in place.
