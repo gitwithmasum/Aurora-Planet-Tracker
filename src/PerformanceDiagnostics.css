@@ -1,0 +1,11 @@
+.auroraPerfDiagnostics{position:absolute;right:12px;top:55px;width:min(310px,calc(100% - 24px));z-index:6;background:#071b2ff2;border:1px solid #5b879c;border-radius:12px;padding:13px;box-shadow:0 12px 32px #0208128c;color:#d8eff8}
+.auroraPerfHead{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.auroraPerfHead strong{display:flex;gap:7px;align-items:center;color:#f3c6df;font:800 13px Rajdhani,sans-serif;letter-spacing:1px}
+.auroraPerfHead button{display:grid;place-items:center;border:1px solid #496981;background:#153249;color:#dcf6fc;border-radius:6px;padding:5px;cursor:pointer}
+.auroraPerfDiagnostics dl{display:grid;gap:8px;margin:14px 0}
+.auroraPerfDiagnostics dl>div{display:flex;justify-content:space-between;gap:9px;font:700 11px Rajdhani,sans-serif}
+.auroraPerfDiagnostics dt{display:flex;align-items:center;gap:5px;color:#afc9d6}
+.auroraPerfDiagnostics dd{margin:0;color:#e9c58b;text-align:right}
+.auroraPerfDiagnostics p{display:flex;align-items:flex-start;gap:6px;color:#b5cbda;font:500 11px/1.55 'Space Grotesk',sans-serif;margin:0}
+.auroraPerfDiagnostics p svg{flex-shrink:0;color:#eac691}
+@media(max-width:680px){.auroraPerfDiagnostics{right:8px;top:48px;width:min(280px,calc(100% - 16px))}}
