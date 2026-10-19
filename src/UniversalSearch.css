@@ -1,0 +1,32 @@
+/* v3.9 global search: lightweight fixed overlay, no expensive backdrop-filter. */
+.universalSearchBackdrop{position:fixed;inset:0;z-index:150;display:flex;align-items:flex-start;justify-content:center;background:#020917cf;padding:clamp(14px,9vh,95px) 14px 24px;overflow-y:auto}
+.universalSearch{width:min(720px,100%);max-height:min(78vh,710px);display:flex;flex-direction:column;min-height:0;background:#0a1830;color:#e8f4ff;border:1px solid #6283aa;border-radius:20px;box-shadow:0 30px 90px #010612a6;overflow:hidden}
+.universalSearchTop{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:18px 22px 12px}
+.universalSearchTop small{font:700 11px Rajdhani,sans-serif;letter-spacing:2px;color:#e6bb7b}
+.universalSearchTop h2{margin:3px 0;font:800 clamp(23px,4vw,32px) Rajdhani,sans-serif;color:#fb8cbb}
+.universalSearchClose{width:39px;height:39px;display:grid;place-items:center;background:#112b44;border:1px solid #537389;border-radius:10px;color:inherit}
+.universalSearchInput{margin:0 20px;display:flex;align-items:center;gap:11px;min-height:56px;border:1px solid #5ea7bf;border-radius:12px;padding:7px 13px;color:#85dce7;background:#0d283f}
+.universalSearchInput input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:#f5faff;font:600 15px 'Space Grotesk',sans-serif}
+.universalSearchInput input::placeholder{color:#91a5ba}
+.universalSearchInput kbd{font:700 10px Rajdhani,sans-serif;padding:5px;border:1px solid #486680;border-radius:5px;color:#aac3d6}
+.universalSearchMeta,.universalSearchFooter{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:11px 21px;font:700 10px Rajdhani,sans-serif;letter-spacing:.7px;color:#b6cce2}
+.universalSearchMeta span:last-child{display:flex;align-items:center;gap:4px;color:#e9c080}
+.universalSearchResults{overflow-y:auto;min-height:100px;max-height:430px;padding:5px 12px 12px;overscroll-behavior:contain}
+.universalSearchResults button{width:100%;display:flex;align-items:center;gap:12px;border:1px solid transparent;border-radius:11px;text-align:left;background:transparent;color:inherit;padding:11px 12px;margin:1px 0;cursor:pointer}
+.universalSearchResults button:hover,.universalSearchResults button.active,.universalSearchResults button:focus-visible{background:#183754;border-color:#468baf}
+.universalSearchIcon{width:35px;height:35px;border-radius:10px;background:#173d54;color:#69ddec;display:grid;place-items:center;flex-shrink:0}
+.universalSearchItemText{min-width:0;flex:1;display:grid;gap:3px}
+.universalSearchItemText strong{font:800 16px Rajdhani,sans-serif;color:#f7c0d9;overflow-wrap:anywhere}
+.universalSearchItemText small{font:500 11px/1.4 'Space Grotesk',sans-serif;color:#bdd0e1;overflow-wrap:anywhere}
+.universalSearchType{font:800 10px Rajdhani,sans-serif;letter-spacing:1px;color:#ddbd84}
+.universalSearchHint{padding:23px 12px;text-align:center;font:500 13px/1.7 'Space Grotesk',sans-serif;color:#b9c8dd}
+.universalSearchFooter{border-top:1px solid #33536d}
+.globalSearchButton{display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;background:#10283e;border:1px solid #4a768d;color:#bdeafa;border-radius:10px;padding:9px 11px;font:700 12px Rajdhani,sans-serif}
+.globalSearchButton kbd{font:700 9px Rajdhani,sans-serif;opacity:.65;border:1px solid currentColor;border-radius:4px;padding:2px 4px}
+.theme-halftone .globalSearchButton{background:#fffef8;color:#bd3176;border-color:#9ccfc8}
+.auroraDashSearchLauncher{display:flex;align-items:center;gap:11px;flex:1;min-width:0;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer;padding:5px;font:700 13px 'Space Grotesk',sans-serif}
+.auroraDashSearchLauncher>span{flex:1;color:#5b7582;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.auroraDashSearchLauncher kbd{color:#977127;font:700 10px Rajdhani,sans-serif}
+@media(max-width:1000px){.globalSearchButton kbd{display:none}}
+@media(max-width:720px){.globalSearchButton{padding:8px}.globalSearchButton .globalSearchLabel{display:none}.universalSearchBackdrop{padding:10px}.universalSearch{max-height:calc(100dvh - 20px);border-radius:15px}.universalSearchTop{padding:13px}.universalSearchInput{margin:0 11px}.universalSearchMeta,.universalSearchFooter{padding:9px 12px}.universalSearchType{font-size:9px}.universalSearchResults button{gap:8px;padding:9px 6px}}
+@media(prefers-reduced-motion:reduce){.universalSearchBackdrop,.universalSearch{scroll-behavior:auto}}
