@@ -7,16 +7,22 @@ import SatelliteARFinder from './SatelliteARFinder.jsx';
 import SatellitePassPlanner from './SatellitePassPlanner.jsx';
 import './SatelliteTracker.css';
 import {SATELLITE_CATEGORIES,DEFAULT_SATELLITES,satelliteSearch,loadSatelliteCatalog} from './satelliteCatalog.mjs';
-export default function SatelliteTracker({alert,location,onLocation,onOpenSky}){
+export default function SatelliteTracker({alert,location,onLocation,onOpenSky,initialSatelliteId='iss'}){
  const pass=alert.activePass||alert.upcoming;
  const [catalog,setCatalog]=useState([]),[catalogStatus,setCatalogStatus]=useState('loading'),[catalogError,setCatalogError]=useState('');
- const [selectedId,setSelectedId]=useState('iss'),[category,setCategory]=useState('All'),[query,setQuery]=useState('');
+ const [selectedId,setSelectedId]=useState(initialSatelliteId),[category,setCategory]=useState('All'),[query,setQuery]=useState('');
  const reloadCatalog=useCallback(async()=>{
   setCatalogStatus('loading');setCatalogError('');
   try{const result=await loadSatelliteCatalog();setCatalog(result.rows);setCatalogStatus('ready')}
   catch(error){setCatalogError(error.message||'Orbital catalog is unavailable');setCatalogStatus('error')}
  },[]);
  useEffect(()=>{reloadCatalog()},[reloadCatalog]);
+ useEffect(()=>{
+  if(typeof initialSatelliteId!=='string'||!initialSatelliteId)return;
+  setSelectedId(initialSatelliteId);
+  setCategory('All');
+  setQuery('');
+ },[initialSatelliteId]);
  const selected=catalog.find(s=>s.id===selectedId)||null;
  const legacyIss=selectedId==='iss'&&alert.satrec&&!selected;
  const targetSatrec=selected?.satrec||(legacyIss?alert.satrec:null);
