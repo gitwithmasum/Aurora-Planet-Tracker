@@ -1,0 +1,71 @@
+/* v4.0 Space Intelligence — responsive, data-first, no continuous WebGL */
+.spaceScience{display:grid;gap:19px;min-width:0;color:#d8eaf8}
+.spaceScienceHero{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;border:1px solid #315a7b;background:linear-gradient(120deg,#101d3af0,#102d43e8);padding:24px;border-radius:19px}
+.spaceScienceEyebrow{font:800 11px Rajdhani,sans-serif;letter-spacing:2px;color:#e7b968}
+.spaceScienceHero h3{display:flex;gap:10px;align-items:center;margin:9px 0 7px;font:800 clamp(25px,3vw,40px)/1.1 Rajdhani,sans-serif;color:#f9b4da}
+.spaceScienceHero p,.spaceSciencePanel>p{font:500 12px/1.7 'Space Grotesk',sans-serif;color:#afc6d6;margin:5px 0}
+.spaceScienceHeroActions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+.spaceScienceHeroActions button,.spaceScienceControls button,.spaceSciencePanelTitle button,.spaceSciencePrimary{display:flex;align-items:center;gap:7px;justify-content:center;border:1px solid #447b95;background:#103149;color:#a9e4ea;border-radius:9px;padding:10px 12px;font:800 11px Rajdhani,sans-serif;letter-spacing:.6px;cursor:pointer}
+.spaceScienceHeroActions button:hover,.spaceScienceControls button:hover,.spaceSciencePrimary:hover{background:#15445a}
+.spaceScienceControls{display:flex;align-items:center;flex-wrap:wrap;gap:12px;padding:12px 16px;border:1px solid #345d7e;border-radius:13px;background:#0a1d34}
+.spaceScienceControls>div{display:flex;flex:1;align-items:center;gap:9px;flex-wrap:wrap}
+.spaceScienceControls>div span,.spaceScienceControls>label{font:800 11px Rajdhani;color:#e2b974;letter-spacing:.7px}
+.spaceScienceControls strong{font:700 13px 'Space Grotesk';color:#f9c7db}.spaceScienceControls small{color:#f3b66c}
+.spaceScienceControls select,.spaceScienceSelect select{background:#102d46;border:1px solid #507b97;color:#e4f5fa;border-radius:7px;padding:8px;min-width:0}
+.spaceScienceControls button:disabled,.spaceSciencePanelTitle button:disabled{opacity:.5;cursor:default}
+.spaceScienceStats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.spaceScienceStats article{min-width:0;display:grid;gap:7px;padding:17px;background:#0b2239e8;border:1px solid #2b5476;border-radius:15px}
+.spaceScienceStats article>svg{color:#86d7e8}.spaceScienceStats small{color:#d6ad75;font:800 11px Rajdhani,sans-serif;letter-spacing:1px}
+.spaceScienceStats strong{font:800 30px Rajdhani,sans-serif;color:#f9b2d3}.spaceScienceStats span{color:#aac1d2;font:500 11px 'Space Grotesk',sans-serif}
+.spaceScienceColumns{display:grid;grid-template-columns:1.16fr 1fr;gap:15px;min-width:0}
+.spaceSciencePanel{min-width:0;padding:20px;background:#0a1d33eb;border:1px solid #386482;border-radius:17px;display:grid;align-content:start;gap:13px}
+.spaceSciencePanelTitle{display:flex;align-items:flex-start;justify-content:space-between;gap:9px;flex-wrap:wrap}
+.spaceSciencePanelTitle h4{display:flex;align-items:center;gap:9px;margin:0;font:800 20px Rajdhani,sans-serif;color:#efadce}
+.spaceScienceSelect{display:grid;gap:6px;color:#d7b67e;font:800 11px Rajdhani,sans-serif}
+.spaceScienceSelect select{width:100%;font:600 13px 'Space Grotesk',sans-serif}
+.spaceScienceQuality{display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap}
+.spaceScienceQualityFlag{display:inline-flex;border-radius:30px;padding:6px 10px;font:800 11px Rajdhani,sans-serif;background:#243b50;color:#eccea0}
+.spaceScienceQualityFlag.flag-recent{background:#123c39;color:#8ee6d0}
+.spaceScienceQualityFlag.flag-monitor{background:#49361e;color:#ffe29d}
+.spaceScienceQualityFlag.flag-aging,.spaceScienceQualityFlag.flag-future{background:#462f32;color:#ffbba8}
+.spaceScienceQuality small{font:600 11px Rajdhani;color:#c8d6e6}
+.spaceScienceReadings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.spaceScienceReadings>div{min-width:0;border:1px solid #31526b;border-radius:10px;background:#0c2940;padding:11px;display:grid;gap:6px}
+.spaceScienceReadings span{font:700 11px Rajdhani,sans-serif;letter-spacing:.4px;color:#b7cddc}
+.spaceScienceReadings strong{font:800 18px Rajdhani,sans-serif;color:#f3c29b;overflow-wrap:anywhere}
+.spaceScienceSource{border-left:3px solid #66adbd;padding:8px 10px;background:#102e42;line-height:1.6}
+.spaceSciencePrimary{width:100%;color:#f4c9d9;border-color:#927592}
+.spaceScienceSun{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px;background:#102b43;border:1px solid #35607a;border-radius:11px}
+.spaceScienceSun svg{color:#f8ca86}.spaceScienceSun span{font:800 11px Rajdhani;color:#bed5e0}
+.spaceScienceSun strong{font:800 19px Rajdhani;color:#f2ca95}.spaceScienceSun small{margin-left:auto;font:700 11px Rajdhani;color:#f2b9cf}
+.spaceSciencePanel h5{font:800 13px Rajdhani,sans-serif;letter-spacing:1.5px;color:#e5bb82;margin:9px 0 0}
+.spaceScienceTargets{display:grid;gap:8px}
+.spaceScienceTargets>div,.spaceScienceTargets>button{display:grid;gap:6px;width:100%;min-width:0;background:#102a3f;border:1px solid #31546c;border-radius:9px;padding:9px 11px;color:#d7ebf8;text-align:left}
+.spaceScienceTargets>button{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer}
+.spaceScienceTargets>button:hover{background:#183b51}
+.spaceScienceTargets>div>div:first-child{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.spaceScienceTargets strong{font:800 14px Rajdhani,sans-serif;color:#f7c4da}
+.spaceScienceTargets span{font:700 11px Rajdhani,sans-serif;color:#b7e2e8;display:flex;gap:4px;align-items:center}
+.spaceScienceTrack{height:5px;border-radius:6px;background:#264660;overflow:hidden}
+.spaceScienceTrack span{height:100%;display:block;background:linear-gradient(90deg,#63c6d0,#e7a9d4)}
+.spaceScienceWarning{color:#ffc3a6!important;overflow-wrap:anywhere}
+.spaceScienceNote{color:#b4c8d6;font:500 12px/1.7 'Space Grotesk',sans-serif}
+.spaceScienceMethod{display:flex;gap:11px;align-items:flex-start;padding:16px 19px;background:#13253c;border:1px solid #466681;border-radius:12px}
+.spaceScienceMethod svg{flex-shrink:0;color:#eac18c}
+.spaceScienceMethod p{margin:0;font:500 12px/1.75 'Space Grotesk',sans-serif;color:#bbcfde}
+.spaceScienceMethod strong{color:#f3b7d3;margin-right:8px}
+.theme-halftone .spaceScience{color:#324b59}
+.theme-halftone .spaceScienceHero,.theme-halftone .spaceScienceControls,.theme-halftone .spaceSciencePanel,.theme-halftone .spaceScienceStats article,.theme-halftone .spaceScienceMethod{background:#fffffff0;border-color:#a6dcd4;box-shadow:0 9px 25px #48766d1c}
+.theme-halftone .spaceScienceHero h3,.theme-halftone .spaceScienceStats strong,.theme-halftone .spaceSciencePanelTitle h4,.theme-halftone .spaceScienceMethod strong{color:#d92579}
+.theme-halftone .spaceScienceEyebrow,.theme-halftone .spaceScienceStats small,.theme-halftone .spaceScienceControls>label,.theme-halftone .spaceSciencePanel h5{color:#9c7229}
+.theme-halftone .spaceScienceHero p,.theme-halftone .spaceSciencePanel>p,.theme-halftone .spaceScienceStats span,.theme-halftone .spaceScienceMethod p{color:#526b78}
+.theme-halftone .spaceScienceControls strong,.theme-halftone .spaceScienceReadings strong{color:#bc3573}
+.theme-halftone .spaceScienceReadings>div,.theme-halftone .spaceScienceSun,.theme-halftone .spaceScienceTargets>div,.theme-halftone .spaceScienceTargets>button,.theme-halftone .spaceScienceSource{background:#f1faf7;border-color:#b2ddd5}
+.theme-halftone .spaceScienceReadings span,.theme-halftone .spaceScienceTargets span,.theme-halftone .spaceScienceSun span{color:#526b77}
+.theme-halftone .spaceScienceTargets strong{color:#d92579}
+.theme-halftone .spaceScienceHeroActions button,.theme-halftone .spaceScienceControls button,.theme-halftone .spaceSciencePanelTitle button,.theme-halftone .spaceSciencePrimary{background:#fafffc;border-color:#a1cfc9;color:#b32672}
+.theme-halftone .spaceScienceControls select,.theme-halftone .spaceScienceSelect select{background:#fff;color:#314d5b;border-color:#9ed4ca}
+.theme-halftone .spaceScienceSun strong,.theme-halftone .spaceScienceSun small{color:#af7334}
+.theme-halftone .spaceScienceMethod{background:#fafffc}
+@media(max-width:1100px){.spaceScienceColumns{grid-template-columns:1fr}.spaceScienceStats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:660px){.spaceScienceHero{flex-direction:column;padding:17px}.spaceScienceHeroActions{justify-content:flex-start}.spaceScienceStats{gap:8px}.spaceScienceStats article{padding:11px}.spaceScienceStats strong{font-size:25px}.spaceSciencePanel{padding:13px}.spaceScienceReadings strong{font-size:16px}.spaceScienceHero h3{font-size:25px}.spaceScienceControls{padding:10px}}
