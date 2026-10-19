@@ -97,7 +97,7 @@ export default function ObservationAnalytics({now,onNavigate}){
      {name:t('Completed · Seen','সম্পন্ন · দেখেছি'),n:analysis?.outcomes.seen??0,group:'seen'},
      {name:t('Completed · Not seen','সম্পন্ন · দেখিনি'),n:analysis?.outcomes.notSeen??0,group:'missed'},
      {name:t('Completed · Unknown','সম্পন্ন · অজানা'),n:analysis?.outcomes.unknown??0,group:'unknown'}
-    ].map(item=><div className="obsAnalyticsOutcome" key={item.group}><div><span>{item.name}</span><strong>{item.n}</strong></div><div className="obsAnalyticsMeter"><span data-kind={item.group} style={{width:percent(item.n,analysis?.total)||0+'%'}}/></div></div>)}</div>
+    ].map(item=><div className="obsAnalyticsOutcome" key={item.group}><div><span>{item.name}</span><strong>{item.n}</strong></div><div className="obsAnalyticsMeter"><span data-kind={item.group} style={{width:(percent(item.n,analysis?.total)||0)+'%'}}/></div></div>)}</div>
     <p className="obsAnalyticsPanelFoot">{t('Upcoming planned sessions (all journal dates, matching category):','পরবর্তী পরিকল্পিত সেশন (সব তারিখ, নির্বাচিত বিভাগ):')} <strong>{analysis?.upcoming??'—'}</strong></p>
    </article>
   </div>
