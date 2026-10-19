@@ -9,7 +9,8 @@ export const SPACE_MODULES=[
  {name:'Earth Observation',terms:'earth nasa imagery weather maps cloud climate'},
  {name:'Sky Tracker',terms:'360 sky star positions constellation'},
  {name:'AR Scanner',terms:'augmented reality camera compass planet'},
- {name:'Galaxy Observatory',terms:'andromeda galaxy messier deep space'}
+ {name:'Galaxy Observatory',terms:'andromeda galaxy messier deep space'},
+ {name:'Space Intelligence',terms:'research scientific sGP4 tle freshness science sky observer inclination eccentricity orbit analysis'}
 ];
 
 const normalize=value=>String(value??'').normalize('NFKC').toLocaleLowerCase().trim().replace(/\s+/g,' ');
