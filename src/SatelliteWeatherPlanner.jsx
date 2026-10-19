@@ -1,5 +1,5 @@
 import React,{useEffect,useMemo,useState} from 'react';
-import {Satellite,Cloud,Sun,Compass,Clock3,RefreshCw,ArrowUpRight,ShieldAlert,CloudRain,MapPin} from 'lucide-react';
+import {Satellite,Cloud,Sun,Compass,Clock3,RefreshCw,ArrowUpRight,ShieldAlert,CloudRain,MapPin,BookOpen} from 'lucide-react';
 import {loadSatelliteCatalog} from './satelliteCatalog.mjs';
 import {predictSatelliteCalendar,alertDirection} from './satellitePassPlanner.mjs';
 import {assessIssPass} from './issVisibility.mjs';
@@ -12,7 +12,7 @@ const localTime=date=>new Date(date).toLocaleString(undefined,{weekday:'short',m
 const finite=n=>typeof n==='number'&&Number.isFinite(n);
 const compact=(n,d=0)=>finite(n)?n.toFixed(d):'—';
 
-export default function SatelliteWeatherPlanner({location,now,onSatellite,onSky}){
+export default function SatelliteWeatherPlanner({location,now,onSatellite,onSky,onLogPass}){
  const {language}=useLanguage(),bn=language==='bn';
  const label=(en,translated)=>bn?translated:en;
  const [catalog,setCatalog]=useState([]),[catalogState,setCatalogState]=useState('loading'),[catalogError,setCatalogError]=useState('');
@@ -132,7 +132,7 @@ export default function SatelliteWeatherPlanner({location,now,onSatellite,onSky}
     <span><Cloud size={14}/>{label('PEAK CLOUD','মেঘ')}: {pass.weather?compact(pass.weather.cloudCover)+'%':'—'}</span>
     <span><CloudRain size={14}/>{label('RAIN','বৃষ্টি')}: {pass.weather?.precipitationMm===null||!pass.weather?'—':compact(pass.weather.precipitationMm,1)+' mm'}</span></div>
     <p>{pass.conditions.reason}</p>
-    <button type="button" onClick={()=>onSatellite(selected.id)}>{label('OPEN SATELLITE TRACKER','স্যাটেলাইট ট্র্যাকার খুলুন')} <ArrowUpRight size={14}/></button>
+    <button type="button" onClick={()=>onLogPass(selected,pass)}><BookOpen size={14}/>{label('LOG THIS PASS','এই পাসের সেশন')}</button><button type="button" onClick={()=>onSatellite(selected.id)}>{label('OPEN SATELLITE TRACKER','স্যাটেলাইট ট্র্যাকার খুলুন')} <ArrowUpRight size={14}/></button>
    </article>):<p className="satWeatherEmpty">{catalogState==='loading'?label('Loading passes…','পাস লোড হচ্ছে…'):!validLocation?label('Choose valid observer coordinates.','বৈধ পর্যবেক্ষকের স্থানাঙ্ক দিন।'):showOnlyCandidates?label('No passes match the current promising conditions. Try showing all passes.','এই শর্তে উপযুক্ত পাস পাওয়া যায়নি; সব পাস দেখুন।'):label('No predicted pass meets the altitude threshold within 24 hours.','২৪ ঘণ্টায় নির্ধারিত উচ্চতার কোনো পাস নেই।')}</p>}
   </div>
   <p className="satWeatherMethod"><ShieldAlert size={18}/>{label('Method and limits: orbital passes use recent public TLEs propagated by SGP4; sunlight uses an approximate Earth-shadow model at pass peak. Clouds and rain are UTC-hourly model forecasts matched only within 70 minutes of peak, never extrapolated. “Potential window” is not a probability or guarantee, and terrain, aircraft, brightness, light pollution and local clouds can change visibility. Weather fetching is optional; no continuous background tracking or notifications are added.','পদ্ধতি ও সীমাবদ্ধতা: TLE/SGP4 থেকে পাস এবং পৃথিবীর আনুমানিক ছায়া থেকে সূর্যালোক গণনা করা হয়। আবহাওয়ার পূর্বাভাস শুধুমাত্র পাসের কাছাকাছি ঘণ্টার সঙ্গে মেলানো হয়, অনুমান করে নতুন সময় তৈরি করা হয় না। সম্ভাব্য সময় মানে দেখার নিশ্চয়তা নয়। অনুমতি ছাড়া background tracking বা notification যুক্ত করা হয়নি।')}</p>
