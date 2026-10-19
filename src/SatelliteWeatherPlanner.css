@@ -1,0 +1,60 @@
+/* v4.2 — light, accessible orbital-weather observation cards */
+.satWeather{display:grid;gap:17px;min-width:0;color:#e3f2fc}
+.satWeatherHero,.satWeatherForecast,.satWeatherControls,.satWeatherProvenance,.satWeatherCard,.satWeatherStats>div,.satWeatherMethod{border:1px solid #396782;border-radius:15px;background:#0b2138ee}
+.satWeatherHero{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;padding:22px;background:linear-gradient(130deg,#0e2441ee,#15374dea)}
+.satWeatherEyebrow{color:#d9ae7c;font:800 11px Rajdhani,sans-serif;letter-spacing:2px}
+.satWeatherHero h3{display:flex;gap:9px;align-items:center;font:800 clamp(24px,3vw,38px)/1.16 Rajdhani,sans-serif;color:#f6b6d4;margin:8px 0}
+.satWeatherHero p,.satWeatherForecast p,.satWeatherResultsTitle p{font:500 12px/1.7 'Space Grotesk',sans-serif;color:#b4ceda;margin:6px 0}
+.satWeatherHero>button,.satWeatherControls>button,.satWeatherForecast>button,.satWeatherCard>button{display:flex;align-items:center;justify-content:center;gap:7px;border:1px solid #5c849b;background:#123950;color:#e4eafc;border-radius:9px;font:800 11px Rajdhani,sans-serif;letter-spacing:.4px;padding:10px 12px;cursor:pointer}
+.satWeatherHero>button:hover,.satWeatherControls>button:hover,.satWeatherForecast>button:hover,.satWeatherCard>button:hover{background:#1a4865}
+.satWeatherHero button:disabled,.satWeatherControls button:disabled,.satWeatherForecast button:disabled{opacity:.55;cursor:default}
+.satWeatherStats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.satWeatherStats>div{display:grid;gap:7px;min-width:0;padding:14px}
+.satWeatherStats small{color:#e8bd88;font:800 11px Rajdhani,sans-serif;letter-spacing:.8px}
+.satWeatherStats strong{font:800 clamp(16px,2vw,25px)/1.2 Rajdhani,sans-serif;color:#f6c1df;overflow-wrap:anywhere}
+.satWeatherStats span{color:#a7ccd9;font:600 11px Rajdhani,sans-serif}
+.satWeatherControls{display:flex;flex-wrap:wrap;gap:11px;align-items:end;padding:13px}
+.satWeatherControls label{display:grid;gap:5px;font:800 11px Rajdhani,sans-serif;color:#dab986;flex:1;min-width:190px}
+.satWeatherControls select{width:100%;min-width:0;border:1px solid #5a8496;background:#113249;color:#e6f2fa;border-radius:7px;padding:10px;font:600 12px 'Space Grotesk',sans-serif}
+.satWeatherProvenance{display:flex;flex-wrap:wrap;align-items:center;gap:12px;justify-content:space-between;padding:12px 14px;color:#c7d9e6;font:700 11px Rajdhani,sans-serif;overflow-wrap:anywhere}
+.satWeatherProvenance span{display:flex;gap:6px;align-items:center}
+.satWeatherProvenance svg{color:#f1c387}
+.satWeatherForecast{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:17px}
+.satWeatherForecast h4{font:800 20px Rajdhani,sans-serif;color:#f7c6de;margin:0;display:flex;align-items:center;gap:8px}
+.satWeatherForecast p{max-width:810px}
+.satWeatherForecast>button{flex-shrink:0}
+.satWeatherFresh{color:#8bf1ca!important}.satWeatherWarning{color:#f8bb9f!important}
+.satWeatherNotice{color:#c1e6f3}
+.satWeatherResultsTitle{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.satWeatherResultsTitle h4{color:#f3c3d9;font:800 21px Rajdhani,sans-serif;margin:0}
+.satWeatherResultsTitle label{display:flex;align-items:center;gap:7px;white-space:nowrap;font:800 11px Rajdhani,sans-serif;color:#e6c597}
+.satWeatherResultsTitle input{accent-color:#db6dab}
+.satWeatherCards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.satWeatherCard{display:grid;align-content:start;gap:9px;min-width:0;padding:16px}
+.satWeatherCardTop{display:flex;justify-content:space-between;align-items:center;gap:7px;color:#a9d1db;font:800 11px Rajdhani,sans-serif}
+.satWeatherClass{padding:6px 9px;border-radius:30px;color:#d9e0f4;background:#32405a}
+.satWeatherClass[data-level="potential"]{background:#173d3a;color:#87f0c9}
+.satWeatherClass[data-level="mixed"]{background:#474021;color:#f6d98d}
+.satWeatherClass[data-level="limited"]{background:#452f35;color:#ffb4a5}
+.satWeatherCard h5{font:800 22px Rajdhani,sans-serif;color:#f8beda;margin:4px 0 0;overflow-wrap:anywhere}
+.satWeatherCard>strong{font:800 18px Rajdhani,sans-serif;color:#f7d1a1}
+.satWeatherCard>small{font:700 11px Rajdhani,sans-serif;color:#a5c9d5}
+.satWeatherMetrics{display:grid;gap:7px;padding:10px 0;border-block:1px solid #31566d}
+.satWeatherMetrics span{display:flex;align-items:center;gap:6px;flex-wrap:wrap;color:#b2d7e5;font:700 12px Rajdhani,sans-serif}
+.satWeatherMetrics svg{color:#80d8dd}
+.satWeatherCard>p{font:500 11px/1.55 'Space Grotesk',sans-serif;color:#b4cad7;margin:4px 0}
+.satWeatherCard>button{margin-top:auto}
+.satWeatherEmpty{grid-column:1/-1;border:1px dashed #537991;border-radius:11px;padding:24px;text-align:center;color:#b5cfda}
+.satWeatherMethod{display:flex;gap:11px;align-items:flex-start;padding:15px;font:500 12px/1.75 'Space Grotesk',sans-serif;color:#bdd2de}
+.satWeatherMethod svg{color:#e8b77c;flex-shrink:0;margin-top:2px}
+.theme-halftone .satWeather{color:#284957}
+.theme-halftone .satWeatherHero,.theme-halftone .satWeatherForecast,.theme-halftone .satWeatherControls,.theme-halftone .satWeatherProvenance,.theme-halftone .satWeatherCard,.theme-halftone .satWeatherStats>div,.theme-halftone .satWeatherMethod{background:#fffffff0;border-color:#a1d9d1;box-shadow:0 8px 22px #467d7521}
+.theme-halftone .satWeatherHero h3,.theme-halftone .satWeatherForecast h4,.theme-halftone .satWeatherResultsTitle h4,.theme-halftone .satWeatherCard h5,.theme-halftone .satWeatherStats strong{color:#d51e78}
+.theme-halftone .satWeatherHero p,.theme-halftone .satWeatherForecast p,.theme-halftone .satWeatherResultsTitle p,.theme-halftone .satWeatherCard>p,.theme-halftone .satWeatherMethod{color:#486a75}
+.theme-halftone .satWeatherEyebrow,.theme-halftone .satWeatherStats small,.theme-halftone .satWeatherControls label,.theme-halftone .satWeatherResultsTitle label{color:#a0712b}
+.theme-halftone .satWeatherStats span,.theme-halftone .satWeatherCard>small,.theme-halftone .satWeatherMetrics span,.theme-halftone .satWeatherProvenance{color:#506e80}
+.theme-halftone .satWeatherCard>strong{color:#ab7735}
+.theme-halftone .satWeatherHero>button,.theme-halftone .satWeatherControls>button,.theme-halftone .satWeatherForecast>button,.theme-halftone .satWeatherCard>button{background:#f8fffa;border-color:#98d3cb;color:#bb3376}
+.theme-halftone .satWeatherControls select{background:#f9fffe;color:#2a5360;border-color:#9fd0ca}
+@media(max-width:1250px){.satWeatherCards{grid-template-columns:repeat(2,minmax(0,1fr))}.satWeatherStats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.satWeatherHero,.satWeatherForecast{flex-direction:column;padding:15px}.satWeatherHero h3{font-size:24px}.satWeatherCards{grid-template-columns:1fr}.satWeatherResultsTitle{align-items:flex-start;flex-direction:column;gap:4px}.satWeatherControls label{min-width:0;width:100%}.satWeatherControls>button{width:100%}}
