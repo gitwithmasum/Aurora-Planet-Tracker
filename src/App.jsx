@@ -82,7 +82,7 @@ function planetTexture(planet){
  texture.colorSpace=THREE.SRGBColorSpace;texture.wrapS=THREE.RepeatWrapping;texture.needsUpdate=true;return texture;
 }
 function PlanetMesh({planet,index,selected,onSelect,speed,onTrack,scaleMode,quality}){
- const mesh=useRef(),pivot=useRef(),group=useRef();
+ const mesh=useRef(),pivot=useRef(),group=useRef(),worldPosition=useRef(new THREE.Vector3());
  const orbitRadius=solarOrbitRadius(planet.name,scaleMode,planet.orbit);
  const radius=solarPlanetRadius(planet.name,scaleMode,planet.size);
  const procedural=useMemo(()=>planetTexture(planet),[planet]);
@@ -103,7 +103,7 @@ function PlanetMesh({planet,index,selected,onSelect,speed,onTrack,scaleMode,qual
  useFrame((state,dt)=>{
   if(pivot.current)pivot.current.rotation.y+=dt*speed*(.035+2/(index+2));
   if(mesh.current)mesh.current.rotation.y+=dt*spinRate(planet.name)*speed;
-  if(group.current&&selected?.name===planet.name){const v=new THREE.Vector3();group.current.getWorldPosition(v);onTrack.current=v;}
+  if(group.current&&selected?.name===planet.name){group.current.getWorldPosition(worldPosition.current);onTrack.current=worldPosition.current;}
  });
  return <group ref={pivot}>
  <mesh rotation={[-Math.PI/2,0,0]}><ringGeometry args={[orbitRadius,orbitRadius+.014,192]}/><meshBasicMaterial color={selected?.name===planet.name?'#5fdcf9':'#517291'} transparent opacity={selected?.name===planet.name?.33:.16} side={THREE.DoubleSide}/></mesh>
@@ -120,16 +120,19 @@ function PlanetMesh({planet,index,selected,onSelect,speed,onTrack,scaleMode,qual
 }
 function CameraFocus({tracked,focusEnabled,inspection,selected}){
  const {camera,controls}=useThree();
- const last=useRef(null);
+ const delta=useRef(new THREE.Vector3()),direction=useRef(new THREE.Vector3()),goal=useRef(new THREE.Vector3());
  useFrame((state,dt)=>{
   if(!focusEnabled||!tracked.current||!controls)return;
   const desired=tracked.current;
-  if(!last.current){last.current=controls.target.clone()}
-  const delta=desired.clone().sub(controls.target);
+  delta.current.subVectors(desired,controls.target);
   const rate=1-Math.exp(-dt*2.3);
-  camera.position.addScaledVector(delta,rate);
+  camera.position.addScaledVector(delta.current,rate);
   controls.target.lerp(desired,rate);
-  if(inspection){const direction=camera.position.clone().sub(controls.target).normalize();const goal=desired.clone().addScaledVector(direction,Math.max(3.3,selected.size*4.2));camera.position.lerp(goal,1-Math.exp(-dt*1.2));}
+  if(inspection){
+   direction.current.subVectors(camera.position,controls.target).normalize();
+   goal.current.copy(desired).addScaledVector(direction.current,Math.max(3.3,selected.size*4.2));
+   camera.position.lerp(goal.current,1-Math.exp(-dt*1.2));
+  }
   controls.update();
  });
  return null;
