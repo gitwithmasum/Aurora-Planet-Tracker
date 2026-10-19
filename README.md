@@ -2,6 +2,17 @@
   <img src="src/assets/Aurora%20Planet%20Tracker%20Dashboard.png" alt="Aurora Planet Tracker — Pink & Gold Dashboard Preview" width="100%" />
 </p>
 
+## v4.1.0 — Smart Astronomy Observation Planner
+
+- **Science → Observation Planner** is a dedicated observing-session planner, accessible through Sidebar, Dashboard quick links and Universal Space Search. Existing scientific modules, themes and PWA settings remain in place.
+- Uses **Astronomy Engine planet positions**, the existing **Galaxy Observatory catalog**, and observer latitude/longitude already selected in the app to find the next 24 hours of potential astronomical observing intervals for seven planets (Earth is not a sky target) and ten curated galaxies.
+- **Conservative sample-based timing**: local calculations check target altitude and solar altitude at 15-minute intervals. An interval must have at least two adjacent qualifying samples to be listed; times are approximations, not precise rise/set crossings. The prediction updates as the 15-minute clock bucket changes or filters are changed.
+- Interactive constraints: minimum target altitude (15°, 25°, 35° or 45°), Sun altitude threshold (−6°, −12° or −18°), target category and shortlist-only filter. Cards show a first estimated interval, peak sample altitude, approximate bearing and interval length. Results are ordered by the start of the nearest qualifying window.
+- **Observation shortlist:** bookmark targets locally via `localStorage`; storage failures are tolerated. Saved target IDs are validated against the 17 known catalog objects and deduplicated. No location or notes are uploaded.
+- **Local calendar export:** download an individual target's next estimated window or export one next window for each shortlisted target as a standard `.ics` file, which can be imported into Google Calendar, Outlook or compatible applications. This is a local file export, not a notification service or direct calendar integration; an import is necessary before calendar entries exist.
+- **Scientific limitations:** geometric visibility does not guarantee naked-eye visibility, weather/cloud clearance, dark-sky quality, or telescope suitability. Moon illumination is displayed as context only, not used for a scientifically unjustified numerical visibility score; light pollution, terrain, obstruction and weather are not incorporated.
+- **Performance and testing:** visibility calculations only run when the Planner route is open; Sun altitude is sampled once per time step, and model calculations are memoized for 15-minute clock buckets. `tests/observationPlanner.test.mjs` covers twilight thresholds, windows, missing records, shortlist validation and ICS output. Full production browser/regression testing remains required.
+
 ## v4.0.0 — Advanced Space Intelligence
 
 - Adds a dedicated **Science → Space Intelligence** module in the sidebar, reachable through Universal Search or the Dashboard's Mission Control shortcuts. Preserves all existing v3.9 search, multi-satellite, AR, NASA imagery, galaxy, PWA and theme modules.
