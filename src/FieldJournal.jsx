@@ -31,7 +31,7 @@ function fileDownload(name,text,mime){
  anchor.href=url;anchor.download=name;document.body.appendChild(anchor);anchor.click();anchor.remove();
  window.setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
-export default function FieldJournal({location,now,onNavigate,onPlanet,onGalaxy,onSatellite}){
+export default function FieldJournal({location,now,onNavigate,onPlanet,onGalaxy,onSatellite,initialTarget=null,onPrefillConsumed}){
  const {language}=useLanguage(),bn=language==='bn';
  const label=(english,bangla)=>bn?bangla:english;
  const [sessions,setSessions]=useState(readJournal);
@@ -39,6 +39,20 @@ export default function FieldJournal({location,now,onNavigate,onPlanet,onGalaxy,
  const [showForm,setShowForm]=useState(false),[filter,setFilter]=useState('all'),[term,setTerm]=useState('');
  const [message,setMessage]=useState(''),[error,setError]=useState('');
  const picker=useRef(null);
+ useEffect(()=>{
+  if(!initialTarget)return;
+  const known=targetMap.get(initialTarget.targetKey);
+  const targetName=known?.type==='other'?String(initialTarget.targetName||''):known?.name||String(initialTarget.targetName||'');
+  const date=Number.isFinite(initialTarget.scheduledMs)?initialTarget.scheduledMs:Date.now();
+  setEditingId(null);
+  setDraft({...initialDraft(),targetKey:known?.key||'other',
+   customTarget:known?.type==='other'?String(initialTarget.targetName||''):known?'':targetName,
+   title:'Observe '+targetName.slice(0,110),
+   scheduledLocal:localInput(date)
+  });
+  setShowForm(true);setMessage('');setError('');
+  onPrefillConsumed?.();
+ },[initialTarget,onPrefillConsumed]);
  useEffect(()=>{
   const listener=event=>{
    if(event.key!==JOURNAL_KEY)return;
