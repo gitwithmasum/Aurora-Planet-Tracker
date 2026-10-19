@@ -10,7 +10,7 @@ const LINKS=[
  {name:'Earth Observation',icon:Globe2,detail:'Explore NASA imagery, Earth events and global locations.',asset:'earth.jpg',eyebrow:'EARTH SCIENCE'},
  {name:'AR Scanner',icon:ScanLine,detail:'Camera-assisted sky exploration on compatible devices.',asset:'saturn.jpg',eyebrow:'AUGMENTED SKY'}
 ];
-const MORE=[{name:'Sky Tonight',icon:Stars,subtitle:'Your night-sky outlook'},{name:'Solar System',icon:Orbit,subtitle:'Interactive solar system'},{name:'Galaxy Observatory',icon:Compass,subtitle:'Deep-sky exploration'},{name:'Command Center',icon:Activity,subtitle:'Live orbital visualization'},{name:'Space Intelligence',icon:Activity,subtitle:'Scientific orbital and sky data'}];
+const MORE=[{name:'Sky Tonight',icon:Stars,subtitle:'Your night-sky outlook'},{name:'Solar System',icon:Orbit,subtitle:'Interactive solar system'},{name:'Galaxy Observatory',icon:Compass,subtitle:'Deep-sky exploration'},{name:'Command Center',icon:Activity,subtitle:'Live orbital visualization'},{name:'Space Intelligence',icon:Activity,subtitle:'Scientific orbital and sky data'},{name:'Observation Planner',icon:Clock3,subtitle:'Night-sky targets and viewing windows'}];
 const tex=asset=>import.meta.env.BASE_URL+'planet-textures/'+asset;
 export default function AuroraDashboard({onNavigate,onOpenSearch,sky,observer,now}){
  const [catalogCount,setCatalogCount]=useState(null);
