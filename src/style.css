@@ -127,9 +127,13 @@
 .auroraPerfToggle[aria-pressed="true"]{border-color:#e6a7cf;color:#ffc1e0}
 .auroraPerfToggle:focus-visible{outline:2px solid #68d8ed;outline-offset:3px}
 @supports (content-visibility:auto){
- .fieldJournalEntry,.obsAnalyticsTarget,.satWeatherCard,.observePlannerCard{
+ .fieldJournalEntry,.satWeatherCard,.observePlannerCard{
   content-visibility:auto;
   contain-intrinsic-size:auto 240px;
+ }
+ .obsAnalyticsTarget{
+  content-visibility:auto;
+  contain-intrinsic-size:auto 70px;
  }
 }
 @media(prefers-reduced-motion:reduce){
