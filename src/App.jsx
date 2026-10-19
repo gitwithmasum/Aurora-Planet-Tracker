@@ -32,7 +32,7 @@ import fullGalaxyBackdrop from './assets/full-galaxy.svg';
 import halftoneArtwork from './assets/aurora-halftone.webp';
 import './HalftoneTheme.css';
 import {useLanguage} from './i18n.jsx';
-import {Orbit,Compass,MapPin,Search,Clock3,ScanLine,Globe2,Layers3,Info,ArrowUpRight,LocateFixed,ChevronRight,Menu,X,Pause,Play,Volume2,VolumeX,Maximize2,Satellite,Eye} from 'lucide-react';
+import {Orbit,Compass,MapPin,Search,Clock3,ScanLine,Globe2,Layers3,Activity,Info,ArrowUpRight,LocateFixed,ChevronRight,Menu,X,Pause,Play,Volume2,VolumeX,Maximize2,Satellite,Eye} from 'lucide-react';
 
 const AU=149597870.7;
 const PLANETS=[
