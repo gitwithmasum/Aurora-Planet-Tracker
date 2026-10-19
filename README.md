@@ -2,6 +2,17 @@
   <img src="src/assets/Aurora%20Planet%20Tracker%20Dashboard.png" alt="Aurora Planet Tracker — Pink & Gold Dashboard Preview" width="100%" />
 </p>
 
+## v4.3.0 — Astronomy Observation Sessions & Field Log
+
+- Adds a dedicated **SCIENCE → Field Journal** module to the Sidebar, Dashboard shortcuts and Universal Space Search; preserves Planet/Galaxy Observation Planner, Satellite Weather, Space Intelligence, AR and themes.
+- Create an observation **session** with a planned local time, target selected from the planet, galaxy and curated satellite catalogs, or a custom target. The user's explicitly selected observer label and coordinates are saved as a session snapshot in browser localStorage, not uploaded.
+- **Planned → In progress → Completed** statuses, with **Observed by me**, **Not observed** and **Not attempted/unknown** outcomes. Predicted or simulated objects never automatically become actual sighting records: outcomes are **self-reported, not independently verified**.
+- Field notes up to 2,000 characters, equipment, sky conditions and atmospheric seeing; edit, start, finish, delete with confirmation, search and status filters. Each entry retains immutable ID, target and captured observer.
+- **LOG SESSION** from Planet/Galaxy Observation Planner and **LOG THIS PASS** from Satellite Weather open a prefilled log with selected target and estimated starting time.
+- Export your records as a portable **JSON** backup, a **CSV** table or a printable **TXT** science field report. Import valid Aurora JSON backups (file limit 1 MB); normalize and deduplicate records by ID and latest edit timestamp. CSV fields are escaped against spreadsheet formula execution. Capacity is 150 valid sessions.
+- Privacy and reliability: no GPS, camera, account or notification permissions are newly requested. Journal is local browser storage with cross-tab storage-event refresh. Export regular backups; site data clearing may erase entries. JSON/CSV/TXT exports can contain personal field notes and saved coordinates — share intentionally.
+- Regression tests in **tests/fieldJournal.test.mjs** cover creation, sightings, update invariants, observer validation, note caps, duplicate merge, reporting totals and CSV safety. Production mobile and browser QA remain separate.
+
 ## v4.2.0 — Satellite Observation Planner & Weather Intelligence
 
 - Adds a dedicated **SCIENCE → Satellite Weather** module, reachable via Sidebar, Dashboard quick links, or Universal Space Search. All prior satellite visualization, ISS alert, research dashboard, AR, Earth Observation, v4.1 observation planner, themes, and PWA functionality remain.
