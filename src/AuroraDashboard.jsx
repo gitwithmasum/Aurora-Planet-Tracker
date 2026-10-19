@@ -1,4 +1,4 @@
-import React,{useEffect,useMemo,useState} from 'react';
+import React,{useEffect,useState} from 'react';
 import {andromedaHero} from './andromedaHero.mjs';
 import {Orbit,Satellite,Globe2,ScanLine,ArrowUpRight,ChevronRight,Search,Clock3,MapPin,Compass,Stars,Layers3,Activity,BookOpen,Play} from 'lucide-react';
 import {loadSatelliteCatalog} from './satelliteCatalog.mjs';
@@ -12,16 +12,12 @@ const LINKS=[
 ];
 const MORE=[{name:'Sky Tonight',icon:Stars,subtitle:'Your night-sky outlook'},{name:'Solar System',icon:Orbit,subtitle:'Interactive solar system'},{name:'Galaxy Observatory',icon:Compass,subtitle:'Deep-sky exploration'},{name:'Command Center',icon:Activity,subtitle:'Live orbital visualization'}];
 const tex=asset=>import.meta.env.BASE_URL+'planet-textures/'+asset;
-export default function AuroraDashboard({onNavigate,sky,observer,now}){
- const [text,setText]=useState(''),[catalogCount,setCatalogCount]=useState(null);
+export default function AuroraDashboard({onNavigate,onOpenSearch,sky,observer,now}){
+ const [catalogCount,setCatalogCount]=useState(null);
  useEffect(()=>{let active=true;loadSatelliteCatalog().then(d=>{if(active)setCatalogCount(d.rows.length)}).catch(()=>{});return()=>{active=false}},[]);
- const matches=useMemo(()=>[...LINKS,...MORE].filter(x=>(x.name+' '+(x.detail||x.subtitle||'')).toLowerCase().includes(text.toLowerCase().trim())),[text]);
  const visible=sky.filter(p=>p.visible&&Number.isFinite(p.alt)).sort((a,b)=>b.alt-a.alt);
  return <div className="auroraDashboard" aria-label="Aurora Planet Tracker Dashboard">
-  <div className="auroraDashSearchBar"><Search size={20}/><input aria-label="Search dashboard modules" placeholder="Search planets, satellites, Earth observation, sky…" value={text} onChange={e=>setText(e.target.value)}/><span className="auroraDashLocation"><MapPin size={16}/> {observer.label||'Manual observer'}</span></div>
-  {text.trim()&&<div className="auroraDashMatches" role="region" aria-label="Dashboard search results">
-   {matches.length?matches.map(x=><button key={x.name} type="button" onClick={()=>{onNavigate(x.name);setText('')}}>{x.name}<ArrowUpRight size={14}/></button>):<span>No matching module. Try “Earth” or “Satellite”.</span>}
-  </div>}
+  <div className="auroraDashSearchBar"><button type="button" className="auroraDashSearchLauncher" onClick={onOpenSearch} aria-label="Open universal space search"><Search size={20}/><span>Search planets, satellites, galaxies, missions…</span><kbd>Ctrl K</kbd></button><span className="auroraDashLocation"><MapPin size={16}/> {observer.label||'Manual observer'}</span></div>
   <section className="auroraDashHero auroraDashHero--andromeda" style={{'--hero-art':`url("${andromedaHero}")`}} aria-label="Aurora Planet Tracker Andromeda galaxy hero"><div className="auroraDashHeroCopy">
    <span className="auroraDashOverline">EXPLORE &nbsp; · &nbsp; TRACK &nbsp; · &nbsp; DISCOVER</span>
    <h2><span>AURORA</span><strong>PLANET TRACKER</strong></h2>
