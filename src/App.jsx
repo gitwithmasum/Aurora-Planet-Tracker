@@ -23,6 +23,7 @@ import {EarthEffects,SaturnDetailedRings,SolarBloom} from './SolarRealism.jsx';
 import {AXIAL_TILT,solarOrbitRadius,solarPlanetRadius,spinRate} from './solarPhysics.mjs';
 import {chooseGraphicsQuality,resolveGraphicsQuality} from './performance.mjs';
 import {GALAXIES} from './galaxyCatalog.mjs';
+import './UniversalSearch.css';
 import PWAStatus from './PWAStatus.jsx';
 import galaxyBackdrop from './assets/deep-galaxy.svg';
 import fullGalaxyBackdrop from './assets/full-galaxy.svg';
