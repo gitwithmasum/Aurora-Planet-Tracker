@@ -15,7 +15,7 @@ const timeLabel=time=>Number.isFinite(time)?new Date(time).toLocaleString():'—
 
 export default function SpaceIntelligence({location,now,onNavigate,onSatellite,onGalaxy}){
  const {language}=useLanguage(),bn=language==='bn';
- const [catalog,setCatalog]=useState([]),[state,setState]=useState('loading'),[error,setError]=useState('');
+ const [catalog,setCatalog]=useState([]),[state,setState]=useState('loading'),[error,setError]=useState(''),[provenance,setProvenance]=useState(null);
  const [refreshKey,setRefreshKey]=useState(0),[selectedId,setSelectedId]=useState('iss'),[offset,setOffset]=useState(0);
  const observer=safeObserver(location);
  const simulated=useMemo(()=>new Date(now.getTime()+offset*60000),[now,offset]);
@@ -24,11 +24,11 @@ export default function SpaceIntelligence({location,now,onNavigate,onSatellite,o
   setState('loading');setError('');
   loadSatelliteCatalog().then(data=>{
    if(!active)return;
-   setCatalog(data.rows);setState('ready');
+   setCatalog(data.rows);setProvenance({source:String(data.source||'Public orbital-element catalog'),fetchedAt:data.fetchedAt});setState('ready');
    setSelectedId(previous=>data.rows.some(row=>row.id===previous)?previous:data.rows[0].id);
   }).catch(e=>{
    if(!active)return;
-   setCatalog([]);setState('error');
+   setCatalog([]);setProvenance(null);setState('error');
    setError(e?.message||'Orbital catalog unavailable');
   });
   return()=>{active=false};
@@ -73,7 +73,7 @@ export default function SpaceIntelligence({location,now,onNavigate,onSatellite,o
     <p>{label('Choose a spacecraft to inspect SGP4 orbital elements, propagated position and local sky direction.','SGP4 কক্ষপথ, গণনাভিত্তিক অবস্থান ও স্থানীয় দিক দেখতে স্যাটেলাইট বেছে নাও।')}</p>
     {state==='loading'&&<p role="status" className="spaceScienceNote">{label('Loading validated orbital elements…','যাচাইকৃত কক্ষপথের তথ্য লোড হচ্ছে…')}</p>}
     {state==='error'&&<p role="alert" className="spaceScienceWarning">{error}. {label('No orbital numbers are estimated without valid elements.','বৈধ তথ্য ছাড়া কোনো কক্ষপথের সংখ্যা দেখানো হবে না।')}</p>}
-    {state==='ready'&&<><label className="spaceScienceSelect">{label('SPACECRAFT','স্যাটেলাইট')}<select aria-label="Select orbital intelligence satellite" value={chosen?.id||''} onChange={e=>setSelectedId(e.target.value)}>{catalog.map(s=><option key={s.id} value={s.id}>{s.name} · NORAD {s.noradId}</option>)}</select></label>
+    {state==='ready'&&<><p className="spaceScienceSource">{label('Catalog source','ক্যাটালগের উৎস')}: {provenance?.source||'Public TLE'} · {label('Updated','আপডেট')}: {Number.isFinite(Date.parse(provenance?.fetchedAt||''))?timeLabel(Date.parse(provenance.fetchedAt)):label('Not specified','উল্লেখ নেই')}</p><label className="spaceScienceSelect">{label('SPACECRAFT','স্যাটেলাইট')}<select aria-label="Select orbital intelligence satellite" value={chosen?.id||''} onChange={e=>setSelectedId(e.target.value)}>{catalog.map(s=><option key={s.id} value={s.id}>{s.name} · NORAD {s.noradId}</option>)}</select></label>
      <div className="spaceScienceQuality"><span className={'spaceScienceQualityFlag flag-'+tle.status}>{displayTleStatus(tle.status)}</span><small>{label('Epoch age','Epoch-এর বয়স')}: {fmt(tle.ageHours,1)} h</small></div>
      <div className="spaceScienceReadings">
       <div><span>{label('Inclination','কক্ষপথের কাত')}</span><strong>{fmt(tle.inclinationDeg,2)}°</strong></div>
