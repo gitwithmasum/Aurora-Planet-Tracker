@@ -57,7 +57,7 @@ function PlanetMesh({planet,index,selected,onSelect,speed,onTrack,scaleMode,qual
  <mesh rotation={[-Math.PI/2,0,0]}><ringGeometry args={[orbitRadius,orbitRadius+.014,192]}/><meshBasicMaterial color={selected?.name===planet.name?'#5fdcf9':'#517291'} transparent opacity={selected?.name===planet.name?.33:.16} side={THREE.DoubleSide}/></mesh>
  <group ref={group} position={[orbitRadius,0,0]}>
  <group rotation={[0,0,AXIAL_TILT[planet.name]*Math.PI/180]}><mesh ref={mesh} castShadow receiveShadow onClick={e=>{e.stopPropagation();onSelect(planet)}}>
- <sphereGeometry args={[radius,64,48]}/><meshStandardMaterial map={photomap||procedural} roughness={.96} metalness={0} color="#ffffff"/></mesh></group>
+ <sphereGeometry args={[radius,quality==='low'?24:48,quality==='low'?16:32]}/><meshStandardMaterial map={photomap||procedural} roughness={.96} metalness={0} color="#ffffff"/></mesh></group>
  {['Earth','Venus','Mars','Uranus','Neptune'].includes(planet.name)&&<AtmosphereGlow radius={radius} color={{Earth:'#3988ff',Venus:'#ffb76c',Mars:'#d36c49',Uranus:'#80eddf',Neptune:'#427bff'}[planet.name]} strength={planet.name==='Earth'?.8:.48}/>}
  {planet.name==='Earth'&&<><EarthMoon radius={radius} speed={speed}/><EarthEffects radius={radius} quality={quality} speed={speed}/></>} 
  {planet.name==='Saturn'&&<SaturnDetailedRings radius={radius} quality={quality}/>}
@@ -91,7 +91,7 @@ function NebulaDust({quality}){
 }
 export default function SolarScene({planets,selected,onSelect,paused,focus,inspection,speed,quality,cosmic,scaleMode,active}){
  const tracked=useRef(null);
- return <Canvas frameloop={active?'always':'demand'} shadows={quality!=='low'} camera={{position:[0,22,31],fov:50}} gl={{antialias:true,alpha:true}} dpr={quality==='low'?[1,1]:[1,1.6]}>
+ return <Canvas frameloop={active?'always':'demand'} shadows={quality!=='low'} camera={{position:[0,22,31],fov:50}} gl={{antialias:quality!=='low',alpha:true,powerPreference:quality==='low'?'low-power':'high-performance'}} dpr={quality==='low'?[1,1]:[1,1.6]}>
  {!cosmic&&<color attach="background" args={['#050915']}/>}<fog attach="fog" args={[cosmic?'#0a1230':'#07112c',cosmic?54:30,cosmic?160:100]}/>
  <ambientLight intensity={cosmic?.2:.16}/><hemisphereLight args={['#4b84ff','#170d20',cosmic?.22:.16]}/>
  <pointLight position={[0,0,0]} color="#fff0d3" intensity={165} distance={100} castShadow={quality!=='low'} shadow-mapSize={[1024,1024]} shadow-bias={-.0002}/>
