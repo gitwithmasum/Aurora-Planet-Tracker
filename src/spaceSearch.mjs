@@ -11,7 +11,8 @@ export const SPACE_MODULES=[
  {name:'AR Scanner',terms:'augmented reality camera compass planet'},
  {name:'Galaxy Observatory',terms:'andromeda galaxy messier deep space'},
  {name:'Space Intelligence',terms:'research scientific sGP4 tle freshness science sky observer inclination eccentricity orbit analysis'},
- {name:'Observation Planner',terms:'astronomy observing viewing window night sky visibility schedule calendar ics saved shortlist twilight moon altitude'}
+ {name:'Observation Planner',terms:'astronomy observing viewing window night sky visibility schedule calendar ics saved shortlist twilight moon altitude'},
+ {name:'Satellite Weather',terms:'satellite pass sunlight shadow cloud rain weather forecast meteoblue open meteo visibility observation planner'}
 ];
 
 const normalize=value=>String(value??'').normalize('NFKC').toLocaleLowerCase().trim().replace(/\s+/g,' ');
