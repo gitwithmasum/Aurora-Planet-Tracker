@@ -87,3 +87,22 @@
  html{scroll-behavior:auto}
  .auroraDashFeature,.auroraDashExplore{transition:none!important}
 }
+
+
+/* Static painting for page scroll: retain the galaxy artwork while avoiding
+   fixed SVG noise and expensive sticky-header blurs in regular dark themes. */
+.app .noise{display:none}
+.app.theme-cosmic{background-attachment:scroll}
+.app.theme-cosmic > header,.app.theme-nebula > header{
+ backdrop-filter:none;
+ -webkit-backdrop-filter:none;
+}
+@media(max-width:1024px){
+ .app.theme-cosmic .astroMap,.app.theme-cosmic .arModule,
+ .app.theme-nebula .glass,.app.theme-nebula .planetpanel,
+ .app.theme-nebula .astroMap,.app.theme-nebula .viewport,
+ .app.theme-nebula .fieldQa{
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+ }
+}
