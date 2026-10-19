@@ -1,5 +1,5 @@
 import React,{useEffect,useMemo,useState} from 'react';
-import {CalendarDays,Bookmark,BookmarkCheck,Compass,Clock3,ArrowUpRight,Info,Moon,Download,SlidersHorizontal} from 'lucide-react';
+import {CalendarDays,Bookmark,BookmarkCheck,Compass,Clock3,ArrowUpRight,Info,Moon,Download,SlidersHorizontal,BookOpen} from 'lucide-react';
 import {observationForecast,OBSERVATION_TARGETS} from './observationForecast.mjs';
 import {normalizeWatchlist,observationCalendar,PLANNER_STEP_MINUTES} from './observationPlannerCore.mjs';
 import {useLanguage} from './i18n.jsx';
@@ -23,7 +23,7 @@ function exportCalendar(entries,observer){
  document.body.appendChild(link);link.click();link.remove();
  setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
-export default function ObservationPlanner({location,now,onPlanet,onGalaxy,onNavigate}){
+export default function ObservationPlanner({location,now,onPlanet,onGalaxy,onNavigate,onLogTarget}){
  const {language}=useLanguage();
  const bn=language==='bn';
  const txt=(en,bengali)=>bn?bengali:en;
@@ -83,7 +83,7 @@ export default function ObservationPlanner({location,now,onPlanet,onGalaxy,onNav
     <div className="observePlannerLine">{txt('Until','শেষ')} {dateLabel(item.next.endMs)} · {estimateDuration(item.next)} {txt('min','মিনিট')}</div>
     <div className="observePlannerPeak"><Compass size={14}/>{txt('Peak','সর্বোচ্চ')} {item.next.peakAltitude.toFixed(1)}° · {bearing(item.next.peakAzimuth)} · {dateLabel(item.next.peakMs)}</div>
     {item.windows.length>1&&<small className="observePlannerMore">+{item.windows.length-1} {txt('more window(s) within 24 hours','টি অতিরিক্ত সময় পাওয়া গেছে')}</small>}
-    <div className="observePlannerCardActions"><button type="button" onClick={()=>openTarget(item)}>{txt('OPEN TARGET','লক্ষ্য খুলুন')} <ArrowUpRight size={14}/></button><button type="button" onClick={()=>calendarFor(item)}><CalendarDays size={14}/>{txt('CALENDAR','ক্যালেন্ডার')}</button></div>
+    <div className="observePlannerCardActions"><button type="button" onClick={()=>onLogTarget(item)}><BookOpen size={14}/>{txt('LOG SESSION','সেশন নোট')}</button><button type="button" onClick={()=>openTarget(item)}>{txt('OPEN TARGET','লক্ষ্য খুলুন')} <ArrowUpRight size={14}/></button><button type="button" onClick={()=>calendarFor(item)}><CalendarDays size={14}/>{txt('CALENDAR','ক্যালেন্ডার')}</button></div>
    </article>):<p className="observePlannerEmpty">{plan.error||txt('No matching estimated observing windows. Try a lower altitude, less restrictive twilight filter, or turn off shortlist-only.','এই শর্তে সম্ভাব্য সময় পাওয়া যায়নি। সর্বনিম্ন উচ্চতা বা twilight পরিবর্তন করুন, অথবা shortlist filter বন্ধ করুন।')}</p>}
   </div>
   <div className="observePlannerSchedule">
