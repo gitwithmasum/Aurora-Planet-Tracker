@@ -5,10 +5,18 @@ import {useLanguage} from './i18n.jsx';
 import './GalaxyObservatory.css';
 import GalaxyPhoto from './GalaxyPhoto.jsx';
 const format=(v,n=1)=>Number.isFinite(v)?v.toFixed(n):'—';
-export default function GalaxyObservatory({location,onLocation}){
+export default function GalaxyObservatory({location,onLocation,initialGalaxyId='m31'}){
  const {language}=useLanguage(),bn=language==='bn';
- const [selected,setSelected]=useState('m31'),[hours,setHours]=useState(0),[reference,setReference]=useState(()=>Date.now()),[heading,setHeading]=useState(0),[search,setSearch]=useState(''),[visibleOnly,setVisibleOnly]=useState(false),[mode,setMode]=useState('sky'),[gpsError,setGpsError]=useState(''),[travel,setTravel]=useState(false),[travelKey,setTravelKey]=useState(0),[compare,setCompare]=useState('m33'),[comparisonOpen,setComparisonOpen]=useState(false),[showTrail,setShowTrail]=useState(true),[cinematic,setCinematic]=useState(()=>{try{return localStorage.getItem('aurora-cinematic')!=='off'&&!(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)}catch{return true}});
+ const [selected,setSelected]=useState(()=>GALAXIES.some(g=>g.id===initialGalaxyId)?initialGalaxyId:'m31'),[hours,setHours]=useState(0),[reference,setReference]=useState(()=>Date.now()),[heading,setHeading]=useState(0),[search,setSearch]=useState(''),[visibleOnly,setVisibleOnly]=useState(false),[mode,setMode]=useState('sky'),[gpsError,setGpsError]=useState(''),[travel,setTravel]=useState(false),[travelKey,setTravelKey]=useState(0),[compare,setCompare]=useState('m33'),[comparisonOpen,setComparisonOpen]=useState(false),[showTrail,setShowTrail]=useState(true),[cinematic,setCinematic]=useState(()=>{try{return localStorage.getItem('aurora-cinematic')!=='off'&&!(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)}catch{return true}});
  const travelTimer=useRef(null);
+ useEffect(()=>{
+  if(!GALAXIES.some(g=>g.id===initialGalaxyId))return;
+  clearTimeout(travelTimer.current);
+  setTravel(false);
+  setVisibleOnly(false);
+  setSearch('');
+  setSelected(initialGalaxyId);
+ },[initialGalaxyId]);
  useEffect(()=>{const timer=setInterval(()=>setReference(Date.now()),30000);return()=>clearInterval(timer)},[]);
  const date=useMemo(()=>new Date(reference+hours*3600000),[reference,hours]);
  const catalog=useMemo(()=>GALAXIES.map(g=>galaxyHorizontal(g,date,location.lat,location.lon)),[date,location.lat,location.lon]);
