@@ -2,6 +2,17 @@
   <img src="src/assets/Aurora%20Planet%20Tracker%20Dashboard.png" alt="Aurora Planet Tracker — Pink & Gold Dashboard Preview" width="100%" />
 </p>
 
+## v4.0.0 — Advanced Space Intelligence
+
+- Adds a dedicated **Science → Space Intelligence** module in the sidebar, reachable through Universal Search or the Dashboard's Mission Control shortcuts. Preserves all existing v3.9 search, multi-satellite, AR, NASA imagery, galaxy, PWA and theme modules.
+- **Scientific orbital overview** uses the same validated, recently ingested public orbital element records as Satellite Tracker. Users can select a spacecraft and inspect SGP4-derived orbital inclination, eccentricity, approximate orbital period and revolutions/day, propagated geodetic altitude and speed, and observer-relative true-north bearing, elevation and slant range. Values are calculated estimates, not live satellite downlink telemetry.
+- **Data quality and provenance** show each selected TLE epoch and its age relative to the displayed model time, a transparent age category (recent: ≤24h; monitor: >24–72h; aging: >72h), public source and source refresh timestamp when provided. These labels **are not accuracy scores**, nor do they give statistical error bars. Invalid/missing elements never produce fabricated orbital values.
+- **Observer-based sky science** shows computed Sun altitude, Moon illumination, darkness/twilight context, above-horizon planet angles and known catalog galaxies visible *geometrically above the horizon*; users can open a galaxy in its existing Observatory. Optical visibility is not guaranteed by geometry.
+- **Time shift** lets visitors compare NOW with ±30 and ±60-minute model times, explicitly labeling predictions. It does not change the app's stored observer coordinates, system time or alerts.
+- **No new permissions:** reuses the existing manual/GPS observer already set in the app, without accessing GPS, microphone or camera from the new module. Celestial coordinates are computed locally with Astronomy Engine; valid TLEs are propagated by satellite.js/SGP4. Satellite data is only fetched when the module is opened or explicitly refreshed.
+- **Language and presentation:** SCIENCE sidebar navigation, Universal Search entry, bilingual page headings/explanations, dark galaxy and Halftone Pink & Gold UI with responsive data panels.
+- **Regression coverage:** `tests/spaceScienceMath.test.mjs` tests orbital units, epoch-age thresholds, missing records and observer coordinate validation. Real-device browser QA and production deployment verification remain separate tasks.
+
 ## v3.9.0 — Universal Space Search
 
 - New global **Universal Space Search** panel available from the top bar and Dashboard search launcher; open from any page with **Ctrl+K / Cmd+K**, dismiss using Escape or the close button.
