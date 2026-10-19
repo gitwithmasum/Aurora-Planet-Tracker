@@ -1,0 +1,73 @@
+/* v4.3 Field Journal — no WebGL, GPU filters, or full-viewport animations. */
+.fieldJournal{display:grid;gap:17px;min-width:0;color:#dceefd}
+.fieldJournalHero,.fieldJournalStats>div,.fieldJournalToolbar,.fieldJournalForm,.fieldJournalFilters,.fieldJournalEntry,.fieldJournalDisclosure{background:#0c2036eb;border:1px solid #3b6381;border-radius:15px}
+.fieldJournalHero{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:23px;background:linear-gradient(125deg,#122b44ee,#0c2539ea)}
+.fieldJournalEyebrow{font:800 11px Rajdhani,sans-serif;color:#e0bb81;letter-spacing:1.9px}
+.fieldJournalHero h3{display:flex;align-items:center;gap:10px;font:800 clamp(24px,3.5vw,37px)/1.13 Rajdhani,sans-serif;color:#f8b7d5;margin:10px 0}
+.fieldJournalHero p,.fieldJournalHistoryHeader p{font:500 12px/1.7 'Space Grotesk',sans-serif;color:#b5ccda;margin:6px 0}
+.fieldJournalHero button,.fieldJournalToolbar button,.fieldJournalFormActions button,.fieldJournalEntryActions button,.fieldJournalFormHead button{display:flex;align-items:center;justify-content:center;gap:7px;background:#163951;border:1px solid #527e9d;border-radius:9px;color:#cceef7;cursor:pointer;font:800 11px Rajdhani,sans-serif;letter-spacing:.3px;padding:10px 13px}
+.fieldJournalHero button:hover,.fieldJournalToolbar button:hover,.fieldJournalFormActions button:hover,.fieldJournalEntryActions button:hover{background:#205269}
+.fieldJournalToolbar button:disabled,.fieldJournalEntryActions button:disabled{opacity:.5;cursor:not-allowed}
+.fieldJournalStats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.fieldJournalStats>div{min-width:0;display:grid;gap:6px;padding:13px}
+.fieldJournalStats small{font:800 11px Rajdhani,sans-serif;color:#efc58c;letter-spacing:.7px}
+.fieldJournalStats strong{font:800 29px Rajdhani,sans-serif;color:#fac1e0}
+.fieldJournalToolbar{display:flex;flex-wrap:wrap;gap:8px;padding:12px}
+.fieldJournalToolbar button{padding:10px 12px}
+.fieldJournalSuccess,.fieldJournalError{padding:10px 14px;margin:0;border-radius:9px;font:600 12px/1.5 'Space Grotesk',sans-serif}
+.fieldJournalSuccess{color:#a1e8d2;background:#16392f;border:1px solid #528f7e}
+.fieldJournalError{color:#ffc0b2;background:#3a2227;border:1px solid #ab646d}
+.fieldJournalForm{display:grid;gap:15px;padding:21px}
+.fieldJournalFormHead{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.fieldJournalFormHead h4{font:800 21px Rajdhani,sans-serif;color:#f3c2d9;margin:0}
+.fieldJournalFormHead button{padding:8px}
+.fieldJournalGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.fieldJournalGrid label{display:grid;align-content:start;gap:7px;min-width:0;font:800 11px Rajdhani,sans-serif;color:#e9bf82;letter-spacing:.35px}
+.fieldJournalGrid .fieldJournalWide{grid-column:1/-1}
+.fieldJournalGrid input,.fieldJournalGrid select,.fieldJournalGrid textarea{font:600 13px/1.45 'Space Grotesk',sans-serif;background:#102c44;border:1px solid #57849b;color:#e7f5fc;border-radius:8px;padding:11px;min-width:0;width:100%;resize:vertical}
+.fieldJournalGrid input::placeholder,.fieldJournalGrid textarea::placeholder{color:#9cb9cb}
+.fieldJournalGrid select:disabled{opacity:.6}
+.fieldJournalGrid :is(input,select,textarea):focus-visible{outline:2px solid #91daed;outline-offset:2px}
+.fieldJournalPrivacy{display:flex;gap:8px;align-items:flex-start;font:600 12px/1.7 'Space Grotesk',sans-serif;color:#bcd1de;margin:0}
+.fieldJournalPrivacy svg{flex-shrink:0;margin-top:3px;color:#f2cd87}
+.fieldJournalFormActions{display:flex;flex-wrap:wrap;gap:9px}
+.fieldJournalFormActions button:first-child{color:#ffd0e5;background:#29405a;border-color:#7e82b0}
+.fieldJournalHistoryHeader h4{color:#fac1dc;font:800 23px Rajdhani,sans-serif;margin:0}
+.fieldJournalFilters{display:flex;align-items:center;gap:10px;padding:12px}
+.fieldJournalFilters label{flex:1;min-width:0;display:flex;align-items:center;gap:9px;background:#102c43;border:1px solid #436982;border-radius:9px;padding:9px;color:#9bdbe6}
+.fieldJournalFilters input{flex:1;min-width:0;border:0;background:transparent;color:#e9f7fa;outline:0;font:600 13px 'Space Grotesk',sans-serif}
+.fieldJournalFilters select{background:#15364b;border:1px solid #517991;border-radius:8px;color:#e9f8ff;padding:10px;font:700 12px Rajdhani,sans-serif}
+.fieldJournalEntries{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.fieldJournalEntry{min-width:0;display:flex;flex-direction:column;gap:9px;padding:16px}
+.fieldJournalEntryHead{display:flex;align-items:center;justify-content:space-between;gap:7px;font:800 10px Rajdhani,sans-serif;letter-spacing:1px;color:#dfbd8c}
+.fieldJournalStatus{padding:5px 9px;border-radius:50px;background:#233b58;color:#d1c2ff}
+.fieldJournalStatus--in-progress{background:#3c371d;color:#f9d693}
+.fieldJournalStatus--completed{background:#16443d;color:#a5f6d1}
+.fieldJournalEntry h5{font:800 21px Rajdhani,sans-serif;margin:3px 0 0;color:#fabfdb;overflow-wrap:anywhere}
+.fieldJournalTarget{font:800 12px Rajdhani,sans-serif;color:#dec391;margin:0}
+.fieldJournalFacts{display:grid;gap:7px;padding:9px 0;border-block:1px solid #36536a}
+.fieldJournalFacts span{display:flex;align-items:center;gap:8px;font:600 12px Rajdhani,sans-serif;color:#afcada;overflow-wrap:anywhere}
+.fieldJournalFacts svg{color:#84d3e8;flex-shrink:0}
+.fieldJournalEquipment{margin:0;color:#dbbe93;font:600 12px/1.5 'Space Grotesk',sans-serif;overflow-wrap:anywhere}
+.fieldJournalNotes{margin:0;color:#d0e4ee;font:500 12px/1.7 'Space Grotesk',sans-serif;white-space:pre-wrap;overflow-wrap:anywhere}
+.fieldJournalEntryActions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px}
+.fieldJournalEntryActions button{font-size:11px;padding:8px}
+.fieldJournalEntryActions button.fieldJournalDelete{border-color:#8c5269;color:#efb2b8;background:#4a243a}
+.fieldJournalEmpty{grid-column:1/-1;border:1px dashed #5c7891;border-radius:12px;padding:31px 16px;margin:0;text-align:center;color:#b8d2df;font:500 13px/1.7 'Space Grotesk',sans-serif}
+.fieldJournalDisclosure{padding:14px 17px;color:#bed2e0;font:500 12px/1.7 'Space Grotesk',sans-serif}
+.theme-halftone .fieldJournal{color:#2a4253}
+.theme-halftone .fieldJournalHero,.theme-halftone .fieldJournalStats>div,.theme-halftone .fieldJournalToolbar,.theme-halftone .fieldJournalForm,.theme-halftone .fieldJournalFilters,.theme-halftone .fieldJournalEntry,.theme-halftone .fieldJournalDisclosure{background:#fffffff2;border-color:#a4dcd2;box-shadow:0 9px 23px #497a7320}
+.theme-halftone .fieldJournalHero h3,.theme-halftone .fieldJournalStats strong,.theme-halftone .fieldJournalFormHead h4,.theme-halftone .fieldJournalHistoryHeader h4,.theme-halftone .fieldJournalEntry h5{color:#d42078}
+.theme-halftone .fieldJournalEyebrow,.theme-halftone .fieldJournalStats small,.theme-halftone .fieldJournalTarget,.theme-halftone .fieldJournalEntryHead,.theme-halftone .fieldJournalGrid label{color:#a06e26}
+.theme-halftone .fieldJournalHero p,.theme-halftone .fieldJournalHistoryHeader p,.theme-halftone .fieldJournalNotes,.theme-halftone .fieldJournalDisclosure,.theme-halftone .fieldJournalPrivacy{color:#4e6b78}
+.theme-halftone .fieldJournalFacts span,.theme-halftone .fieldJournalEquipment{color:#567383}
+.theme-halftone .fieldJournalHero button,.theme-halftone .fieldJournalToolbar button,.theme-halftone .fieldJournalFormActions button,.theme-halftone .fieldJournalEntryActions button,.theme-halftone .fieldJournalFormHead button{color:#b42d72;background:#f8fffc;border-color:#9ecfc9}
+.theme-halftone .fieldJournalEntryActions button.fieldJournalDelete{color:#b32d61;border-color:#d6adb8;background:#fff3f5}
+.theme-halftone .fieldJournalGrid input,.theme-halftone .fieldJournalGrid select,.theme-halftone .fieldJournalGrid textarea,.theme-halftone .fieldJournalFilters label,.theme-halftone .fieldJournalFilters select{background:#f7fffc;color:#2a4655;border-color:#a3d6ce}
+.theme-halftone .fieldJournalFilters input{color:#2a4655}
+.theme-halftone .fieldJournalGrid input::placeholder,.theme-halftone .fieldJournalGrid textarea::placeholder{color:#718c93}
+.theme-halftone .fieldJournalStatus{background:#eceaf8;color:#7569a2}
+.theme-halftone .fieldJournalStatus--in-progress{background:#f8efcf;color:#976c2a}
+.theme-halftone .fieldJournalStatus--completed{background:#dbf7ec;color:#1c846e}
+@media(max-width:1130px){.fieldJournalStats{grid-template-columns:repeat(3,minmax(0,1fr))}.fieldJournalEntries{grid-template-columns:1fr}}
+@media(max-width:640px){.fieldJournalHero{flex-direction:column;padding:16px}.fieldJournalHero h3{font-size:25px}.fieldJournalStats{grid-template-columns:repeat(2,minmax(0,1fr))}.fieldJournalStats>div{padding:10px}.fieldJournalToolbar{gap:6px}.fieldJournalForm{padding:13px}.fieldJournalGrid{grid-template-columns:1fr}.fieldJournalFilters{flex-direction:column;align-items:stretch}.fieldJournalFilters label{width:100%}.fieldJournalFilters select{width:100%}.fieldJournalEntry{padding:13px}.fieldJournalToolbar button{flex:1}.fieldJournalEntryActions button{flex:1}}
