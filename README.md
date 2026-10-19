@@ -2,6 +2,17 @@
   <img src="src/assets/Aurora%20Planet%20Tracker%20Dashboard.png" alt="Aurora Planet Tracker — Pink & Gold Dashboard Preview" width="100%" />
 </p>
 
+## v3.8.0 — Ultimate Performance & Stability
+
+- **Adaptive graphics:** the 3D Solar System now defaults to AUTO graphics quality. A conservative, capability-based decision uses available CPU cores, device memory, viewport size, coarse pointer, reduced-motion preferences and Save-Data settings. No device identification or extra permissions. Users can override with HIGH or ECO; that selection persists locally.
+- **Foreground-aware rendering:** Solar System and Earth Observation WebGL scenes stop continuous rendering when the app tab is hidden, resuming on return. Earth Observation also suspends its 1-second simulation clock and imagery timeline playback in the background.
+- **Reduced frame allocations:** solar planet camera tracking and Earth Observation's globe-follow camera reuse Three.js vectors rather than allocating transient vectors every animation frame.
+- **Smoother scrolling:** ECO mode omits fixed noise and expensive glass backdrop blur, while dark-mode header blur and fixed cosmic background rendering are simplified. The underlying original wallpaper and all four selectable appearances remain.
+- **Earth Observation integration:** its initial ECO recommendation follows the app's resolved AUTO/HIGH/ECO choice; the module's own graphics toggle remains manually adjustable.
+- **PWA release safety:** cache namespace advanced to `aurora-v3.8.0` to avoid accidentally mixing old application shell/assets after upgrade.
+- **Regression coverage:** `tests/performance.test.mjs` checks AUTO quality selection, low-end devices, accessibility preferences, missing browser metrics and manual overrides. The existing `npm test` and `npm run build` commands remain unchanged.
+- **QA limitation:** actual browser FPS, Android/iOS GPU and production deployment success still require observed device/browser and CI checks; no unverified speed-up percentage is claimed.
+
 ## v3.7.0 — Pink & Gold Typography Halftone Theme + Dashboard
 
 - Adds **Halftone · Pink & Gold Text** as a fourth app appearance, selectable from the existing header Theme dropdown and saved in localStorage. Previous Classic Cyber, Deep Galaxy and Full Galaxy Nebula themes remain selectable. New installations default to Halftone; existing stored preferences are respected.
