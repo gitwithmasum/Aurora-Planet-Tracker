@@ -1,5 +1,5 @@
 import React,{useEffect,useMemo,useRef,useState} from 'react';
-import {BookOpen,CalendarDays,CheckCircle2,Clock3,Download,Edit3,FileText,FolderOpen,MapPin,Play,Plus,Save,Search,Trash2,Upload,X} from 'lucide-react';
+import {BookOpen,CalendarDays,CheckCircle2,Clock3,Download,Edit3,FileText,FolderOpen,MapPin,Play,Plus,Save,Search,Trash2,Upload,X,BarChart3} from 'lucide-react';
 import {OBSERVATION_TARGETS} from './observationForecast.mjs';
 import {DEFAULT_SATELLITES} from './satelliteCatalog.mjs';
 import {JOURNAL_KEY,JOURNAL_FORMAT,JOURNAL_LIMIT,createFieldSession,updateFieldSession,normalizeFieldSessions,mergeFieldSessions,journalSummary,journalJSON,journalCSV,journalTextReport} from './fieldJournalCore.mjs';
@@ -175,6 +175,7 @@ export default function FieldJournal({location,now,onNavigate,onPlanet,onGalaxy,
    <div><small>{label('MARKED SEEN','দেখা হয়েছে বলে চিহ্নিত')}</small><strong>{summary.confirmedByUser}</strong></div>
   </div>
   <div className="fieldJournalToolbar">
+   <button type="button" onClick={()=>onNavigate('Observation Analytics')}><BarChart3 size={15}/>{label('VIEW ANALYTICS','বিশ্লেষণ দেখুন')}</button>
    <button type="button" onClick={newSession}><Plus size={15}/>{label('ADD','যোগ')}</button>
    <button type="button" disabled={!sessions.length} onClick={()=>exportType('json')}><Download size={15}/> JSON</button>
    <button type="button" disabled={!sessions.length} onClick={()=>exportType('csv')}><Download size={15}/> CSV</button>
