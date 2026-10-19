@@ -42,7 +42,7 @@ export default function FieldJournal({location,now,onNavigate,onPlanet,onGalaxy,
  useEffect(()=>{
   const listener=event=>{
    if(event.key!==JOURNAL_KEY)return;
-   setSessions(normalizeFieldSessions(event.newValue?JSON.parseSafe?.(event.newValue)||safeJSON(event.newValue):[]));
+   setSessions(normalizeFieldSessions(event.newValue?safeJSON(event.newValue):[]));
   };
   const safeJSON=text=>{try{return JSON.parse(text)}catch{return []}};
   // Changes in another tab are read, but are never re-broadcast back into storage.
