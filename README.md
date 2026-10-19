@@ -2,6 +2,16 @@
   <img src="src/assets/Aurora%20Planet%20Tracker%20Dashboard.png" alt="Aurora Planet Tracker — Pink & Gold Dashboard Preview" width="100%" />
 </p>
 
+## v3.9.0 — Universal Space Search
+
+- New global **Universal Space Search** panel available from the top bar and Dashboard search launcher; open from any page with **Ctrl+K / Cmd+K**, dismiss using Escape or the close button.
+- Searches the actual **eight app planets**, the **ten galaxies** from the existing Galaxy Observatory catalog, the **validated current satellite catalog** (name, category and NORAD ID), and all ten main application modules.
+- Supports partial names, case-insensitive matching, Messier identifiers (e.g. M31), NORAD identifiers (e.g. 25544), relevant keywords and multi-term lookups. Exact and title matches are prioritized, and results are bounded for responsiveness.
+- Selecting a planet opens its **Planet Intelligence** detail. Selecting a validated spacecraft focuses that craft in **Satellite Tracker**. Selecting a galaxy opens its **Galaxy Observatory** entry. Modules navigate to their existing pages without resetting existing app settings.
+- Satellite orbital rows are loaded **on demand**, only when search opens, and restricted to validated, recent TLE records. If the network/catalog is unavailable, planet, galaxy and module search still work, with an explicit satellite status; no fake spacecraft telemetry is displayed.
+- Responsive, keyboard-operable search dialog provides arrow-key selection, Enter-to-open, Escape-to-close, focus return, theme-aware styling and English/Bangla prompts. No server search history, login or new permission is required.
+- Regression tests in `tests/spaceSearch.test.mjs` cover categories, alias matches, NORAD/Messier IDs, ranking, result limits and offline behavior. Device-level mobile browser QA and live deployment verification remain required.
+
 ## v3.8.0 — Ultimate Performance & Stability
 
 - **Adaptive graphics:** the 3D Solar System now defaults to AUTO graphics quality. A conservative, capability-based decision uses available CPU cores, device memory, viewport size, coarse pointer, reduced-motion preferences and Save-Data settings. No device identification or extra permissions. Users can override with HIGH or ECO; that selection persists locally.
