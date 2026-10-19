@@ -12,7 +12,8 @@ export const SPACE_MODULES=[
  {name:'Galaxy Observatory',terms:'andromeda galaxy messier deep space'},
  {name:'Space Intelligence',terms:'research scientific sGP4 tle freshness science sky observer inclination eccentricity orbit analysis'},
  {name:'Observation Planner',terms:'astronomy observing viewing window night sky visibility schedule calendar ics saved shortlist twilight moon altitude'},
- {name:'Satellite Weather',terms:'satellite pass sunlight shadow cloud rain weather forecast meteoblue open meteo visibility observation planner'}
+ {name:'Satellite Weather',terms:'satellite pass sunlight shadow cloud rain weather forecast meteoblue open meteo visibility observation planner'},
+ {name:'Field Journal',terms:'astronomy sessions observations field log notes sightings report history backup csv json research'}
 ];
 
 const normalize=value=>String(value??'').normalize('NFKC').toLocaleLowerCase().trim().replace(/\s+/g,' ');
