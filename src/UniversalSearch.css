@@ -30,3 +30,27 @@
 @media(max-width:1000px){.globalSearchButton kbd{display:none}}
 @media(max-width:720px){.globalSearchButton{padding:8px}.globalSearchButton .globalSearchLabel{display:none}.universalSearchBackdrop{padding:10px}.universalSearch{max-height:calc(100dvh - 20px);border-radius:15px}.universalSearchTop{padding:13px}.universalSearchInput{margin:0 11px}.universalSearchMeta,.universalSearchFooter{padding:9px 12px}.universalSearchType{font-size:9px}.universalSearchResults button{gap:8px;padding:9px 6px}}
 @media(prefers-reduced-motion:reduce){.universalSearchBackdrop,.universalSearch{scroll-behavior:auto}}
+
+
+/* Use readable white/aqua surfaces in the new Halftone theme without blurring. */
+.theme-halftone .universalSearch{background:#fffefb;border-color:#8fcfc8;color:#283d50;box-shadow:0 25px 80px #28585655}
+.theme-halftone .universalSearchTop h2{color:#d92278}
+.theme-halftone .universalSearchTop small,.theme-halftone .universalSearchType{color:#a87423}
+.theme-halftone .universalSearchClose{background:#f1fffc;border-color:#acd5cf;color:#bb2873}
+.theme-halftone .universalSearchInput{background:#f6fdfa;border-color:#7bcabc;color:#168f84}
+.theme-halftone .universalSearchInput input{color:#304456}
+.theme-halftone .universalSearchInput input::placeholder{color:#657b87}
+.theme-halftone .universalSearchInput kbd{color:#947022;border-color:#accfc7}
+.theme-halftone .universalSearchMeta,.theme-halftone .universalSearchFooter,.theme-halftone .universalSearchHint{color:#526e7b}
+.theme-halftone .universalSearchResults button:hover,
+.theme-halftone .universalSearchResults button.active,
+.theme-halftone .universalSearchResults button:focus-visible{background:#e5f9f3;border-color:#81cdbd}
+.theme-halftone .universalSearchIcon{background:#e4f7f2;color:#168f84}
+.theme-halftone .universalSearchItemText strong{color:#d92278}
+.theme-halftone .universalSearchItemText small{color:#4c6473}
+.theme-halftone .universalSearchFooter{border-color:#b5ded5}
+@media(max-width:600px){
+ .app header .globalSearchButton{min-width:35px;min-height:35px;padding:7px}
+ .app .headerTools{min-width:0}
+}
+@media(max-width:390px){.app header .globalSearchButton{min-width:32px;padding:6px}}
