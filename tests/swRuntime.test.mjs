@@ -9,7 +9,7 @@ const base=origin+'/Aurora-Planet-Tracker/';
 const prefix=base+'assets/';
 const initialHTML='<html><head><link href="/Aurora-Planet-Tracker/assets/style-a.css" rel="stylesheet"></head><body><script type="module" src="/Aurora-Planet-Tracker/assets/index-a.js"></script></body></html>';
 const changedHTML='<html><body><script type="module" src="/Aurora-Planet-Tracker/assets/index-b.js"></script></body></html>';
-const list={format:'aurora-offline-assets-v1',version:'4.8.0',
+const list={format:'aurora-offline-assets-v1',version:'4.8.1',
  assets:['assets/index-a.js','assets/style-a.css','assets/SolarScene-a.js']};
 
 function swHarness({missing=[],manifest=list}={}){
@@ -80,7 +80,7 @@ function swHarness({missing=[],manifest=list}={}){
 test('install caches a version-coherent shell and all listed lazy JS/CSS',async()=>{
  const env=swHarness();
  await env.dispatch('install');
- const shell=await env.caches.open('aurora-v4.8.0-shell');
+ const shell=await env.caches.open('aurora-v4.8.1-shell');
  assert.equal((await (await shell.match(base)).text()),initialHTML);
  for(const path of list.assets)assert.ok(await shell.match(new URL(path,base)));
  await env.dispatch('activate');
@@ -120,8 +120,8 @@ test('scope and private JSON APIs are bypassed and never cached',async()=>{
  assert.equal(await env.dispatch('fetch',{url:base+'api/private.json'}),undefined);
  assert.equal(await env.dispatch('fetch',{url:origin+'/other/assets/x.js'}),undefined);
  assert.equal(await env.dispatch('fetch',{url:base+'api/private.json?token=1'}),undefined);
- const shell=await env.caches.open('aurora-v4.8.0-shell');
- const runtime=await env.caches.open('aurora-v4.8.0-runtime');
+ const shell=await env.caches.open('aurora-v4.8.1-shell');
+ const runtime=await env.caches.open('aurora-v4.8.1-runtime');
  assert.equal(await shell.match(base+'api/private.json'),undefined);
  assert.equal(await runtime.match(base+'api/private.json'),undefined);
 });
