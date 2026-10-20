@@ -20,7 +20,7 @@ test('device QA is discoverable in sidebar, dashboard, search and both languages
 test('device diagnostics do not ask for GPS, camera, notifications or upload private data',()=>{
  const ui=source('src/DeviceQACenter.jsx');
  assert.doesNotMatch(ui,/getCurrentPosition\(|getUserMedia\(|requestPermission\(|fetch\(/);
- assert.match(ui,/storage\.estimate/);
+ assert.match(ui,/storage\?\.estimate/);
  assert.match(ui,/navigator\.serviceWorker/);
  assert.match(ui,/browserFrameCadence/);
  assert.match(ui,/createObjectURL/);
