@@ -28,7 +28,13 @@ jobs:
         with:
           node-version: '22'
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        run: |
+          npm install --no-audit --no-fund || {
+            echo "Initial npm registry/dependency resolution failed; retrying once after cache verification"
+            npm cache verify || true
+            sleep 8
+            npm install --no-audit --no-fund
+          }
       - name: Test and build
         run: npm run qa
       - name: Install headless Chromium for browser QA
