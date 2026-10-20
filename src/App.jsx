@@ -106,6 +106,30 @@ useEffect(()=>{
 },[]);
 useEffect(()=>()=>{stream.current?.getTracks().forEach(t=>t.stop())},[]);
 useEffect(()=>{
+ if(!menu)return;
+ if(window.matchMedia('(min-width: 769px)').matches){setMenu(false);return}
+ const before=document.body.style.overflow;
+ document.body.style.overflow='hidden';
+ const sidebar=document.getElementById('auroraSidebar');
+ const focusable=()=>[...sidebar?.querySelectorAll('button:not([disabled]),a[href],select:not([disabled]),input:not([disabled])')||[]].filter(node=>node.getClientRects().length>0);
+ focusable()[0]?.focus();
+ const onKeyDown=event=>{
+  if(event.key==='Escape'){
+   event.preventDefault();
+   setMenu(false);
+   document.querySelector('.sidebarMobileToggle')?.focus();
+  }
+  if(event.key!=='Tab')return;
+  const items=focusable();
+  if(!items.length)return;
+  const first=items[0],last=items[items.length-1];
+  if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}
+  else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
+ };
+ document.addEventListener('keydown',onKeyDown);
+ return()=>{document.body.style.overflow=before;document.removeEventListener('keydown',onKeyDown)};
+},[menu]);
+useEffect(()=>{
  const shortcut=event=>{
   if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='k'){
    event.preventDefault();
