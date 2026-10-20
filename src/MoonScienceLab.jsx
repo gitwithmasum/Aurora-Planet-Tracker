@@ -104,7 +104,7 @@ export default function MoonScienceLab({moon}){
  if(!moon)return null;
  const media=moonMedia(moon.id);
  return <section className="moonScienceLab" aria-label={'Moon science lab '+moon.name}>
-  <div className="moonLabHeader"><div><span>MOONVERSE / v5.3 / JPL SCIENCE + GEOLOGY</span><h4><Layers3 size={20}/>{label('Advanced Moon Intelligence','উন্নত উপগ্রহ গবেষণা')}</h4></div>
+  <div className="moonLabHeader"><div><span>MOONVERSE / v5.4 / JPL SCIENCE + GEOLOGY</span><h4><Layers3 size={20}/>{label('Advanced Moon Intelligence','উন্নত উপগ্রহ গবেষণা')}</h4></div>
    <span className="moonLabVersion">{moon.name.toUpperCase()} · {physicalParameters(moon)?.naifCode||'—'}</span>
   </div>
   <div className="moonLabTabs" role="tablist" aria-label="Moon scientific investigations">
