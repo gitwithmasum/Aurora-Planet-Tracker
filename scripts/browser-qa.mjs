@@ -93,6 +93,28 @@ try{
   await page.getByRole('heading',{name:/No natural moons/}).waitFor();
   await checkOverflow(page);
  });
+ await run('horizons-jpl-synthetic-fixture-and-safe-fallback',desktop,async page=>{
+  // Isolated browser fixture, NOT a NASA/JPL response and never written to dist.
+  const hour=60*60*1000,baseline=Math.floor(Date.now()/hour)*hour-hour;
+  const rows=Array.from({length:4},(_,i)=>[baseline+i*hour,
+   [671100,10000+i*5000,5000+i*2000],[.01,.2,.02]]);
+  const fixture={format:'aurora-horizons-v1',schema:1,createdAt:new Date().toISOString(),
+   frame:'ICRF',timeScale:'UTC',units:'km',stepMinutes:60,
+   targets:{europa:{naif:502,center:599,frame:'ICRF',rows}}};
+  await page.route('**/orbital-data/horizons-v5.2.json',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(fixture)}));
+  await navigate(page,'Moonverse');
+  await page.locator('.moonverseEphemerisStatus').getByText(/verified jpl snapshot captured/i).waitFor({timeout:20000});
+  const scientific=page.getByRole('button',{name:'JPL HORIZONS SNAPSHOT'});
+  await scientific.waitFor({state:'visible'});
+  assert.equal(await scientific.isDisabled(),false);
+  await scientific.click();
+  await page.getByText(/JPL SAMPLED VECTORS/).waitFor({timeout:20000});
+  await page.getByRole('button',{name:/Europa.*km radius/i}).click();
+  await page.getByText(/Planet-relative distance/).waitFor();
+  await page.getByRole('button',{name:'EDUCATIONAL ORBITS'}).click();
+  await page.getByText(/ILLUSTRATIVE MODEL/).waitFor();
+  await checkOverflow(page);
+ });
  await run('earth-observation-return-dashboard-without-portal-errors',desktop,async page=>{
   await page.locator('#auroraSidebar button[title="Earth Observation"]').click();
   await page.getByRole('heading',{name:'Earth Mission View'}).waitFor({timeout:25000});
