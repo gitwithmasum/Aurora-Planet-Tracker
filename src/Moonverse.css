@@ -87,3 +87,23 @@
 .theme-halftone .moonverseCatalogFilters select{background:#fff;color:#a72c72;border-color:#b4d5cb}
 .theme-halftone .moonverseCatalogFilters label{color:#a67438}
 @media(max-width:420px){.moonverseCatalogFilters{grid-template-columns:repeat(2,minmax(0,1fr));padding:0 8px 8px}}
+
+
+/* v5.2: separate ICRF scientific positions from educational orbital mode. */
+.moonverseHorizonsModes{display:flex;flex-wrap:wrap;gap:7px;align-items:center;padding:12px 12px 7px}
+.moonverseHorizonsModes button{border:1px solid #54728d;border-radius:8px;background:#142f47;color:#cce3ee;min-height:42px;padding:9px 11px;cursor:pointer;font:800 11px Rajdhani,sans-serif}
+.moonverseHorizonsModes button.active{border-color:#e3a8c9;background:#422b4a;color:#ffe1ef}
+.moonverseHorizonsModes button:disabled{opacity:.5;cursor:not-allowed}
+.moonverseEphemerisStatus{font:600 11px/1.6 'Space Grotesk',sans-serif;color:#cfdded;padding:7px 13px 11px;overflow-wrap:anywhere}
+.moonverseEphemerisStatus strong{color:#eed0a0}
+.moonverseEphemerisDetail{border:1px solid #44728c;background:#112f47;border-radius:10px;padding:13px;min-width:0}
+.moonverseEphemerisDetail h5{font:800 17px Rajdhani,sans-serif;color:#f4b7d9;margin:0 0 9px}
+.moonverseEphemerisDetail p{font:500 12px/1.7 'Space Grotesk',sans-serif;color:#c3ddec;overflow-wrap:anywhere}
+.moonverseEphemerisDetail a{font:800 11px Rajdhani,sans-serif;color:#b4e5ff}
+.theme-halftone .moonverseHorizonsModes button{background:#fff;color:#b22d79;border-color:#a6ccc7}
+.theme-halftone .moonverseHorizonsModes button.active{background:#f7e3f1}
+.theme-halftone .moonverseEphemerisStatus,.theme-halftone .moonverseEphemerisDetail p{color:#4a6673}
+.theme-halftone .moonverseEphemerisDetail{background:#f2faf8;border-color:#b0cfc8}
+.theme-halftone .moonverseEphemerisDetail h5{color:#bf2a78}
+.theme-halftone .moonverseEphemerisDetail a{color:#1b6a88}
+@media(max-width:480px){.moonverseHorizonsModes button{flex:1 1 100px}.moonverseSceneControls input[type=datetime-local]{max-width:180px;min-width:0}}
