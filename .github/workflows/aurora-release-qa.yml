@@ -31,6 +31,10 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Test and build
         run: npm run qa
+      - name: Root-domain static regression (Vercel)
+        run: |
+          VERCEL=1 npm run build
+          VERCEL=1 node scripts/smoke-static-build.mjs
       - name: Report build output size
         if: success()
         run: du -sh dist
