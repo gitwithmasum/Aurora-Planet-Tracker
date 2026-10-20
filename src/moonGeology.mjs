@@ -12,7 +12,7 @@ const GEOLOGY={
  europa:{
   label:'Fractured ocean-world ice',ocean:'strong-evidence',
   features:[
-   FEATURE('conamara','Conamara Chaos','chaos terrain','Broken ice plates displaced and rotated within younger, disrupted terrain; the process may involve warm ice or water.','https://science.nasa.gov/photojournal/pj-chaotic-terrain-on-europa-in-very-high-resolution/','observed','PIA01177',{latitudeN:8,longitudeW:274,approximate:true}),
+   FEATURE('conamara','Conamara Chaos','chaos terrain','Broken ice plates displaced and rotated within younger, disrupted terrain; the process may involve warm ice or water.','https://science.nasa.gov/photojournal/pj-chaotic-terrain-on-europa-in-very-high-resolution/','observed','PIA01177'),
    FEATURE('europa-ridges','Ridges and fracture bands','ice tectonics','Widespread cracks and bands record stretching, compression and tidal stresses in the ice crust.','https://science.nasa.gov/science-research/landscapes-and-features-of-europa/'),
    FEATURE('europa-ice','Ice shell thickness','interior uncertainty','Europa’s ice-shell thickness remains debated; surface terrain cannot uniquely determine a layer thickness.','https://science.nasa.gov/science-research/thick-or-thin-ice-shell-on-europa/','inferred')
   ],
@@ -67,7 +67,7 @@ const GEOLOGY={
   label:'Ancient cratered ice-rock surface',ocean:'hypothetical',
   features:[
    FEATURE('valhalla','Valhalla multi-ring basin','impact structure','Enormous concentric impact rings recorded by Voyager and Galileo; the ring troughs are interpreted as crustal fractures.','https://science.nasa.gov/photojournal/the-valhalla-multi-ring-structure-on-callisto/','observed','PIA01649'),
-   FEATURE('asgard','Asgard basin','impact basin','Galileo imaged bright inner plains and discontinuous concentric troughs in the Asgard impact structure.','https://science.nasa.gov/photojournal/asgard-multi-ring-structure-on-callisto/','observed','PIA01634',{latitudeN:30,longitudeW:142,approximate:true})
+   FEATURE('asgard','Asgard basin','impact basin','Galileo imaged bright inner plains and discontinuous concentric troughs in the Asgard impact structure.','https://science.nasa.gov/photojournal/asgard-multi-ring-structure-on-callisto/','observed','PIA01634')
   ],
   layers:[
    LAYER('surface','Heavily cratered crust','Water ice / rocky material','Ancient cratered ice-rock surface documented by Voyager and Galileo.','observed','#b7c8cf'),
