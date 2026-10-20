@@ -141,3 +141,39 @@
   scroll-behavior:auto!important;
  }
 }
+
+
+/* v4.8 cross-device stability. Avoid fixed-height header clipping and iOS
+   focused-input zoom; preserve horizontal content rather than hiding it. */
+@media(max-width:768px){
+ .app > header{
+  height:auto;min-height:70px;padding:9px 12px;
+  flex-wrap:wrap;align-content:center;row-gap:7px;
+ }
+ .app > header .brand{min-width:0;max-width:calc(100% - 54px);letter-spacing:1px}
+ .app > header .brand > span:last-child{min-width:0;overflow-wrap:anywhere}
+ .app > header .brand small{letter-spacing:.6px}
+ .app > header .headerTools{
+  width:100%;min-width:0;justify-content:flex-start;flex-wrap:wrap;gap:6px;
+ }
+ .app > header .globalSearchButton,
+ .app > header .languageSwitch select,
+ .app > header .galaxyThemeControl select,
+ .app > header .pwaActions button{min-height:42px}
+ .app > header .galaxyThemeControl select{max-width:min(150px,42vw)}
+ .app > header .languageSwitch select{max-width:110px}
+ .app .auroraMain{min-width:0;max-width:100%;padding:16px 12px 32px}
+ .app .auroraMain .topline{min-width:0;flex-wrap:wrap}
+ .app .auroraMain .topline > div{min-width:0}
+ .app .auroraMain .topline h2{overflow-wrap:anywhere}
+ .app .auroraMain :where(input,textarea,select){font-size:max(16px,1em)}
+ .app .auroraMain :where(img,canvas){max-width:100%}
+ .app .scenecontrols,.app .scene-options{flex-wrap:wrap}
+ .app .viewport{max-width:100%}
+}
+@media(max-width:360px){
+ .app > header .brand{font-size:12px}
+ .app > header .brand small{display:none}
+ .app > header .galaxyThemeControl span,.app > header .languageSwitch span{display:none}
+ .app > header .headerTools{justify-content:space-between}
+}
