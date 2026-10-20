@@ -82,3 +82,12 @@ test('releases pin compatible dependencies and do not bypass peer checks',()=>{
   assert.doesNotMatch(yaml,/--legacy-peer-deps|--force/);
  }
 });
+
+
+test('Earth Observation avoids DOM portal teardown in its 3D labels',()=>{
+ const scene=source('src/EarthObservation.jsx');
+ const browser=source('scripts/browser-qa.mjs');
+ assert.match(scene,/import \{OrbitControls,Stars,Text\} from '@react-three\/drei'/);
+ assert.doesNotMatch(scene,/<Html\b|<\/Html>/);
+ assert.match(browser,/earth-observation-return-dashboard-without-portal-errors/);
+});
