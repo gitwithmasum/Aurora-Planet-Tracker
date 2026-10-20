@@ -1,0 +1,41 @@
+.deviceQA{display:grid;gap:16px;min-width:0;color:#d9f0f8}
+.deviceQAHero,.deviceQAStats>div,.deviceQAPanel,.deviceQAFoot{border:1px solid #3b6b88;background:#0b2239ef;border-radius:14px}
+.deviceQAHero{padding:21px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;background:linear-gradient(115deg,#1a2448,#102b42)}
+.deviceQAEyebrow{font:800 11px Rajdhani,sans-serif;color:#ddc18e;letter-spacing:2px}
+.deviceQAHero h3,.deviceQAPanel h4{display:flex;gap:10px;align-items:center;color:#f0b7db;font:800 clamp(22px,3vw,31px) Rajdhani,sans-serif;margin:9px 0}
+.deviceQAHero p,.deviceQATitle p,.deviceQAEmpty,.deviceQANote,.deviceQAFoot{font:500 12px/1.7 'Space Grotesk',sans-serif;color:#b9d3e2}
+.deviceQA button{display:inline-flex;align-items:center;justify-content:center;gap:7px;background:#153c56;color:#dbecf6;border:1px solid #5686a1;border-radius:8px;padding:10px 12px;cursor:pointer;font:800 12px Rajdhani,sans-serif;min-height:42px}
+.deviceQA button:disabled{opacity:.5;cursor:wait}
+.deviceQA button:hover:not(:disabled){border-color:#ecc19c}
+.deviceQAStats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.deviceQAStats>div{padding:15px;display:grid;gap:8px;min-width:0}
+.deviceQAStats span{font:800 11px Rajdhani,sans-serif;color:#bcd3df}
+.deviceQAStats strong{font:800 25px Rajdhani,sans-serif;color:#f6c1e0}
+.deviceQAPanel{padding:18px}
+.deviceQATitle{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.deviceQAPanel h4{font-size:22px;margin:0}
+.deviceQATitle p{margin:8px 0}
+.deviceQAProbeGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;margin:16px 0}
+.deviceQAProbeGrid>div{background:#123348;border:1px solid #386a83;padding:12px;border-radius:10px;min-width:0;display:grid;gap:7px}
+.deviceQAProbeGrid small{font:700 11px Rajdhani,sans-serif;color:#abcbd9}
+.deviceQAProbeGrid strong{font:800 16px Rajdhani,sans-serif;color:#f0c58e;overflow-wrap:anywhere}
+.deviceQANote{display:flex;align-items:flex-start;gap:8px;margin:14px 0 0}.deviceQANote svg{flex:none;color:#eab7d4}
+.deviceQAChecklist{display:grid;gap:8px;margin-top:14px}
+.deviceQACheck{display:grid;grid-template-columns:28px minmax(0,1fr) minmax(136px,190px);align-items:center;gap:12px;background:#112f46;border:1px solid #335d75;padding:10px;border-radius:9px}
+.deviceQACheck>span{font:800 13px Rajdhani,sans-serif;color:#e9be89}
+.deviceQACheck label{font:600 12px/1.5 'Space Grotesk',sans-serif;color:#d1e8f2}
+.deviceQACheck select{background:#0e273b;color:#f4c5dc;border:1px solid #4e7790;border-radius:6px;padding:9px;min-width:0;min-height:42px;font:700 12px Rajdhani,sans-serif}
+.deviceQAActions{display:flex;gap:10px;flex-wrap:wrap}
+.deviceQAStatus,.deviceQAError{display:flex;align-items:flex-start;gap:8px;padding:11px 13px;border-radius:8px;font:600 12px/1.5 'Space Grotesk',sans-serif;margin:0}
+.deviceQAStatus{background:#113b34;color:#bce6ca}.deviceQAError{background:#43272b;color:#ffd2c6}
+.deviceQAFoot{display:flex;align-items:flex-start;gap:9px;padding:13px;margin:0}
+.deviceQAFoot svg{flex:0 0 auto}
+.theme-halftone .deviceQAHero,.theme-halftone .deviceQAStats>div,.theme-halftone .deviceQAPanel,.theme-halftone .deviceQAFoot{background:#fffffff0;color:#466573;border-color:#a4d3d0}
+.theme-halftone .deviceQAHero h3,.theme-halftone .deviceQAPanel h4,.theme-halftone .deviceQAStats strong{color:#cf277c}
+.theme-halftone .deviceQAHero p,.theme-halftone .deviceQATitle p,.theme-halftone .deviceQAEmpty,.theme-halftone .deviceQANote,.theme-halftone .deviceQAFoot{color:#4c6673}
+.theme-halftone .deviceQAProbeGrid>div,.theme-halftone .deviceQACheck{background:#effaf8;border-color:#abd2ca}
+.theme-halftone .deviceQAProbeGrid strong,.theme-halftone .deviceQACheck>span{color:#946c29}
+.theme-halftone .deviceQAProbeGrid small,.theme-halftone .deviceQACheck label{color:#425f68}
+.theme-halftone .deviceQA button,.theme-halftone .deviceQACheck select{background:#fffafc;color:#be2671;border-color:#a7d4cd}
+@media(max-width:720px){.deviceQAHero{flex-direction:column}.deviceQAStats{grid-template-columns:repeat(2,minmax(0,1fr))}.deviceQACheck{grid-template-columns:23px minmax(0,1fr)}.deviceQACheck select{grid-column:2;width:100%}}
+@media(max-width:420px){.deviceQAPanel,.deviceQAHero{padding:13px}.deviceQAProbeGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
