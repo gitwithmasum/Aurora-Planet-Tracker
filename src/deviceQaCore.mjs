@@ -49,5 +49,5 @@ export function qaReport({qa,probes,platform,createdAt,version}){
   probeResults:evidence,
   checklist:normalized.checks,
   summary:qaSummary(normalized),
-  disclaimer:'Do not interpret browser-frame cadence as WebGL GPU FPS. Install, offline and sensor checks require physical-device verification. No notes, location, IP, account or user-agent string is exported.'};
+  disclaimer:'Browser frame cadence is NOT WebGL GPU FPS. Install, offline and sensor checks require physical-device verification. No notes, location, IP, account or user-agent string is exported.'};
 }
