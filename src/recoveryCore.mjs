@@ -1,4 +1,4 @@
-// v4.6 — versioned, local-only, deliberately scoped recovery bundles.
+// v4.7 — versioned, local-only, loss-preventing recovery transactions.
 // Never claim to include unrelated modules, cloud data, or weather forecasts.
 import {JOURNAL_KEY,normalizeFieldSessions,mergeFieldSessions,JOURNAL_LIMIT} from './fieldJournalCore.mjs';
 import {normalizeWatchlist} from './observationPlannerCore.mjs';
@@ -22,7 +22,7 @@ export function createRecoveryBundle(storage,validIds,createdAt=new Date().toISO
  if(!Array.isArray(journalInput)||!Array.isArray(watchInput))throw Error('Existing local journal or watchlist format is invalid; backup not exported');
  const sessions=normalizeFieldSessions(journalInput);
  const watchlist=normalizeWatchlist(watchInput,validIds);
- if(sessions.length!==journalInput.length||watchlist.length!==new Set(watchInput).size){
+ if(sessions.length!==journalInput.length||watchlist.length!==watchInput.length){
   throw Error('Some locally saved records are malformed or duplicated. Export the original site data separately before repairing.');
  }
  const preferences={};
@@ -44,7 +44,7 @@ export function validateRecoveryBundle(input,validIds){
  const sessions=normalizeFieldSessions(data.sessions);
  if(sessions.length!==data.sessions.length)throw Error('Some journal records are invalid or duplicated; backup rejected');
  const watchlist=normalizeWatchlist(data.watchlist,validIds);
- if(watchlist.length!==new Set(data.watchlist).size)throw Error('Backup contains unknown watchlist targets; backup rejected');
+ if(watchlist.length!==data.watchlist.length)throw Error('Backup contains unknown or duplicated watchlist targets; backup rejected');
  const preferences={};
  for(const [key,allowed] of Object.entries(RECOVERY_PREFERENCES)){
   const value=data.preferences[key];
@@ -64,15 +64,31 @@ export function applyRecoveryBundle(storage,bundle,validIds,{mode='merge'}={}){
  if(!['merge','replace'].includes(mode))throw Error('Unsupported restore mode');
  const normalized=validateRecoveryBundle(bundle,validIds);
  const before=new Map(keys.map(key=>[key,storage.getItem(key)]));
- const existing=before.get(JOURNAL_KEY)===null?[]:normalizeFieldSessions(readJSON(before.get(JOURNAL_KEY)));
- const currentWatch=before.get(WATCH_KEY)===null?[]:normalizeWatchlist(readJSON(before.get(WATCH_KEY)),validIds);
+ const originalSessionData=before.get(JOURNAL_KEY)===null?[]:readJSON(before.get(JOURNAL_KEY));
+ const originalWatchData=before.get(WATCH_KEY)===null?[]:readJSON(before.get(WATCH_KEY));
+ if(!Array.isArray(originalSessionData)||!Array.isArray(originalWatchData)){
+  throw Error('Existing browser data has an unsupported shape. No records changed.');
+ }
+ const existing=normalizeFieldSessions(originalSessionData);
+ const currentWatch=normalizeWatchlist(originalWatchData,validIds);
+ if(existing.length!==originalSessionData.length||currentWatch.length!==originalWatchData.length){
+  throw Error('Existing browser data contains duplicates or invalid records. No records changed.');
+ }
+ if(mode==='merge'){
+  const count=new Set([...existing,...normalized.sessions].map(s=>s.id)).size;
+  if(count>JOURNAL_LIMIT)throw Error('Merge would exceed '+JOURNAL_LIMIT+' sessions and discard records. Export and free space first; no data changed.');
+ }
  const sessions=mode==='merge'?mergeFieldSessions(existing,normalized.sessions):normalized.sessions;
  const watchlist=mode==='merge'?normalizeWatchlist([...currentWatch,...normalized.watchlist],validIds):normalized.watchlist;
  const actions=[[JOURNAL_KEY,JSON.stringify(sessions)],[WATCH_KEY,JSON.stringify(watchlist)]];
  if(mode==='replace')for(const [key,value] of Object.entries(normalized.preferences))actions.push([key,value]);
  const written=[];
  try{
-  for(const [key,value] of actions){storage.setItem(key,value);written.push(key)}
+  for(const [key,value] of actions){
+   written.push(key); // Include possibly partial writes in rollback.
+   storage.setItem(key,value);
+   if(storage.getItem(key)!==value)throw Error('Browser did not retain verified data for '+key);
+  }
  }catch(error){
   const rollbackErrors=[];
   for(const key of written.reverse()){
