@@ -5,7 +5,7 @@ const file=name=>readFileSync(new URL('../'+name,import.meta.url),'utf8');
 
 test('service worker uses a versioned same-origin cache without user records',()=>{
  const sw=file('public/sw.js');
- assert.match(sw,/const VERSION='aurora-v5\.3\.0'/);
+ assert.match(sw,/const VERSION='aurora-v5\.4\.0'/);
  assert.match(sw,/isLocal=url=>url\.origin===self\.location\.origin/);
  assert.doesNotMatch(sw,/localStorage|indexedDB|sessionStorage/);
  assert.match(sw,/const SHELL=VERSION\+'-shell'/);
