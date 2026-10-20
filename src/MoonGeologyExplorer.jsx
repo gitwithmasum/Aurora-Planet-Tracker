@@ -1,9 +1,11 @@
-import React,{useEffect,useId,useMemo,useRef,useState} from 'react';
+import React,{Suspense,lazy,useEffect,useId,useMemo,useRef,useState} from 'react';
 import {ArrowUpRight,Camera,FlaskConical,Layers3,MapPin,RefreshCw,ShieldCheck,Waves} from 'lucide-react';
 import {geologyForMoon,featuresForMoon,geologySummary} from './moonGeology.mjs';
+import {nomenclatureForFeature,nomenclatureForMoon} from './moonNomenclature.mjs';
 import {nasaImageQuery,extractNasaThumbnail} from './moonMedia.mjs';
 import {useLanguage} from './i18n.jsx';
 import './MoonGeologyExplorer.css';
+const MoonCoordinateGrid=lazy(()=>import('./MoonCoordinateGrid.jsx'));
 
 const EVIDENCE={observed:{en:'OBSERVED',bn:'পর্যবেক্ষিত'},inferred:{en:'INFERRED',bn:'প্রমাণভিত্তিক অনুমান'},hypothetical:{en:'HYPOTHESIS',bn:'হাইপোথিসিস'}};
 function Evidence({level,bn}){
@@ -74,18 +76,21 @@ export default function MoonGeologyExplorer({moon}){
  const {language}=useLanguage(),bn=language==='bn';
  const profile=geologyForMoon(moon?.id);
  const [view,setView]=useState('surface');
+ const [showMap,setShowMap]=useState(false);
  const [featureId,setFeatureId]=useState(null),[layerId,setLayerId]=useState(null);
- useEffect(()=>{setFeatureId(null);setLayerId(null);setView('surface')},[moon?.id]);
+ useEffect(()=>{setFeatureId(null);setLayerId(null);setView('surface');setShowMap(false)},[moon?.id]);
  if(!moon)return null;
  if(!profile)return <section className="moonGeoEmpty" aria-label="Moon geological profile unavailable">
   <Layers3 size={24}/><h5>{moon.name} — {bn?'গবেষণা তথ্য সীমিত':'Geological research still being curated'}</h5>
   <p>{bn?'এই উপগ্রহের পর্যাপ্ত যাচাইকৃত ভূতাত্ত্বিক feature বা interior model এখনো catalog-এ নেই। কাল্পনিক cross-section দেখানো হবে না।':'No verified regional features or defensible interior layering have been curated for this moon. No fictitious cutaway is displayed.'}</p>
  </section>;
  const feature=profile.features.find(x=>x.id===featureId)||profile.features[0];
+ const verified=nomenclatureForFeature(moon.id,feature.id);
+ const matchedSites=nomenclatureForMoon(moon.id);
  const layer=profile.layers.find(x=>x.id===layerId)||profile.layers[0];
  const summary=geologySummary();
  return <section className="moonGeoExplorer" aria-label={'Surface and interior explorer for '+moon.name}>
-  <div className="moonGeoHeader"><div><span>MOONVERSE / v5.3 / SURFACE & INTERIOR</span>
+  <div className="moonGeoHeader"><div><span>MOONVERSE / v5.4 / SURFACE & INTERIOR</span>
    <h5><Layers3 size={21}/>{moon.name} · {bn?'ভূতত্ত্ব ও অভ্যন্তরীণ গঠন':'Surface & Interior Explorer'}</h5>
    <p>{profile.label} · {profile.features.length} {bn?'টি NASA-নথিভুক্ত স্থান/বৈশিষ্ট্য':'NASA-supported geological features'}</p></div>
    <div className="moonGeoOcean"><Waves size={16}/>{profile.ocean==='none-detected'?'NO CONFIRMED WATER OCEAN':profile.ocean==='hypothetical'?'OCEAN HYPOTHESIS':profile.ocean==='inferred'?'OCEAN INFERRED':'STRONG OCEAN EVIDENCE'}</div>
@@ -101,10 +106,18 @@ export default function MoonGeologyExplorer({moon}){
     </button>)}
    </div>
    <article className="moonGeoFeatureDetail">
+    <div className="moonGeoMapControls">
+     <button type="button" aria-pressed={showMap} onClick={()=>setShowMap(v=>!v)}>
+      <MapPin size={15}/>{showMap?(bn?'স্থানাঙ্ক লুকাও':'HIDE COORDINATE GRID'):(bn?'IAU স্থানাঙ্ক দেখাও':'SHOW IAU COORDINATE GRID')}
+     </button><small>{matchedSites.length} {bn?'টি USGS-যাচাইকৃত স্থান':'USGS-verified centers'}</small>
+    </div>
+    {showMap&&<Suspense fallback={<p className="moonGeoSmall" role="status">Loading IAU location grid…</p>}>
+     <MoonCoordinateGrid moonId={moon.id} selectedFeatureId={feature.id} onFeatureSelect={setFeatureId}/>
+    </Suspense>}
     <div className="moonGeoDetailTitle"><span>GEOLOGICAL FEATURE</span><h5>{feature.name}</h5><Evidence level={feature.evidence} bn={bn}/></div>
     <p>{feature.description}</p>
-    {feature.coords?<p className="moonGeoSmall"><MapPin size={13}/>{bn?'NASA-র আনুমানিক region center':'Approximate NASA region center'}: {feature.coords.latitudeN}° N, {feature.coords.longitudeW}° W · {bn?'এটি georeferenced map marker নয়':'Not a globe-pinned coordinate'}</p>:
-     <p className="moonGeoSmall">{bn?'যাচাই করা latitude/longitude নেই; তাই কোনো কাল্পনিক map pin নয়।':'No verified feature coordinates are included. No fabricated location pins or exact surface projection.'}</p>}
+    {verified?<p className="moonGeoSmall"><MapPin size={13}/>{bn?'USGS/IAU অনুমোদিত feature center':'USGS/IAU approved feature center'}: {verified.latitude}° {verified.latitude>=0?'N':'S'}, {verified.longitudeWest}° W · <a href={verified.source} target="_blank" rel="noopener noreferrer">IAU #{verified.usgsId}</a> · {bn?'এলাকার সীমানা নয়':'Not a feature boundary'}</p>:
+     <p className="moonGeoSmall">{bn?'যাচাইকৃত IAU latitude/longitude নেই; কাল্পনিক map pin নয়।':'No verified IAU coordinates are curated for this feature. No fabricated location pins or exact surface projection.'}</p>}
     <FeatureImage key={feature.id} feature={feature} bn={bn}/>
     <a href={feature.source} target="_blank" rel="noopener noreferrer">NASA SCIENTIFIC SOURCE <ArrowUpRight size={14}/></a>
    </article>
