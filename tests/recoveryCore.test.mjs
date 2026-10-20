@@ -81,3 +81,41 @@ test('corrupt stored records stop export instead of creating a silently incomple
  const old=fakeStorage({[WATCH_KEY]:JSON.stringify(['planet:Mars','unknown'])});
  assert.throws(()=>createRecoveryBundle(old,TARGETS,date),/malformed/);
 });
+
+
+test('duplicate and unknown backup watchlist entries are both rejected',()=>{
+ const bundle=createRecoveryBundle(fakeStorage(),TARGETS,date);
+ assert.throws(()=>validateRecoveryBundle({...bundle,watchlist:['planet:Mars','planet:Mars']},TARGETS),/duplicated/);
+ assert.throws(()=>validateRecoveryBundle({...bundle,watchlist:['planet:Mars','planet:Unknown']},TARGETS),/unknown/);
+});
+test('merge exceeding 150 unique sessions fails before any local write',()=>{
+ const original=Array.from({length:150},(_,i)=>sample('item-'+i));
+ const prior=JSON.stringify(original);
+ const store=fakeStorage({[JOURNAL_KEY]:prior,[WATCH_KEY]:'[]'});
+ const backup=createRecoveryBundle(fakeStorage({[JOURNAL_KEY]:JSON.stringify([sample('item-new')])}),TARGETS,date);
+ assert.throws(()=>applyRecoveryBundle(store,backup,TARGETS,{mode:'merge'}),/exceed 150 sessions/);
+ assert.equal(store.getItem(JOURNAL_KEY),prior);
+});
+test('malformed existing journal is not silently replaced in merge mode',()=>{
+ const prior=JSON.stringify([{id:'invalid'}]);
+ const store=fakeStorage({[JOURNAL_KEY]:prior,[WATCH_KEY]:'[]'});
+ const backup=createRecoveryBundle(fakeStorage(),TARGETS,date);
+ assert.throws(()=>applyRecoveryBundle(store,backup,TARGETS,{mode:'merge'}),/invalid records/);
+ assert.equal(store.getItem(JOURNAL_KEY),prior);
+});
+test('silently ignored browser writes must fail read-after-write verification',()=>{
+ const store=fakeStorage({[JOURNAL_KEY]:'[]',[WATCH_KEY]:'[]'});
+ store.setItem=()=>{};
+ const backup=createRecoveryBundle(fakeStorage({[JOURNAL_KEY]:JSON.stringify([sample('new')])}),TARGETS,date);
+ assert.throws(()=>applyRecoveryBundle(store,backup,TARGETS,{mode:'replace'}),/did not retain verified data/);
+ assert.equal(store.getItem(JOURNAL_KEY),'[]');
+});
+test('successful recovery survives fresh storage parsing and retains record count',()=>{
+ const store=fakeStorage({[JOURNAL_KEY]:'[]',[WATCH_KEY]:'[]'});
+ const backup=createRecoveryBundle(fakeStorage({[JOURNAL_KEY]:JSON.stringify([sample('from-backup')]),[WATCH_KEY]:JSON.stringify(['galaxy:m31'])}),TARGETS,date);
+ applyRecoveryBundle(store,backup,TARGETS,{mode:'replace'});
+ const copied=createRecoveryBundle(store,TARGETS,date);
+ assert.equal(copied.sessions.length,1);
+ assert.equal(copied.sessions[0].id,'from-backup');
+ assert.deepEqual(copied.watchlist,['galaxy:m31']);
+});
