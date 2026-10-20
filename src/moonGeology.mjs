@@ -63,6 +63,19 @@ const GEOLOGY={
    LAYER('core','Metal-rich central region','Iron-bearing material','Core structure inferred from gravity/magnetic studies.','inferred','#8c554a')
   ],note:'Io is not an observed subsurface ocean world; persistent magma and volcanism are distinct from liquid-water habitability.'
  },
+ callisto:{
+  label:'Ancient cratered ice-rock surface',ocean:'hypothetical',
+  features:[
+   FEATURE('valhalla','Valhalla multi-ring basin','impact structure','Enormous concentric impact rings recorded by Voyager and Galileo; the ring troughs are interpreted as crustal fractures.','https://science.nasa.gov/photojournal/the-valhalla-multi-ring-structure-on-callisto/','observed','PIA01649'),
+   FEATURE('asgard','Asgard basin','impact basin','Galileo imaged bright inner plains and discontinuous concentric troughs in the Asgard impact structure.','https://science.nasa.gov/photojournal/asgard-multi-ring-structure-on-callisto/','observed','PIA01634',{latitudeN:30,longitudeW:142,approximate:true})
+  ],
+  layers:[
+   LAYER('surface','Heavily cratered crust','Water ice / rocky material','Ancient cratered ice-rock surface documented by Voyager and Galileo.','observed','#b7c8cf'),
+   LAYER('ice','Mixed ice-rock outer interior','Ice with silicate admixture','Callisto may be incompletely differentiated; models are uncertain.','inferred','#859db4'),
+   LAYER('ocean','Possible deep briny layer','Liquid water (possible)','An internal conductive layer/ocean is hypothesized; not directly sampled.','hypothetical','#377ea3'),
+   LAYER('deep','Deep mixed rock-ice body','Rock and ice','Interior differentiation is not constrained to a unique layer model.','inferred','#9e7965')
+  ],note:'Possible subsurface ocean is not a confirmed body of liquid water. Interior cutaway is illustrative.'
+ },
  ganymede:{
   label:'Grooved ice and magnetic field',ocean:'strong-evidence',
   features:[
