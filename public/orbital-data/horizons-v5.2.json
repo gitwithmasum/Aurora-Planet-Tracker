@@ -1,0 +1,12 @@
+{
+  "format": "aurora-horizons-v1",
+  "schema": 1,
+  "createdAt": null,
+  "frame": "ICRF",
+  "timeScale": "UTC",
+  "units": "km",
+  "stepMinutes": 60,
+  "source": "https://ssd.jpl.nasa.gov/api/horizons.api",
+  "disclaimer": "No JPL Horizons vectors have been generated yet. Educational simulation only.",
+  "targets": {}
+}
