@@ -59,3 +59,14 @@
 @media(max-width:900px){.moonGeoSurface{grid-template-columns:minmax(0,1fr)}.moonGeoFeatureList{grid-template-columns:repeat(2,minmax(0,1fr));max-height:300px}.moonGeoInterior{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:520px){.moonGeoHeader{padding:12px}.moonGeoSurface,.moonGeoInterior{padding:0 8px 10px}.moonGeoFeatureList{grid-template-columns:minmax(0,1fr)}.moonGeoFeatureDetail,.moonGeoInteriorDetail{padding:12px}.moonGeoModes button{flex:1 1 130px}}
 @media(prefers-reduced-motion:reduce){.moonGeoExplorer *{animation:none!important;transition:none!important}}
+
+
+/* v5.4: source-verified coordinate grid is optional and mounts only on demand. */
+.moonGeoMapControls{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.moonGeoMapControls button{min-height:42px;display:inline-flex;align-items:center;gap:8px;border:1px solid #6192ab;border-radius:8px;background:#173a52;color:#e9c7e1;padding:9px 11px;font:800 11px Rajdhani,sans-serif;cursor:pointer}
+.moonGeoMapControls button[aria-pressed=true]{border-color:#f3b3d4;background:#3c2c4c}
+.moonGeoMapControls small{font:800 11px Rajdhani,sans-serif;color:#e6c69b}
+.theme-halftone .moonGeoMapControls button{background:#fff9fc;color:#b6377c;border-color:#b2d3d1}
+.theme-halftone .moonGeoMapControls small{color:#9a7348}
+.moonGeoSmall a{color:#addff4;text-decoration:none}
+.theme-halftone .moonGeoSmall a{color:#216783}
