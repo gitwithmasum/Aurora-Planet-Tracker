@@ -13,23 +13,24 @@ export default function PWAStatus(){
  const [message,setMessage]=useState('');
  const userApproved=useRef(false);
  useEffect(()=>{
-  const onPrompt=e=>{e.preventDefault();setPrompt(e)};
+  let live=true,registration=null,installedWorker=null,lastCheck=0;
+  function checkForUpdate(){
+   if(!live||!registration||!navigator.onLine||document.visibilityState!=='visible')return;
+   const timestamp=Date.now();
+   if(timestamp-lastCheck<5*60*1000)return;
+   lastCheck=timestamp;
+   registration.update().catch(()=>{});
+  }
+  const onPrompt=e=>{e.preventDefault();if(live)setPrompt(e)};
   const onInstalled=()=>setPrompt(null);
-  const onOnline=()=>{setOnline(true);checkForUpdate()},onOffline=()=>setOnline(false);
+  const onOnline=()=>{setOnline(true);checkForUpdate()};
+  const onOffline=()=>setOnline(false);
+  const onVisible=()=>{if(document.visibilityState==='visible')checkForUpdate()};
   window.addEventListener('beforeinstallprompt',onPrompt);
   window.addEventListener('appinstalled',onInstalled);
   window.addEventListener('online',onOnline);
   window.addEventListener('offline',onOffline);
   document.addEventListener('visibilitychange',onVisible);
-  let live=true,registration=null,installedWorker=null,lastCheck=0;
-  function checkForUpdate(){
-   if(!registration||!navigator.onLine||document.visibilityState!=='visible')return;
-   const now=Date.now();
-   if(now-lastCheck<5*60*1000)return;
-   lastCheck=now;
-   registration.update().catch(()=>{});
-  }
-  const onVisible=()=>{if(document.visibilityState==='visible')checkForUpdate()};
   const onWorkerState=()=>{
    if(live&&installedWorker?.state==='installed'&&navigator.serviceWorker.controller)setWaiting(installedWorker);
   };
