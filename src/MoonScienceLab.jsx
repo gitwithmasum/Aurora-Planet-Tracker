@@ -51,6 +51,7 @@ function PhysicalDetails({moon,bn}){
    <ScienceCard name={label('Surface gravity (derived)','পৃষ্ঠের অভিকর্ষ (গণনাকৃত)')} value={fixed(phy.gravityMS2,3)} unit="m/s²" detail={phy.gravityMS2!==null?'GM / mean radius²; spherical model':''}/>
    <ScienceCard name={label('Escape speed (derived)','মুক্তিবেগ (গণনাকৃত)')} value={fixed(phy.escapeVelocityMS,1)} unit="m/s" detail={phy.escapeVelocityMS!==null?'√(2 GM / mean radius); spherical model':''}/>
    <ScienceCard name={label('Approximate mass (derived)','ভর (গণনাকৃত)')} value={phy.massKg!==null?phy.massKg.toExponential(3):'—'} unit="kg" detail={phy.massKg!==null?'GM ÷ CODATA gravitational constant':''}/>
+   {Number.isFinite(status?.temperatureC)&&<ScienceCard name={label('NASA surface temperature (approx.)','NASA পৃষ্ঠের তাপমাত্রা (আনুমানিক)')} value={fixed(status.temperatureC,0)} unit="°C" detail="NASA environment reference; not live weather"/>}
   </div>
   <div className="moonLabEvidence">
    <span className="moonLabTag">DATA QUALITY: {phy.quality.toUpperCase()}</span>
