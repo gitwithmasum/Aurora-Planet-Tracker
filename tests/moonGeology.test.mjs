@@ -19,10 +19,10 @@ test('all named geological profiles belong to existing v5.1 natural moon catalog
   for(const feature of featuresForMoon(id))assert.ok(SURFACE_EVIDENCE.includes(feature.evidence));
  }
 });
-test('verified Europa Conamara Chaos includes appropriately approximate NASA region location',()=>{
+test('Europa Conamara NASA photo metadata does not invent non-IAU map coordinates',()=>{
  const europa=surfaceFeatureById('europa','conamara');
  assert.equal(europa.nasaId,'PIA01177');
- assert.deepEqual(europa.coords,{latitudeN:8,longitudeW:274,approximate:true});
+ assert.equal(europa.coords,null);
  assert.match(europa.source,/^https:\/\/science\.nasa\.gov\//);
  assert.equal(europa.evidence,'observed');
  assert.match(europa.description,/may involve warm ice or water/);
