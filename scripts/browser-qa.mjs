@@ -73,6 +73,18 @@ try{
   await page.locator('.obsAnalytics').waitFor({timeout:20000});
   await checkOverflow(page);
  });
+ await run('moonverse-core-and-planet-selection',desktop,async page=>{
+  await navigate(page,'Moonverse');
+  await page.locator('.moonverse').waitFor({timeout:20000});
+  await page.getByRole('heading',{name:'Planetary Moon Systems'}).waitFor();
+  await page.getByRole('button',{name:/Europa.*km radius/i}).click();
+  await page.getByRole('heading',{name:'Europa',exact:true}).waitFor();
+  await page.getByRole('button',{name:/Mars.*selected/i}).click();
+  await page.getByRole('heading',{name:'Phobos',exact:true}).waitFor();
+  await page.getByRole('button',{name:/Mercury.*none/i}).click();
+  await page.getByRole('heading',{name:/No natural moons/}).waitFor();
+  await checkOverflow(page);
+ });
  await run('earth-observation-return-dashboard-without-portal-errors',desktop,async page=>{
   await page.locator('#auroraSidebar button[title="Earth Observation"]').click();
   await page.getByRole('heading',{name:'Earth Mission View'}).waitFor({timeout:25000});
@@ -150,6 +162,15 @@ try{
   await checkOverflow(page);
   await navigate(page,'Field Journal',true);
   await page.locator('.fieldJournal').waitFor({timeout:20000});
+  await checkOverflow(page);
+ });
+ await run('mobile-moonverse-catalog-and-layout',mobile,async page=>{
+  await navigate(page,'Moonverse',true);
+  await page.locator('.moonverse').waitFor({timeout:20000});
+  await checkOverflow(page);
+  await page.locator('.moonverseCatalogList').waitFor();
+  await page.getByRole('button',{name:/Europa.*km radius/i}).click();
+  await page.getByRole('heading',{name:'Europa',exact:true}).waitFor();
   await checkOverflow(page);
  });
  await run('mobile-pwa-service-worker-offline-reload',mobile,async page=>{
