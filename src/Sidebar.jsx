@@ -4,7 +4,7 @@ import './Sidebar.css';
 const KEY='aurora-sidebar-order-v2';
 const GROUPS=[
  {id:'home',title:'DASHBOARD',items:['Dashboard']},
- {id:'explore',title:'EXPLORATION',items:['Command Center','Solar System','Planet Intelligence']},
+ {id:'explore',title:'EXPLORATION',items:['Command Center','Solar System','Planet Intelligence','Moonverse']},
  {id:'observe',title:'OBSERVATION',items:['Sky Tonight','Satellite Tracker','Earth Observation','Sky Tracker','AR Scanner','Galaxy Observatory']},
  {id:'science',title:'SCIENCE',items:['Space Intelligence','Observation Planner','Satellite Weather','Field Journal','Observation Analytics','Offline Recovery','Device QA']}
 ];
