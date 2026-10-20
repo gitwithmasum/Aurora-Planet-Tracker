@@ -73,7 +73,7 @@ export default function Moonverse({initialPlanet='Jupiter',initialMoonId='',onPl
  function changeDate(value){const parsed=new Date(value.includes('T')?value+':00.000Z':value+'T00:00:00.000Z');if(Number.isFinite(parsed.getTime()))setDate(parsed)}
  return <section className="moonverse" aria-label="Moonverse Observatory">
   <div className="moonverseHero">
-   <div><span className="moonverseEyebrow">AURORA / MOONVERSE OBSERVATORY / v5.2</span>
+   <div><span className="moonverseEyebrow">AURORA / MOONVERSE OBSERVATORY / v5.3</span>
     <h3><Orbit size={29}/>{t('Planetary Moon Systems','গ্রহ ও প্রাকৃতিক উপগ্রহের জগৎ')}</h3>
     <p>{t('Travel among natural moons, inspect scientific facts, and explore educational 3D orbits without mistaking them for live ephemerides.','প্রাকৃতিক উপগ্রহের বৈজ্ঞানিক তথ্য, আবিষ্কার ও 3D orbital simulation দেখুন। এটি live orbital ephemeris নয়।')}</p>
    </div><div className="moonverseHeroMark"><strong>{summary.curated}</strong><small>{t('CURATED MOONS','নির্বাচিত উপগ্রহ')}</small></div>
