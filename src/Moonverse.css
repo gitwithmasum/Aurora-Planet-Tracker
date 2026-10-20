@@ -78,3 +78,12 @@
 @media(max-width:750px){.moonverseHero{align-items:flex-start;padding:15px}.moonverseHeroMark strong{font-size:25px}.moonverseHero h3{font-size:25px}.moonversePlanetRail{grid-template-columns:repeat(3,minmax(0,1fr))}.moonverseSummary{grid-template-columns:repeat(2,minmax(0,1fr))}.moonverseMetrics{grid-template-columns:repeat(2,minmax(0,1fr))}.moonverseResearchGrid{grid-template-columns:1fr}.moonverseIntelligence{padding:13px}.moonverseCanvas{height:360px}}
 @media(max-width:480px){.moonverseHero{flex-direction:column}.moonverseHeroMark{display:flex;gap:8px;align-items:center}.moonversePlanetRail{gap:5px}.moonversePlanetRail button{font-size:11px;min-height:80px}.moonverseOrb{width:21px;height:21px}.moonverseCatalogList{grid-template-columns:1fr;height:270px}.moonverseSceneHeader{flex-direction:column}.moonverseIntelligenceHeader{flex-direction:column}.moonverseCanvas{height:300px}.moonverseMetrics strong{font-size:16px}.moonverseSceneControls label{width:100%;justify-content:space-between}.moonverseSceneControls input{max-width:150px}}
 @media(prefers-reduced-motion:reduce){.moonverse *{animation:none!important;transition:none!important}}
+
+
+/* v5.1 curated moon search and science filters; prevent mobile min-content overflow. */
+.moonverseCatalogFilters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:0 12px 10px}
+.moonverseCatalogFilters label{display:grid;min-width:0;gap:5px;font:800 10px Rajdhani,sans-serif;color:#e2b989}
+.moonverseCatalogFilters select{min-width:0;width:100%;max-width:100%;min-height:40px;padding:6px;border:1px solid #476b82;border-radius:8px;color:#e3cde0;background:#10263a;font:700 11px Rajdhani,sans-serif}
+.theme-halftone .moonverseCatalogFilters select{background:#fff;color:#a72c72;border-color:#b4d5cb}
+.theme-halftone .moonverseCatalogFilters label{color:#a67438}
+@media(max-width:420px){.moonverseCatalogFilters{grid-template-columns:repeat(2,minmax(0,1fr));padding:0 8px 8px}}
