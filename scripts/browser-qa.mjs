@@ -78,6 +78,8 @@ try{
   await navigate(page,'Moonverse');
   await page.locator('.moonverse').waitFor({timeout:20000});
   await page.getByRole('heading',{name:'Planetary Moon Systems'}).waitFor();
+  await page.getByLabel('Moonverse 3D rendering quality').selectOption('eco');
+  await page.getByText(/ECO: limited DPR/).waitFor({timeout:7000});
   await page.getByRole('button',{name:/Europa.*km radius/i}).click();
   await page.getByRole('heading',{name:'Europa',exact:true}).waitFor();
   await page.locator('.moonScienceLab').waitFor({timeout:20000});
@@ -89,6 +91,13 @@ try{
   await page.locator('.moonGeoExplorer').waitFor({timeout:15000});
   await page.getByRole('button',{name:/Conamara Chaos/}).first().click();
   await page.getByRole('link',{name:/NASA SCIENTIFIC SOURCE/}).waitFor();
+  await page.getByRole('button',{name:'SHOW IAU COORDINATE GRID'}).click();
+  await page.locator('.moonCoordGrid').waitFor({timeout:12000});
+  await page.getByRole('button',{name:'Select verified feature Conamara Chaos'}).click();
+  await page.getByRole('link',{name:'IAU record'}).waitFor();
+  await page.getByText('272.7° W').first().waitFor();
+  await checkOverflow(page);
+  await page.getByRole('button',{name:'HIDE COORDINATE GRID'}).click();
   await page.getByRole('tab',{name:'INTERIOR CUTAWAY'}).click();
   await page.getByRole('button',{name:/Proposed salty ocean/}).click();
   await page.locator('.moonGeoInteriorDetail .moonGeoEvidence-inferred').waitFor();
@@ -214,6 +223,9 @@ try{
   await page.locator('.moonScienceLab').waitFor({timeout:20000});
   await page.getByRole('tab',{name:'SURFACE & INTERIOR'}).click();
   await page.locator('.moonGeoExplorer').waitFor({timeout:15000});
+  await page.getByRole('button',{name:'SHOW IAU COORDINATE GRID'}).click();
+  await page.locator('.moonCoordGrid').waitFor({timeout:15000});
+  await checkOverflow(page);
   await page.getByRole('tab',{name:'INTERIOR CUTAWAY'}).click();
   await checkOverflow(page);
   await page.getByRole('tab',{name:'COMPARE MOONS'}).click();
