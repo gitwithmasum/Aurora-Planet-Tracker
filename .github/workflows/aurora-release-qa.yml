@@ -17,7 +17,7 @@ jobs:
   test-and-build:
     name: Tests and production build
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -31,10 +31,24 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Test and build
         run: npm run qa
+      - name: Install headless Chromium for browser QA
+        run: npx playwright install --with-deps chromium
+      - name: Browser QA - GitHub Pages base (desktop and emulated Android)
+        run: npm run qa:browser
       - name: Root-domain static regression (Vercel)
         run: |
           VERCEL=1 npm run build
           VERCEL=1 node scripts/smoke-static-build.mjs
+      - name: Browser QA - Vercel root base (desktop and emulated Android)
+        run: VERCEL=1 npm run qa:browser
+      - name: Upload QA failure screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aurora-v4-8-browser-qa
+          path: artifacts/browser-qa/
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Report build output size
         if: success()
         run: du -sh dist
