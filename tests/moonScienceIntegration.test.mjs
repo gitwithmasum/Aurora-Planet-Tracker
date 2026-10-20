@@ -26,9 +26,9 @@ test('moon lab has on-demand official NASA image handling and graceful fallback'
 });
 test('science label carefully differentiates raw JPL measurements and derived values',()=>{
  const ui=file('src/MoonScienceLab.jsx');
- assert.match(ui,/GM \\(JPL\\)/);
- assert.match(ui,/Surface gravity \\(derived\\)/);
- assert.match(ui,/Escape speed \\(derived\\)/);
+ assert.ok(ui.includes('GM (JPL)'));
+ assert.ok(ui.includes('Surface gravity (derived)'));
+ assert.ok(ui.includes('Escape speed (derived)'));
  assert.match(ui,/DATA QUALITY:/);
  assert.match(ui,/unavailable/);
 });
