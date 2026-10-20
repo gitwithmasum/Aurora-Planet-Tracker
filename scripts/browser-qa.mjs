@@ -59,7 +59,8 @@ async function navigate(page,title,mobile=false){
  if(mobile)await page.getByRole('button',{name:'Open sidebar'}).click();
  const button=page.locator('#auroraSidebar button[aria-label="'+title+'"]');
  await button.click();
- await page.getByRole('heading',{name:title,exact:true}).first().waitFor({timeout:20000});
+ const ready=title==='Moonverse'?page.locator('.moonverse'):page.getByRole('heading',{name:title,exact:true}).first();
+ await ready.waitFor({timeout:20000});
 }
 try{
  await waitForServer();
