@@ -1,6 +1,6 @@
 import React,{Suspense,useEffect,useMemo,useRef,useState} from 'react';
 import {Canvas,useFrame,useThree} from '@react-three/fiber';
-import {OrbitControls,Stars,Html} from '@react-three/drei';
+import {OrbitControls,Stars,Text} from '@react-three/drei';
 import * as THREE from 'three';
 import {Globe2,Satellite,Search,Play,Pause,LocateFixed,RotateCcw,Focus} from 'lucide-react';
 import {loadSatelliteCatalog} from './satelliteCatalog.mjs';
@@ -57,7 +57,7 @@ function Craft({record,active,color,onChoose,showLabel,clock}){
  return <group position={current.point}>
   <mesh onClick={e=>{e.stopPropagation();onChoose(record.id)}}><octahedronGeometry args={[active?.13:.08,0]}/><meshBasicMaterial color={color} toneMapped={false}/></mesh>
   {active&&<mesh><sphereGeometry args={[.2,12,8]}/><meshBasicMaterial color={color} transparent opacity={.19} depthWrite={false}/></mesh>}
-  {showLabel&&<Html position={[.14,.16,0]} center={false} distanceFactor={8} style={{pointerEvents:'none'}}><span className={'earthMissionLabel '+(active?'selected':'')}>{record.name}</span></Html>}
+  {showLabel&&<Text position={[.14,.16,0]} fontSize={.13} anchorX="left" anchorY="middle" maxWidth={2.8} color={active?'#ffbfe3':'#bce7ff'} outlineColor="#081d35" outlineWidth={.005}>{record.name}</Text>}
  </group>;
 }
 function WeatherMarkers({layer,points,onSelect,cloudDetail=1}){
