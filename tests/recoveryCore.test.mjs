@@ -17,7 +17,7 @@ function fakeStorage(initial={},failKey=null){
   removeItem:key=>{map.delete(key)},map};
 }
 test('exports an intentionally scoped portable bundle and valid preferences',()=>{
- const store=fakeStorage({[JOURNAL_KEY]:JSON.stringify([sample()]),[WATCH_KEY]:JSON.stringify(['planet:Mars','bad','planet:Mars']),'aurora-language':'bn','aurora-galaxy-theme':'halftone'});
+ const store=fakeStorage({[JOURNAL_KEY]:JSON.stringify([sample()]),[WATCH_KEY]:JSON.stringify(['planet:Mars']),'aurora-language':'bn','aurora-galaxy-theme':'halftone'});
  const bundle=createRecoveryBundle(store,TARGETS,date);
  assert.equal(bundle.format,RECOVERY_FORMAT);
  assert.equal(bundle.sessions.length,1);
@@ -73,4 +73,11 @@ test('preview counts are grounded and sensitive observer coordinates disclosed',
  const b=createRecoveryBundle(fakeStorage({[JOURNAL_KEY]:JSON.stringify([sample()]),[WATCH_KEY]:JSON.stringify(['planet:Mars'])}),TARGETS,date);
  assert.deepEqual(recoveryPreview(b),{sessions:1,watchlist:1,settings:0,hasLocationData:true});
  assert.throws(()=>applyRecoveryBundle(fakeStorage(),b,TARGETS,{mode:'unknown'}));
+});
+
+test('corrupt stored records stop export instead of creating a silently incomplete backup',()=>{
+ const invalid=fakeStorage({[JOURNAL_KEY]:JSON.stringify({unexpected:true})});
+ assert.throws(()=>createRecoveryBundle(invalid,TARGETS,date),/invalid/);
+ const old=fakeStorage({[WATCH_KEY]:JSON.stringify(['planet:Mars','unknown'])});
+ assert.throws(()=>createRecoveryBundle(old,TARGETS,date),/malformed/);
 });
