@@ -3,6 +3,7 @@ import {ArrowUpRight,BookOpen,ChevronRight,Clock3,Compass,Database,ExternalLink,
 import {MOON_PLANETS,MOONS,MOON_SOURCE,moonsForPlanet,moonById,moonPlanet,moonCatalogSummary} from './moonCatalog.mjs';
 import {moonRelativeEpoch,sceneMoonList} from './moonOrbitMath.mjs';
 import {useLanguage} from './i18n.jsx';
+import FeatureBoundary from './FeatureBoundary.jsx';
 import './Moonverse.css';
 const MoonverseScene=lazy(()=>import('./MoonverseScene.jsx'));
 const frame=(date)=>date?.toLocaleDateString?.(undefined,{dateStyle:'medium'})||'—';
@@ -71,9 +72,9 @@ export default function Moonverse({initialPlanet='Jupiter',initialMoonId='',onPl
     <div className="moonverseSceneHeader"><div><span className="moonverseEyebrow">INTERACTIVE 3D / {planet.toUpperCase()}</span><h4>{t('Orbital Observatory','অরবিটাল অবজারভেটরি')}</h4></div>
      <span className="moonverseSimulationTag">{t('SIMULATION • NOT LIVE POSITION','সিমুলেশন • লাইভ অবস্থান নয়')}</span></div>
     <div ref={viewport} className="moonverseCanvas" aria-label={'Interactive 3D orbit illustration of '+planet}>
-     <Suspense fallback={<div className="moonverseLoading" role="status">{t('Loading 3D moon system…','3D উপগ্রহ লোড হচ্ছে…')}</div>}>
+     <FeatureBoundary name="Moonverse 3D renderer"><Suspense fallback={<div className="moonverseLoading" role="status">{t('Loading 3D moon system…','3D উপগ্রহ লোড হচ্ছে…')}</div>}>
       <MoonverseScene key={planet} planet={parent} moons={sceneMoons} selectedId={selected?.id} onSelect={setMoonId} epochDays={baseDays||0} speed={speed} active={sceneActive} quality={quality}/>
-     </Suspense>
+     </Suspense></FeatureBoundary>
     </div>
     <div className="moonverseSceneControls">
      <button type="button" onClick={()=>setActive(v=>!v)} aria-pressed={!active}>{active?<Pause size={15}/>:<Play size={15}/>} {active?t('PAUSE','থামাও'):t('RESUME','চালাও')}</button>
