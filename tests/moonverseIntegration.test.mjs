@@ -16,7 +16,7 @@ test('Solar System and Planet Intelligence link to selected world moon system',(
  const app=src('src/App.jsx');
  assert.match(app,/EXPLORE NATURAL MOONS/);
  assert.match(app,/EXPLORE \{selected\.name\.toUpperCase\(\)\} MOON SYSTEM/);
- assert.match(app,/initialPlanet=\{selected\.name\}/);
+ assert.match(app,/initialPlanet=\{moonverseWorld\|\|selected\.name\}/);
 });
 test('Moonverse scientific source links, no false live-position claims',()=>{
  const ui=src('src/Moonverse.jsx');
