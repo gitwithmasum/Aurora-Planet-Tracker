@@ -15,7 +15,8 @@ export const SPACE_MODULES=[
  {name:'Satellite Weather',terms:'satellite pass sunlight shadow cloud rain weather forecast meteoblue open meteo visibility observation planner'},
  {name:'Field Journal',terms:'astronomy sessions observations field log notes sightings report history backup csv json research'},
  {name:'Observation Analytics',terms:'research dashboard observation statistics field log timeline trends reports target analysis chart data visualization'},
- {name:'Offline Recovery',terms:'offline pwa cache install update recovery backup restore journal data download merge replace'}
+ {name:'Offline Recovery',terms:'offline pwa cache install update recovery backup restore journal data download merge replace'},
+ {name:'Device QA',terms:'phone android windows ios device installation test offline performance storage verification report PWA diagnostics'}
 ];
 
 const normalize=value=>String(value??'').normalize('NFKC').toLocaleLowerCase().trim().replace(/\s+/g,' ');
