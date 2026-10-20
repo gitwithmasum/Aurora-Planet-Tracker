@@ -51,3 +51,10 @@ test('browser QA checks IAU feature source marker, responsive grid and ECO mode'
  assert.match(qa,/Moonverse 3D rendering quality/);
  assert.match(qa,/mobile-moonverse-catalog-and-layout/);
 });
+
+
+test('Moonverse mode is tested with strict comparison, never assigned during render',()=>{
+ const ui=src('src/Moonverse.jsx');
+ assert.doesNotMatch(ui,/\{effectiveMode='horizons'\?/);
+ assert.match(ui,/\{effectiveMode==='horizons'\?t\(/);
+});
