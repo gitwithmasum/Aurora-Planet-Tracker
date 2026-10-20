@@ -132,6 +132,6 @@ self.addEventListener('fetch',event=>{
     if(keys.length>MAX_RUNTIME)await cache.delete(keys[0]).catch(()=>{});
    }
    return response;
-  }catch{return await cache.match(request)||Response.error()}
+  }catch{return await cache.match(request)||await caches.match(request)||Response.error()}
  })());
 });
