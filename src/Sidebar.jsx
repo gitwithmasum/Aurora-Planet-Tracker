@@ -6,7 +6,7 @@ const GROUPS=[
  {id:'home',title:'DASHBOARD',items:['Dashboard']},
  {id:'explore',title:'EXPLORATION',items:['Command Center','Solar System','Planet Intelligence']},
  {id:'observe',title:'OBSERVATION',items:['Sky Tonight','Satellite Tracker','Earth Observation','Sky Tracker','AR Scanner','Galaxy Observatory']},
- {id:'science',title:'SCIENCE',items:['Space Intelligence','Observation Planner','Satellite Weather','Field Journal','Observation Analytics','Offline Recovery']}
+ {id:'science',title:'SCIENCE',items:['Space Intelligence','Observation Planner','Satellite Weather','Field Journal','Observation Analytics','Offline Recovery','Device QA']}
 ];
 const ALL=GROUPS.flatMap(g=>g.items);
 export function normalizeSidebarOrder(input){
