@@ -100,7 +100,7 @@ export default function Moonverse({initialPlanet='Jupiter',initialMoonId='',onPl
   </div>}
   {selected&&<section className="moonverseIntelligence" aria-label={'Scientific profile of '+selected.name}>
    <div className="moonverseIntelligenceHeader"><div><span className="moonverseEyebrow">{planet.toUpperCase()} / MOON INTELLIGENCE</span><h4>{selected.name}</h4><span className="moonverseCategory">{selected.category.toUpperCase()} · {t('NATURAL SATELLITE','প্রাকৃতিক উপগ্রহ')}</span></div>
-    <button type="button" onClick={()=>onPlanet(planet)}><ArrowUpRight size={15}/>{t('PARENT PLANET DATA','গ্রহের বিস্তারিত')}</button>
+    {planet!=='Pluto'&&<button type="button" onClick={()=>onPlanet(planet)}><ArrowUpRight size={15}/>{t('PARENT PLANET DATA','গ্রহের বিস্তারিত')}</button>}
    </div>
    {!selectedRendered&&<p className="moonverseNotice">{t('This catalog moon is not one of the 12 objects rendered simultaneously in the 3D scene for performance. Its scientific profile remains accessible.','পারফরম্যান্সের জন্য এই উপগ্রহটি 3D scene-এ render করা হয়নি, কিন্তু বৈজ্ঞানিক তথ্য পাওয়া যাবে।')}</p>}
    <div className="moonverseMetrics">
