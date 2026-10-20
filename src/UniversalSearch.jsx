@@ -2,10 +2,11 @@ import React,{useEffect,useMemo,useRef,useState} from 'react';
 import {Search,X,Orbit,Satellite,Compass,Layers3,ArrowUpRight,LoaderCircle} from 'lucide-react';
 import {loadSatelliteCatalog} from './satelliteCatalog.mjs';
 import {buildSpaceIndex,searchSpace} from './spaceSearch.mjs';
+import {MOONS} from './moonCatalog.mjs';
 import './UniversalSearch.css';
 
-const ICONS={planet:Orbit,satellite:Satellite,galaxy:Compass,module:Layers3};
-const TYPE_LABEL={planet:'PLANET',satellite:'SATELLITE',galaxy:'GALAXY',module:'MODULE'};
+const ICONS={planet:Orbit,moon:Orbit,satellite:Satellite,galaxy:Compass,module:Layers3};
+const TYPE_LABEL={planet:'PLANET',moon:'NATURAL MOON',satellite:'SATELLITE',galaxy:'GALAXY',module:'MODULE'};
 export default function UniversalSearch({planets,galaxies,onSelect,onClose,language='en'}){
  const bn=language==='bn';
  const [query,setQuery]=useState('');
@@ -32,7 +33,7 @@ export default function UniversalSearch({planets,galaxies,onSelect,onClose,langu
   document.addEventListener('keydown',key);
   return()=>document.removeEventListener('keydown',key);
  },[onClose]);
- const index=useMemo(()=>buildSpaceIndex({planets,galaxies,satellites}),[planets,galaxies,satellites]);
+ const index=useMemo(()=>buildSpaceIndex({planets,galaxies,satellites,moons:MOONS}),[planets,galaxies,satellites]);
  const results=useMemo(()=>searchSpace(index,query),[index,query]);
  const pick=item=>{if(item)onSelect(item)};
  function keyboard(event){
@@ -59,7 +60,7 @@ export default function UniversalSearch({planets,galaxies,onSelect,onClose,langu
     <button className="universalSearchClose" onClick={onClose} aria-label={bn?'অনুসন্ধান বন্ধ করুন':'Close universal search'}><X size={20}/></button>
    </div>
    <div className="universalSearchInput"><Search size={21}/><input ref={field} role="combobox" aria-label={bn?'গ্রহ, স্যাটেলাইট, গ্যালাক্সি বা মডিউল খুঁজুন':'Search planets, satellites, galaxies or modules'} aria-autocomplete="list" aria-expanded={Boolean(query.trim())} aria-controls="universalSearchResults" value={query} maxLength={80} onChange={e=>{setQuery(e.target.value);setActiveIndex(0)}} onKeyDown={keyboard} placeholder={bn?'যেমন: Mars, ISS, M31, 25544':'Try Mars, ISS, M31, 25544, NASA…'}/><kbd>ESC</kbd></div>
-   <div className="universalSearchMeta"><span>{bn?'গ্রহ · স্যাটেলাইট · গ্যালাক্সি · মডিউল':'PLANETS · SATELLITES · GALAXIES · MODULES'}</span><span>{status==='loading'?<><LoaderCircle size={12}/> {bn?'ক্যাটালগ লোড হচ্ছে':'Loading catalog'}</>:status==='ready'?`${satellites.length} validated satellite records`:(bn?'স্যাটেলাইট ডেটা পাওয়া যায়নি':'Satellite catalog unavailable')}</span></div>
+   <div className="universalSearchMeta"><span>{bn?'গ্রহ · প্রাকৃতিক উপগ্রহ · স্যাটেলাইট · গ্যালাক্সি · মডিউল':'PLANETS · NATURAL MOONS · SATELLITES · GALAXIES · MODULES'}</span><span>{status==='loading'?<><LoaderCircle size={12}/> {bn?'ক্যাটালগ লোড হচ্ছে':'Loading catalog'}</>:status==='ready'?`${satellites.length} validated satellite records`:(bn?'স্যাটেলাইট ডেটা পাওয়া যায়নি':'Satellite catalog unavailable')}</span></div>
    <div id="universalSearchResults" className="universalSearchResults" role="listbox" aria-label="Universal search results">
     {!query.trim()?<p className="universalSearchHint">{bn?'অনুসন্ধানের জন্য শব্দ লিখুন। Ctrl+K চাপলেও এটি খুলবে।':'Type to search the local astronomy catalog. Press Ctrl/⌘ + K anywhere to reopen.'}</p>:
     results.length?results.map((item,i)=>{
