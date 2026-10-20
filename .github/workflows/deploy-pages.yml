@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: '23 3 * * *'
 
 permissions:
   contents: read
@@ -32,6 +34,8 @@ jobs:
             sleep 8
             npm install --no-audit --no-fund
           }
+      - name: Refresh JPL Horizons vectors (serial, server-side only)
+        run: node scripts/refresh-horizons.mjs
       - name: Build production website
         run: npm run build
       - name: Configure Pages
