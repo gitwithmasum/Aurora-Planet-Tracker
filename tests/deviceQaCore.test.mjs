@@ -27,7 +27,7 @@ test('manual completeness requires explicit pass for each independent item',()=>
  assert.equal(partial.blocked,1);
 });
 test('manual report does not export notes, personal coordinates, user agent or extra arbitrary keys',()=>{
- const qa={checks:{install:'pass',otherSecret:'token',offline-reload:'fail'},personalNotes:'my medical note'};
+ const qa={checks:{install:'pass',otherSecret:'token','offline-reload':'fail'},personalNotes:'my medical note'};
  const report=qaReport({qa,probes:{standalone:true,online:false,storageWritable:true,
   screenWidth:393,screenHeight:851,secretToken:'secret',observerCoordinates:'23.81,90.41',frameCadence:58},platform:'Android',createdAt:'2026-10-20T21:00:00Z',version:'4.9.0'});
  assert.equal(report.format,DEVICE_QA_FORMAT);
