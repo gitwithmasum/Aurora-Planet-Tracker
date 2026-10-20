@@ -39,7 +39,8 @@ async function run(name,context,steps){
   failures++;
   const safe=name.replace(/[^a-z0-9-]/gi,'-');
   await page.screenshot({path:output+'/'+safe+'.png',fullPage:true,timeout:15000}).catch(()=>{});
-  console.error('FAIL',name,e.message);
+  const boundaries=await page.locator('section').filter({hasText:'is temporarily unavailable.'}).allTextContents().catch(()=>[]);
+  console.error('FAIL',name,e.message,'feature-boundaries:',JSON.stringify(boundaries.map(s=>s.slice(0,600))),'page-errors:',JSON.stringify(exceptions.slice(0,4)));
  }finally{await page.close()}
 }
 const checkOverflow=async page=>{
