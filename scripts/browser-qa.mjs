@@ -1,0 +1,131 @@
+// v4.8: real headless Chromium smoke tests for installed PWA-like browser
+// behavior at desktop, mobile and both deployment base paths.
+// Chromium emulation is NOT physical Android/iOS device validation.
+import assert from 'node:assert/strict';
+import {spawn} from 'node:child_process';
+import {mkdirSync} from 'node:fs';
+import {chromium,devices} from 'playwright';
+
+const BASE=process.env.VERCEL||process.env.VERCEL_ENV||process.env.VERCEL_URL?'/':'/Aurora-Planet-Tracker/';
+const PORT=Number(process.env.AURORA_QA_PORT||4198);
+const URL_ROOT='http://127.0.0.1:'+PORT+BASE;
+const output='artifacts/browser-qa';
+mkdirSync(output,{recursive:true});
+const server=spawn(process.execPath,['node_modules/vite/bin/vite.js','preview','--host','127.0.0.1','--port',String(PORT),'--strictPort'],{env:process.env,stdio:['ignore','pipe','pipe']});
+let logs='';
+server.stdout.on('data',data=>{logs+=String(data)});
+server.stderr.on('data',data=>{logs+=String(data)});
+let browser,failures=0;
+const nap=ms=>new Promise(done=>setTimeout(done,ms));
+async function waitForServer(){
+ for(let i=0;i<70;i++){
+  if(server.exitCode!==null)throw Error('Vite preview quit before starting: '+logs);
+  try{const res=await fetch(URL_ROOT,{signal:AbortSignal.timeout(1000)});if(res.ok)return}catch{}
+  await nap(300);
+ }
+ throw Error('Preview server did not respond: '+logs);
+}
+async function run(name,context,steps){
+ const page=await context.newPage();
+ const exceptions=[];
+ page.on('pageerror',error=>exceptions.push(error.message));
+ try{
+  await page.goto(URL_ROOT,{waitUntil:'domcontentloaded',timeout:30000});
+  await page.locator('main.auroraMain').waitFor({timeout:30000});
+  await steps(page);
+  assert.deepEqual(exceptions,[],'Unhandled client exceptions: '+exceptions.join(' | '));
+  console.log('PASS',name,'base',BASE);
+ }catch(e){
+  failures++;
+  const safe=name.replace(/[^a-z0-9-]/gi,'-');
+  await page.screenshot({path:output+'/'+safe+'.png',fullPage:true,timeout:15000}).catch(()=>{});
+  console.error('FAIL',name,e.message);
+ }finally{await page.close()}
+}
+const checkOverflow=async page=>{
+ const data=await page.evaluate(()=>({w:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth}));
+ assert.ok(data.scroll<=data.w+2,'Horizontal overflow '+JSON.stringify(data));
+};
+async function navigate(page,title,mobile=false){
+ if(mobile)await page.getByRole('button',{name:'Open sidebar'}).click();
+ const button=page.locator('#auroraSidebar button[aria-label="'+title+'"]');
+ await button.click();
+ await page.getByRole('heading',{name:title,exact:true}).first().waitFor({timeout:20000});
+}
+try{
+ await waitForServer();
+ browser=await chromium.launch({headless:true,args:['--disable-dev-shm-usage','--use-gl=angle','--use-angle=swiftshader']});
+ const desktop=await browser.newContext({viewport:{width:1440,height:900},acceptDownloads:true,reducedMotion:'reduce'});
+ await run('desktop-layout-and-navigation',desktop,async page=>{
+  await checkOverflow(page);
+  await navigate(page,'Field Journal');
+  await page.locator('.fieldJournal').waitFor({timeout:20000});
+  await navigate(page,'Observation Analytics');
+  await page.locator('.obsAnalytics').waitFor({timeout:20000});
+  await checkOverflow(page);
+ });
+ await run('field-journal-create-and-reload',desktop,async page=>{
+  await navigate(page,'Field Journal');
+  await page.locator('.fieldJournal').waitFor({timeout:20000});
+  await page.getByRole('button',{name:'NEW SESSION'}).click();
+  await page.locator('.fieldJournalForm input').first().fill('Browser QA Mars sighting');
+  await page.locator('.fieldJournalForm button[type="submit"]').click();
+  await page.getByRole('heading',{name:'Browser QA Mars sighting'}).waitFor({timeout:15000});
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.locator('main.auroraMain').waitFor();
+  await navigate(page,'Field Journal');
+  await page.getByRole('heading',{name:'Browser QA Mars sighting'}).waitFor({timeout:15000});
+  await navigate(page,'Observation Analytics');
+  await page.locator('.obsAnalyticsMetrics').waitFor({timeout:15000});
+ });
+ await run('recovery-export-and-reload',desktop,async page=>{
+  await navigate(page,'Offline Recovery');
+  await page.locator('.recoveryCenter').waitFor({timeout:15000});
+  const [download]=await Promise.all([
+   page.waitForEvent('download',{timeout:15000}),
+   page.getByRole('button',{name:'EXPORT RECOVERY JSON'}).click()
+  ]);
+  assert.match(download.suggestedFilename(),/aurora-recovery-v4/);
+  assert.equal(await download.failure(),null);
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.locator('main.auroraMain').waitFor();
+ });
+ const mobile=await browser.newContext({...devices['Pixel 7'],viewport:{width:393,height:851},acceptDownloads:true,reducedMotion:'reduce'});
+ await run('mobile-drawer-keyboard-and-no-overflow',mobile,async page=>{
+  await checkOverflow(page);
+  await page.getByRole('button',{name:'Open sidebar'}).click();
+  await page.locator('#auroraSidebar').waitFor({state:'visible'});
+  await page.keyboard.press('Escape');
+  await page.getByRole('button',{name:'Open sidebar'}).waitFor();
+  await navigate(page,'Offline Recovery',true);
+  await page.locator('.recoveryCenter').waitFor({timeout:20000});
+  await checkOverflow(page);
+  await navigate(page,'Field Journal',true);
+  await page.locator('.fieldJournal').waitFor({timeout:20000});
+  await checkOverflow(page);
+ });
+ await run('mobile-pwa-service-worker-offline-reload',mobile,async page=>{
+  const ready=await page.evaluate(async()=>{
+   if(!('serviceWorker'in navigator))return false;
+   const reg=await Promise.race([navigator.serviceWorker.ready,new Promise(resolve=>setTimeout(()=>resolve(null),15000))]);
+   return !!reg;
+  });
+  assert.ok(ready,'Service worker installation did not become ready');
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.locator('main.auroraMain').waitFor({timeout:15000});
+  assert.ok(await page.evaluate(()=>!!navigator.serviceWorker.controller),'Service worker is not controlling this tab');
+  await mobile.setOffline(true);
+  try{
+   await page.reload({waitUntil:'domcontentloaded',timeout:20000});
+   await page.locator('main.auroraMain').waitFor({timeout:20000});
+   assert.ok(await page.locator('.app').count(),'Offline render failed');
+  }finally{await mobile.setOffline(false)}
+ });
+ await desktop.close();await mobile.close();
+}catch(e){failures++;console.error('Browser QA infrastructure:',e)}
+finally{
+ await browser?.close().catch(()=>{});
+ server.kill('SIGTERM');
+}
+if(failures)process.exitCode=1;
+else console.log('Aurora browser QA PASS for',BASE);
