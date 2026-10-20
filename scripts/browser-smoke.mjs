@@ -9,7 +9,8 @@ const browser=await chromium.launch({headless:true,args:['--use-gl=angle','--use
 const context=await browser.newContext({viewport:{width:1366,height:768},reducedMotion:'reduce'});
 const page=await context.newPage();
 const errors=[];
-page.on('pageerror',error=>errors.push(error.message));
+let stage='initial load';
+page.on('pageerror',error=>errors.push(stage+': '+(error.stack||error.message)));
 const route=async(name)=>{
  const button=page.locator('#auroraSidebar button[title="'+name+'"]');
  await button.waitFor({state:'attached',timeout:15000});
@@ -24,6 +25,7 @@ try{
  assert.ok(await page.locator('.auroraDashHero').count(),'Andromeda hero missing');
  console.log('PASS: mounted production Dashboard',url);
 
+ stage='Dashboard universal search';
  // Dashboard search is now a launcher for the Universal Space Search.
  await page.locator('.auroraDashSearchLauncher').click();
  const search=page.getByRole('combobox',{name:'Search planets, satellites, galaxies or modules'});
@@ -35,6 +37,7 @@ try{
  await page.getByRole('heading',{name:'Earth Mission View'}).waitFor({timeout:25000});
  console.log('PASS: Universal Search opens Earth Observation module');
 
+ stage='Return Dashboard';
  await route('Dashboard');
  await page.locator('.auroraDashboard').waitFor({timeout:18000});
  await page.getByLabel('Galaxy theme').selectOption('halftone');
@@ -42,19 +45,23 @@ try{
  assert.equal(await page.locator('.auroraDashFeatures .auroraDashFeature').count(),4,'Expected four mission cards');
  console.log('PASS: original Dashboard, four mission cards, theme switch');
 
+ stage='Satellite Tracker mount';
  await route('Satellite Tracker');
  await page.getByText('Interactive Earth Orbit').first().waitFor({timeout:25000});
  const bodyText=await page.locator('main.auroraMain').innerText();
  assert.ok(!bodyText.includes('temporarily unavailable'),'Satellite Tracker error boundary triggered');
  console.log('PASS: Satellite Tracker lazy module boots');
 
+ stage='Satellite Tracker -> Field Journal';
  await route('Field Journal');
  await page.locator('.fieldJournal').waitFor({timeout:20000});
  assert.ok(await page.locator('.fieldJournalToolbar').count(),'Field Journal tools unavailable');
+ stage='Field Journal -> Observation Analytics';
  await route('Observation Analytics');
  await page.locator('.obsAnalytics').waitFor({timeout:20000});
  console.log('PASS: Field Journal and Observation Analytics modules boot');
 
+ stage='Observation Analytics -> Offline Recovery';
  await route('Offline Recovery');
  await page.locator('.recoveryCenter').waitFor({timeout:20000});
  console.log('PASS: Offline Recovery module boots');
