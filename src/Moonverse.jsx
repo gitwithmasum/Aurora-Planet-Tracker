@@ -8,7 +8,7 @@ const MoonverseScene=lazy(()=>import('./MoonverseScene.jsx'));
 const frame=(date)=>date?.toLocaleDateString?.(undefined,{dateStyle:'medium'})||'—';
 const num=(n,fraction=1)=>Number.isFinite(n)?n.toLocaleString('en-US',{maximumFractionDigits:fraction}):'Not available';
 const initialMoon=planet=>moonsForPlanet(planet)[0]?.id||'';
-export default function Moonverse({initialPlanet='Jupiter',initialMoonId='',onPlanet=()=>{},quality='high'}){
+export default function Moonverse({initialPlanet='Jupiter',initialMoonId='',onPlanet=()=>{},onSelectParent=()=>{},quality='high'}){
  const {language}=useLanguage();const bn=language==='bn';const t=(a,b)=>bn?b:a;
  const [planet,setPlanet]=useState(MOON_PLANETS.some(p=>p.name===initialPlanet)?initialPlanet:'Jupiter');
  const [moonId,setMoonId]=useState(()=>moonById(initialMoonId)?.id||initialMoon(initialPlanet));
@@ -42,7 +42,7 @@ export default function Moonverse({initialPlanet='Jupiter',initialMoonId='',onPl
  const baseDays=useMemo(()=>moonRelativeEpoch(date),[date]);
  const summary=moonCatalogSummary();
  const sceneActive=active&&sceneOnscreen&&pageVisible&&!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
- function changePlanet(name){setPlanet(name);setMoonId(initialMoon(name));setQuery('')}
+ function changePlanet(name){setPlanet(name);setMoonId(initialMoon(name));setQuery('');onSelectParent(name)}
  function changeDate(value){const parsed=new Date(value+'T00:00:00.000Z');if(Number.isFinite(parsed.getTime()))setDate(parsed)}
  return <section className="moonverse" aria-label="Moonverse Observatory">
   <div className="moonverseHero">
