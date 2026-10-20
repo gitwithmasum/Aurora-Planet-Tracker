@@ -38,6 +38,7 @@ const ROWS=[
  ['himalia','Jupiter','Himalia',85,11461000,250.56,.162,'1904 · C. D. Perrine','irregular','Outer irregular satellite with inclined orbit','Earth-based surveys','Dark low-reflectance small moon'],
  ['metis','Jupiter','Metis',21.5,128000,.295,.0002,'1979 · Voyager 1','irregular','One of Jupiter’s innermost moons near the main ring','Voyager','Small irregular inner satellite'],
  ['adrastea','Jupiter','Adrastea',8.2,129000,.298,.001,'1979 · Voyager 2','irregular','Inner ring-associated moon','Voyager','Small irregular satellite'],
+ ['thebe','Jupiter','Thebe',49.3,221900,.675,.018,'1979 · Voyager 1','irregular','Small reddish inner moon and a contributor to Jupiter’s gossamer rings','Voyager;Galileo','Dark irregular inner Jovian moon'],
  ['mimas','Saturn','Mimas',198.2,185540,.942,.020,'1789 · William Herschel','icy','Herschel crater dominates one hemisphere','Voyager;Cassini','Heavily cratered icy surface'],
  ['enceladus','Saturn','Enceladus',252.1,238040,1.370,.005,'1789 · William Herschel','ocean','Global subsurface ocean and water-ice plumes','Cassini','Bright icy terrain with south-polar tiger stripes'],
  ['tethys','Saturn','Tethys',531.1,294670,1.888,.0001,'1684 · Giovanni Cassini','icy','Odysseus impact crater and Ithaca Chasma canyon','Cassini','Bright cratered ice-rich landscape'],
@@ -47,6 +48,12 @@ const ROWS=[
  ['hyperion','Saturn','Hyperion',135,1481000,21.277,.104,'1848 · Bond and Lassell','irregular','Porous-looking, irregular moon with chaotic rotation','Cassini','Sponge-like cratered landscape'],
  ['iapetus','Saturn','Iapetus',734.3,3560800,79.321,.028,'1671 · Giovanni Cassini','icy','Dramatic two-tone surface and equatorial ridge','Cassini','Bright and dark hemispheres'],
  ['phoebe','Saturn','Phoebe',106.5,12952000,-550.3,.163,'1899 · William Pickering','retrograde','Dark irregular retrograde satellite','Cassini','Dark rocky and icy cratered terrain'],
+ ['janus','Saturn','Janus',89.2,151500,.697353,.007,'1966 · A. Dollfus','icy','Shares a co-orbital horseshoe configuration with Epimetheus','Voyager;Cassini','Irregular cratered ice-rich moon'],
+ ['epimetheus','Saturn','Epimetheus',58.2,151400,.697012,.020,'1966–1980 · observations','icy','Swaps near-coincident orbits with Janus in a four-year cycle','Voyager;Cassini','Irregular cratered satellite'],
+ ['atlas','Saturn','Atlas',15.1,137700,.604602,.001,'1980 · Voyager 1','irregular','Equatorial ridge and ring-edge interactions','Cassini','Ridge-like equatorial bulge'],
+ ['prometheus','Saturn','Prometheus',43.1,139400,.615878,.002,'1980 · Voyager 1','irregular','Shepherd moon shapes the inner boundary of Saturn’s F ring','Voyager;Cassini','Elongated cratered ice-rich body'],
+ ['pandora','Saturn','Pandora',40.6,141700,.631369,.004,'1980 · Voyager 1','irregular','Small outer F-ring-associated satellite','Voyager;Cassini','Irregular cratered body'],
+ ['pan','Saturn','Pan',14.0,133600,.575051,.000,'1990 · Voyager images','irregular','Lives inside the Encke Gap; has a prominent equatorial ridge','Cassini','Disk-shaped ring moon'],
  ['miranda','Uranus','Miranda',235.8,129900,1.413,.001,'1948 · Gerard Kuiper','icy','Exceptional tectonic cliffs and patchwork terrain','Voyager 2','Coronae and dramatic scarps'],
  ['ariel','Uranus','Ariel',578.9,191020,2.520,.001,'1851 · William Lassell','icy','Fault valleys and resurfaced bright terrain','Voyager 2','Grooves, rifts and impact scars'],
  ['umbriel','Uranus','Umbriel',584.7,266300,4.144,.004,'1851 · William Lassell','icy','Dark cratered Uranian moon','Voyager 2','Dark ancient ice-rich surface'],
@@ -78,7 +85,7 @@ export function moonPlanet(planet){return MOON_PLANETS.find(p=>p.name===planet)|
 export function moonCatalogSummary(){
  return {curated:MOONS.length,systems:MOON_PLANETS.filter(p=>p.hasKnownMoons).length,
   planetSystems:MOON_PLANETS.filter(p=>p.kind==='Planet'&&p.hasKnownMoons).length,
-  complete:false,lastReviewed:'2026-10-20',scope:'Named major/selected moons only'};
+  complete:false,lastReviewed:'2026-10-20',scope:'Named major/selected moons only, including ring moons'};
 }
 export function moonValid(row){
  return !!row&&typeof row.name==='string'&&row.name.length>0&&
