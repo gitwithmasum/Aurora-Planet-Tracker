@@ -1,7 +1,8 @@
 // Convert Vite's emitted manifest into a conservative, portable offline asset list.
 // Only JS/CSS bundles are eagerly cached. Large imagery remains on-demand.
 import {readFileSync,writeFileSync,statSync,mkdirSync} from 'node:fs';
-import {join,posix} from 'node:path';
+import {join,resolve} from 'node:path';
+import {pathToFileURL} from 'node:url';
 
 export const OFFLINE_MAX_BYTES=24*1024*1024;
 export const OFFLINE_MAX_FILES=180;
@@ -31,7 +32,7 @@ export function buildOfflineList(manifest,root,{maxBytes=OFFLINE_MAX_BYTES,maxFi
  if(!entries.some(x=>sorted.some(y=>y.path===x&&y.critical)))throw Error('No main JS entrypoint found in offline manifest');
  return {format:'aurora-offline-assets-v1',version:'4.6.0',generatedFor:'Vite static bundles',assets:entries,bytes,omitted:sorted.length-entries.length};
 }
-if(process.argv[1]&&import.meta.url===new URL('file://'+process.argv[1]).href){
+if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){
  const root=join(process.cwd(),'dist');
  const manifest=JSON.parse(readFileSync(join(root,'.vite','manifest.json'),'utf8'));
  const list=buildOfflineList(manifest,root);
