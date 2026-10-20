@@ -4,6 +4,7 @@ export const SPACE_MODULES=[
  {name:'Command Center',terms:'3d simulation orbit mission control'},
  {name:'Solar System',terms:'planet 3d orbit sun'},
  {name:'Planet Intelligence',terms:'planet facts distance elevation'},
+ {name:'Moonverse',terms:'natural moons satellites planet moon planetary satellite Europa Titan Ganymede Io Phobos Triton Enceladus Charon orbital research explorer'},
  {name:'Sky Tonight',terms:'night sky visibility observation'},
  {name:'Satellite Tracker',terms:'iss tiangong hubble noaa starlink norad tle pass predictor'},
  {name:'Earth Observation',terms:'earth nasa imagery weather maps cloud climate'},
