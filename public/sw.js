@@ -1,7 +1,7 @@
 /* Aurora v4.7 — deployment-coherent offline shell and cache state.
    Only public static assets from this registration's origin and scope are cached.
    Local notes, auth responses, and real-time APIs must never enter CacheStorage. */
-const VERSION='aurora-v5.3.0';
+const VERSION='aurora-v5.4.0';
 const SHELL=VERSION+'-shell';
 const RUNTIME=VERSION+'-runtime';
 const MAX_RUNTIME=70;
@@ -39,7 +39,7 @@ async function precache(){
  const manifestResponse=await fetch(ASSET_LIST,{cache:'reload'});
  if(!manifestResponse.ok||manifestResponse.type==='opaque')throw Error('Build offline asset list missing; keep old worker');
  const manifest=await manifestResponse.clone().json();
- if(manifest?.format!=='aurora-offline-assets-v1'||manifest.version!=='5.3.0'||
+ if(manifest?.format!=='aurora-offline-assets-v1'||manifest.version!=='5.4.0'||
    !Array.isArray(manifest.assets)||manifest.assets.length>180||
    manifest.assets.some(path=>!safeAsset(path))){
   throw Error('Build asset list does not match offline worker');
@@ -80,7 +80,7 @@ self.addEventListener('message',event=>{
   const cache=await caches.open(SHELL);
   const response=await cache.match(ASSET_LIST);
   const manifest=response?await response.json().catch(()=>null):null;
-  const assets=manifest?.version==='5.3.0'&&Array.isArray(manifest.assets)?manifest.assets.filter(safeAsset):[];
+  const assets=manifest?.version==='5.4.0'&&Array.isArray(manifest.assets)?manifest.assets.filter(safeAsset):[];
   let present=0;
   for(const path of assets){if(await cache.match(new URL(path,root)))present++}
   const shellReady=!!await cache.match(root);
