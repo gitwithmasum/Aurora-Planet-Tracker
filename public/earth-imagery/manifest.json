@@ -2,13 +2,13 @@
   "source": "NASA Global Imagery Browse Services (GIBS)",
   "product": "MODIS_Terra_CorrectedReflectance_TrueColor",
   "provider": "MODIS Terra (corrected reflectance, true color)",
-  "fetchedAt": "2026-10-19T17:12:53.186924+00:00",
+  "fetchedAt": "2026-10-20T15:24:20.419259+00:00",
   "serviceUrl": "https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi",
   "projection": "EPSG:4326",
   "snapshots": [
     {
-      "date": "2026-10-16",
-      "file": "modis-terra-2026-10-16.jpg",
+      "date": "2026-10-18",
+      "file": "modis-terra-2026-10-18.jpg",
       "width": 1024,
       "height": 512,
       "layer": "MODIS_Terra_CorrectedReflectance_TrueColor",
@@ -16,8 +16,17 @@
       "acquisitionNote": "Daily browse mosaic requested for date; may contain missing swaths"
     },
     {
-      "date": "2026-10-15",
-      "file": "modis-terra-2026-10-15.jpg",
+      "date": "2026-10-17",
+      "file": "modis-terra-2026-10-17.jpg",
+      "width": 1024,
+      "height": 512,
+      "layer": "MODIS_Terra_CorrectedReflectance_TrueColor",
+      "label": "MODIS Terra true-color daily mosaic",
+      "acquisitionNote": "Daily browse mosaic requested for date; may contain missing swaths"
+    },
+    {
+      "date": "2026-10-16",
+      "file": "modis-terra-2026-10-16.jpg",
       "width": 1024,
       "height": 512,
       "layer": "MODIS_Terra_CorrectedReflectance_TrueColor",
