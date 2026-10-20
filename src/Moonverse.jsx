@@ -2,10 +2,12 @@ import React,{Suspense,lazy,useEffect,useMemo,useRef,useState} from 'react';
 import {ArrowUpRight,BookOpen,ChevronRight,Clock3,Compass,Database,ExternalLink,Globe2,Info,Orbit,Pause,Play,Search,SlidersHorizontal} from 'lucide-react';
 import {MOON_PLANETS,MOONS,MOON_SOURCE,moonsForPlanet,moonById,moonPlanet,moonCatalogSummary} from './moonCatalog.mjs';
 import {moonRelativeEpoch,sceneMoonList} from './moonOrbitMath.mjs';
+import {searchMoonScience,physicalParameters} from './moonScience.mjs';
 import {useLanguage} from './i18n.jsx';
 import FeatureBoundary from './FeatureBoundary.jsx';
 import './Moonverse.css';
 const MoonverseScene=lazy(()=>import('./MoonverseScene.jsx'));
+const MoonScienceLab=lazy(()=>import('./MoonScienceLab.jsx'));
 const frame=(date)=>date?.toLocaleDateString?.(undefined,{dateStyle:'medium'})||'—';
 const num=(n,fraction=1)=>Number.isFinite(n)?n.toLocaleString('en-US',{maximumFractionDigits:fraction}):'Not available';
 const initialMoon=planet=>moonsForPlanet(planet)[0]?.id||'';
@@ -14,6 +16,7 @@ export default function Moonverse({initialPlanet='Jupiter',initialMoonId='',onPl
  const [planet,setPlanet]=useState(MOON_PLANETS.some(p=>p.name===initialPlanet)?initialPlanet:'Jupiter');
  const [moonId,setMoonId]=useState(()=>moonById(initialMoonId)?.id||initialMoon(initialPlanet));
  const [query,setQuery]=useState('');
+ const [category,setCategory]=useState('all'),[order,setOrder]=useState('orbit-asc');
  const [active,setActive]=useState(true),[speed,setSpeed]=useState(1);
  const [date,setDate]=useState(()=>new Date('2026-10-20T00:00:00Z'));
  const [sceneOnscreen,setSceneOnscreen]=useState(true),[pageVisible,setPageVisible]=useState(document.visibilityState!=='hidden');
@@ -35,7 +38,7 @@ export default function Moonverse({initialPlanet='Jupiter',initialMoonId='',onPl
   return()=>observer.disconnect();
  },[planet]);
  const all=useMemo(()=>moonsForPlanet(planet),[planet]);
- const shown=useMemo(()=>all.filter(m=>[m.name,m.category,m.science].join(' ').toLowerCase().includes(query.trim().toLowerCase())),[all,query]);
+ const shown=useMemo(()=>searchMoonScience(all,{query,category,sort:order}),[all,query,category,order]);
  const selected=moonById(moonId)?.planet===planet?moonById(moonId):all[0]||null;
  const parent=moonPlanet(planet);
  const sceneMoons=useMemo(()=>sceneMoonList(planet),[planet]);
@@ -43,11 +46,11 @@ export default function Moonverse({initialPlanet='Jupiter',initialMoonId='',onPl
  const baseDays=useMemo(()=>moonRelativeEpoch(date),[date]);
  const summary=moonCatalogSummary();
  const sceneActive=active&&sceneOnscreen&&pageVisible&&!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
- function changePlanet(name){setPlanet(name);setMoonId(initialMoon(name));setQuery('');onSelectParent(name)}
+ function changePlanet(name){setPlanet(name);setMoonId(initialMoon(name));setQuery('');setCategory('all');onSelectParent(name)}
  function changeDate(value){const parsed=new Date(value+'T00:00:00.000Z');if(Number.isFinite(parsed.getTime()))setDate(parsed)}
  return <section className="moonverse" aria-label="Moonverse Observatory">
   <div className="moonverseHero">
-   <div><span className="moonverseEyebrow">AURORA / MOONVERSE OBSERVATORY / v5.0</span>
+   <div><span className="moonverseEyebrow">AURORA / MOONVERSE OBSERVATORY / v5.1</span>
     <h3><Orbit size={29}/>{t('Planetary Moon Systems','গ্রহ ও প্রাকৃতিক উপগ্রহের জগৎ')}</h3>
     <p>{t('Travel among natural moons, inspect scientific facts, and explore educational 3D orbits without mistaking them for live ephemerides.','প্রাকৃতিক উপগ্রহের বৈজ্ঞানিক তথ্য, আবিষ্কার ও 3D orbital simulation দেখুন। এটি live orbital ephemeris নয়।')}</p>
    </div><div className="moonverseHeroMark"><strong>{summary.curated}</strong><small>{t('CURATED MOONS','নির্বাচিত উপগ্রহ')}</small></div>
@@ -89,10 +92,20 @@ export default function Moonverse({initialPlanet='Jupiter',initialMoonId='',onPl
    </div>
    <div className="moonverseCatalogPanel">
     <div className="moonverseCatalogHeader"><h4><Database size={18}/>{t('Moon Catalog','উপগ্রহ ক্যাটালগ')}</h4><span>{shown.length} / {all.length}</span></div>
-    <label className="moonverseSearch"><Search size={16}/><input aria-label="Search natural moons" value={query} onChange={e=>setQuery(e.target.value)} placeholder={t('Search moon, geology or feature…','উপগ্রহ বা বৈশিষ্ট্য খুঁজুন…')}/></label>
+    <label className="moonverseSearch"><Search size={16}/><input aria-label="Search natural moons" value={query} onChange={e=>setQuery(e.target.value)} placeholder={t('Search moon, geology, mission, JPL ID…','উপগ্রহ, ভূতত্ত্ব, অভিযান, JPL ID…')}/></label>
+    <div className="moonverseCatalogFilters">
+     <label>{t('TYPE','ধরন')}<select aria-label="Filter moon category" value={category} onChange={e=>setCategory(e.target.value)}>
+      <option value="all">ALL</option>
+      {[...new Set(all.map(m=>m.category))].sort().map(type=><option value={type} key={type}>{type}</option>)}
+     </select></label>
+     <label>{t('SORT','ক্রম')}<select aria-label="Sort natural moons" value={order} onChange={e=>setOrder(e.target.value)}>
+      <option value="orbit-asc">ORBITAL DISTANCE</option><option value="radius-desc">LARGEST FIRST</option>
+      <option value="gravity-desc">GRAVITY (DERIVED)</option><option value="name-asc">A–Z</option>
+     </select></label>
+    </div>
     <div className="moonverseCatalogList" role="group" aria-label="Natural moon selections">
      {shown.map(m=><button type="button" className={selected?.id===m.id?'selected':''} key={m.id} aria-pressed={selected?.id===m.id} onClick={()=>setMoonId(m.id)}>
-      <span className="moonverseMiniMoon" aria-hidden="true"/><span><strong>{m.name}</strong><small>{m.category} · {num(m.radiusKm,1)} km {t('radius','ব্যাসার্ধ')}</small></span><ChevronRight size={15}/>
+      <span className="moonverseMiniMoon" aria-hidden="true"/><span><strong>{m.name}</strong><small>{m.category} · {num(m.radiusKm,1)} km {t('radius','ব্যাসার্ধ')} · JPL {physicalParameters(m)?.naifCode||'—'}</small></span><ChevronRight size={15}/>
      </button>)}
      {!shown.length&&<p>{t('No matching moon. Clear search to show the selected catalog.','কোনো উপগ্রহ মেলেনি। অন্য শব্দ দিয়ে খুঁজুন।')}</p>}
     </div>
@@ -112,6 +125,9 @@ export default function Moonverse({initialPlanet='Jupiter',initialMoonId='',onPl
     <div><small>{t('ORBIT SENSE','কক্ষপথের দিক')}</small><strong>{selected.periodDays<0?t('Retrograde','বিপরীতমুখী'):t('Prograde*','সামনের দিকে*')}</strong></div>
     <div><small>{t('DISCOVERY','আবিষ্কার')}</small><strong>{selected.discovery}</strong></div>
    </div>
+   <FeatureBoundary name="Moonverse Advanced Science"><Suspense fallback={<p role="status" className="moonverseNotice">Loading advanced scientific data…</p>}>
+    <MoonScienceLab moon={selected}/>
+   </Suspense></FeatureBoundary>
    <div className="moonverseResearchGrid">
     <article><h5><BookOpen size={17}/>{t('Scientific Highlight','বৈজ্ঞানিক বৈশিষ্ট্য')}</h5><p>{selected.science}</p></article>
     <article><h5><Globe2 size={17}/>{t('Surface & Geology','পৃষ্ঠ ও ভূতত্ত্ব')}</h5><p>{selected.surface}</p></article>
