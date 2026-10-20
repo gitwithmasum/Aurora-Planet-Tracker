@@ -2,6 +2,15 @@
   <img src="src/assets/Aurora%20Planet%20Tracker%20Dashboard.png" alt="Aurora Planet Tracker — Pink & Gold Dashboard Preview" width="100%" />
 </p>
 
+## v4.8.1 — QA Hotfix: Mobile Layout, Current Pages Smoke Test, CI Dependencies
+
+- **CI findings from v4.8.0:** the GitHub Pages build and published HTML/JS/CSS initially succeeded, but its old browser smoke script still expected a removed `Search dashboard modules` input. The new **Universal Space Search** is a launcher/dialog. The Release QA desktop navigation, Field Journal persistence, JSON restore roundtrip and emulated mobile offline reload tests passed; its mobile layout test found **393px viewport / 408px page scroll width** on the Dashboard.
+- **Responsive fix:** explicitly constrain the Dashboard's one-column grid track to `minmax(0,1fr)` rather than an implicit min-content track, and allow the search launcher to flex/shrink/wrap correctly at phone widths. The QA test now reports the specific elements overhanging the viewport instead of silently hiding overflow with `overflow-x:hidden`.
+- **Current live smoke tests:** `scripts/browser-smoke.mjs` tests the real Universal Search → Earth Observation route, Dashboard hero/cards and theme, Satellite Tracker, Field Journal, Observation Analytics and Offline Recovery. The deeper local Chromium browser suite remains separate and tests backup restoration plus service-worker-controlled offline reload. Stale legacy v3 selectors and external weather-dependent checks are removed from the Pages smoke test.
+- **Dependency installation reliability:** pin Vite `6.3.5` and compatible `@vitejs/plugin-react` `4.7.0`, and retry one transient npm install failure in the release and Pages workflows. We do **not** use `--legacy-peer-deps` or ignore real peer conflicts.
+- **Version/pwa coherency:** `package.json`, `public/sw.js`, offline asset manifest output and relevant test fixtures are all versioned **4.8.1**, ensuring a new service-worker namespace for users who approve an update. No Field Journal schema or observing records are changed.
+- **Release verification:** read the latest workflow logs rather than assuming source integration alone implies a successful deploy. A successful Vercel status is independent of GitHub Pages and actual hardware testing. The [physical cross-device QA matrix](docs/CROSS_DEVICE_QA_v4.8.md) remains pending real Android, Windows and iOS evidence.
+
 ## v4.8.0 — Release Stabilization & Cross-Device QA
 
 - **PWA stability fix:** fixes a React effect bug where the visibility-change callback was registered before initialization, risking a runtime error in the header's PWA status/update controls. Keeps update checks throttled, user-approved and safe after unmount.
