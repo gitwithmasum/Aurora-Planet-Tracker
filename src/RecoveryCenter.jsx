@@ -23,7 +23,7 @@ export default function RecoveryCenter({onNavigate}){
  const [local,setLocal]=useState(localSummary);
  const [preview,setPreview]=useState(null),[restoreMode,setRestoreMode]=useState('merge');
  const [offline,setOffline]=useState(null),[storage,setStorage]=useState(null);
- const [busy,setBusy]=useState(false),[status,setStatus]=useState(''),[error,setError]=useState('');
+ const [busy,setBusy]=useState(false),[status,setStatus]=useState(''),[error,setError]=useState(''),[restored,setRestored]=useState(false);
  const picker=useRef(null);
  useEffect(()=>{
   let active=true;
@@ -34,7 +34,7 @@ export default function RecoveryCenter({onNavigate}){
  },[]);
  useEffect(()=>{
   const listener=event=>{
-   if(event.data?.type==='OFFLINE_STATUS_RESULT')setOffline(event.data);
+   if(event.data?.type==='OFFLINE_STATUS_RESULT'){setOffline(event.data);setStatus('')}
   };
   navigator.serviceWorker?.addEventListener('message',listener);
   return()=>navigator.serviceWorker?.removeEventListener('message',listener);
@@ -57,7 +57,7 @@ export default function RecoveryCenter({onNavigate}){
  }
  async function openFile(e){
   const file=e.target.files?.[0];e.target.value='';
-  setPreview(null);setError('');setStatus('');
+  setPreview(null);setError('');setStatus('');setRestored(false);
   if(!file)return;
   if(file.size>RECOVERY_MAX_BYTES){setError(say('Recovery file must not exceed 2 MB.','Recovery ফাইল ২ MB-এর বেশি হতে পারবে না।'));return}
   setBusy(true);
@@ -78,7 +78,7 @@ export default function RecoveryCenter({onNavigate}){
   setError('');setStatus('');
   try{
    const result=applyRecoveryBundle(localStorage,preview.bundle,VALID_IDS,{mode:restoreMode});
-   setLocal(localSummary());setPreview(null);
+   setLocal(localSummary());setPreview(null);setRestored(true);
    setStatus(say('Recovery completed: ','Restore সম্পন্ন: ')+result.sessions+say(' sessions, ','টি সেশন, ')+result.watchlist+say(' saved targets. Reload to refresh every module.','টি সংরক্ষিত লক্ষ্য। সব module হালনাগাদ দেখতে অ্যাপ রিলোড করুন।'));
   }catch(e){setError(e?.message||'Recovery failed')}
  }
@@ -127,6 +127,7 @@ export default function RecoveryCenter({onNavigate}){
    </div>}
   </article>
   {status&&<p role="status" className="recoverySuccess">{status}</p>}
+  {restored&&<button type="button" onClick={()=>window.location.reload()}><RefreshCcw size={16}/>{say('RELOAD APP TO APPLY RESTORED DATA','রিকভারি তথ্য চালু করতে অ্যাপ রিলোড করুন')}</button>}
   {error&&<p role="alert" className="recoveryWarning">{error}</p>}
   <p className="recoveryFoot">{say('Reliability note: Safari/private browsing, storage quotas, data clearing and partially installed PWAs may still prevent offline use or restoring data. Export backups regularly before updates; no cloud sync or automatic backup is performed.','নির্ভরযোগ্যতা: Private browsing, storage limits, browser data clear বা অসম্পূর্ণ PWA install-এর কারণে offline বা recovery ব্যর্থ হতে পারে। আপডেটের আগে ব্যাকআপ রাখুন; এখানে স্বয়ংক্রিয় cloud backup নেই।')}</p>
  </section>;
