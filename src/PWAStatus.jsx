@@ -3,7 +3,7 @@ import {Download,RefreshCcw,WifiOff} from 'lucide-react';
 import {useLanguage} from './i18n.jsx';
 import './PWAStatus.css';
 
-// v4.6: Never reload a working session just because a service worker changed
+// v4.7: Never reload a working session just because a service worker changed
 // in another tab. Only reload after an explicit user-approved update.
 export default function PWAStatus(){
  const {t,language}=useLanguage();
@@ -15,12 +15,21 @@ export default function PWAStatus(){
  useEffect(()=>{
   const onPrompt=e=>{e.preventDefault();setPrompt(e)};
   const onInstalled=()=>setPrompt(null);
-  const onOnline=()=>setOnline(true),onOffline=()=>setOnline(false);
+  const onOnline=()=>{setOnline(true);checkForUpdate()},onOffline=()=>setOnline(false);
   window.addEventListener('beforeinstallprompt',onPrompt);
   window.addEventListener('appinstalled',onInstalled);
   window.addEventListener('online',onOnline);
   window.addEventListener('offline',onOffline);
-  let live=true,registration=null,installedWorker=null;
+  document.addEventListener('visibilitychange',onVisible);
+  let live=true,registration=null,installedWorker=null,lastCheck=0;
+  function checkForUpdate(){
+   if(!registration||!navigator.onLine||document.visibilityState!=='visible')return;
+   const now=Date.now();
+   if(now-lastCheck<5*60*1000)return;
+   lastCheck=now;
+   registration.update().catch(()=>{});
+  }
+  const onVisible=()=>{if(document.visibilityState==='visible')checkForUpdate()};
   const onWorkerState=()=>{
    if(live&&installedWorker?.state==='installed'&&navigator.serviceWorker.controller)setWaiting(installedWorker);
   };
@@ -40,6 +49,7 @@ export default function PWAStatus(){
     if(reg.waiting&&navigator.serviceWorker.controller)setWaiting(reg.waiting);
     reg.addEventListener('updatefound',onUpdate);
     if(reg.installing)onUpdate();
+    checkForUpdate();
    }).catch(()=>{});
    navigator.serviceWorker.addEventListener('controllerchange',onController);
   }
@@ -51,6 +61,7 @@ export default function PWAStatus(){
    window.removeEventListener('appinstalled',onInstalled);
    window.removeEventListener('online',onOnline);
    window.removeEventListener('offline',onOffline);
+   document.removeEventListener('visibilitychange',onVisible);
    navigator.serviceWorker?.removeEventListener('controllerchange',onController);
   };
  },[]);
