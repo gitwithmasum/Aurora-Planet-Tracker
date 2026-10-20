@@ -73,6 +73,14 @@ try{
   await page.locator('.obsAnalytics').waitFor({timeout:20000});
   await checkOverflow(page);
  });
+ await run('earth-observation-return-dashboard-without-portal-errors',desktop,async page=>{
+  await page.locator('#auroraSidebar button[title="Earth Observation"]').click();
+  await page.getByRole('heading',{name:'Earth Mission View'}).waitFor({timeout:25000});
+  await page.locator('#auroraSidebar button[title="Dashboard"]').click();
+  await page.locator('.auroraDashboard').waitFor({timeout:20000});
+  await page.waitForTimeout(350);
+  await checkOverflow(page);
+ });
  await run('field-journal-create-and-reload',desktop,async page=>{
   await navigate(page,'Field Journal');
   await page.locator('.fieldJournal').waitFor({timeout:20000});
