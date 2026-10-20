@@ -17,8 +17,14 @@ export function createRecoveryBundle(storage,validIds,createdAt=new Date().toISO
  if(!storage||!Array.isArray(validIds))throw Error('Storage and known target IDs are required');
  const rawJournal=storage.getItem(JOURNAL_KEY);
  const rawWatchlist=storage.getItem(WATCH_KEY);
- const sessions=rawJournal===null?[]:normalizeFieldSessions(readJSON(rawJournal));
- const watchlist=rawWatchlist===null?[]:normalizeWatchlist(readJSON(rawWatchlist),validIds);
+ const journalInput=rawJournal===null?[]:readJSON(rawJournal);
+ const watchInput=rawWatchlist===null?[]:readJSON(rawWatchlist);
+ if(!Array.isArray(journalInput)||!Array.isArray(watchInput))throw Error('Existing local journal or watchlist format is invalid; backup not exported');
+ const sessions=normalizeFieldSessions(journalInput);
+ const watchlist=normalizeWatchlist(watchInput,validIds);
+ if(sessions.length!==journalInput.length||watchlist.length!==new Set(watchInput).size){
+  throw Error('Some locally saved records are malformed or duplicated. Export the original site data separately before repairing.');
+ }
  const preferences={};
  for(const [key,allowed] of Object.entries(RECOVERY_PREFERENCES)){
   const value=storage.getItem(key);
