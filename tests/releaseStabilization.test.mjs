@@ -53,3 +53,32 @@ test('build manifest and service worker versions match the release',()=>{
  assert.match(sw,/const VERSION='aurora-v4\.8\.1'/);
  assert.match(manifest,/version:'4\.8\.1'/);
 });
+
+
+test('mobile Dashboard explicitly constrains CSS grid and search launcher',()=>{
+ const css=source('src/AuroraDashboard.css');
+ assert.match(css,/grid-template-columns:minmax\(0,1fr\)/);
+ assert.match(css,/\.auroraDashSearchLauncher\{display:flex/);
+ assert.match(css,/\.auroraDashSearchLauncher span\{min-width:0/);
+ const script=source('scripts/browser-qa.mjs');
+ assert.match(script,/offenders/);
+ assert.match(script,/data\.scroll<=data\.w\+2/);
+});
+test('live Pages smoke test uses the current universal search, not removed input',()=>{
+ const script=source('scripts/browser-smoke.mjs');
+ assert.match(script,/\.auroraDashSearchLauncher/);
+ assert.match(script,/Search planets, satellites, galaxies or modules/);
+ assert.doesNotMatch(script,/getByLabel\('Search dashboard modules'\)/);
+ assert.match(script,/Satellite Tracker/);
+});
+test('releases pin compatible dependencies and do not bypass peer checks',()=>{
+ const pkg=JSON.parse(source('package.json'));
+ assert.equal(pkg.version,'4.8.1');
+ assert.equal(pkg.devDependencies.vite,'6.3.5');
+ assert.equal(pkg.devDependencies['@vitejs/plugin-react'],'4.7.0');
+ for(const path of ['.github/workflows/deploy-pages.yml','.github/workflows/aurora-release-qa.yml']){
+  const yaml=source(path);
+  assert.match(yaml,/npm cache verify/);
+  assert.doesNotMatch(yaml,/--legacy-peer-deps|--force/);
+ }
+});
