@@ -93,7 +93,8 @@ try{
   await page.getByRole('heading',{name:/No natural moons/}).waitFor();
   await checkOverflow(page);
  });
- await run('horizons-jpl-synthetic-fixture-and-safe-fallback',desktop,async page=>{
+ const scientificFixtureContext=await browser.newContext({viewport:{width:1440,height:900},serviceWorkers:'block',reducedMotion:'reduce'});
+ await run('horizons-jpl-synthetic-fixture-and-safe-fallback',scientificFixtureContext,async page=>{
   // Isolated browser fixture, NOT a NASA/JPL response and never written to dist.
   const hour=60*60*1000,baseline=Math.floor(Date.now()/hour)*hour-hour;
   const rows=Array.from({length:4},(_,i)=>[baseline+i*hour,
@@ -103,7 +104,7 @@ try{
    targets:{europa:{naif:502,center:599,frame:'ICRF',rows}}};
   await page.route('**/orbital-data/horizons-v5.2.json',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(fixture)}));
   await navigate(page,'Moonverse');
-  await page.locator('.moonverseEphemerisStatus').getByText(/verified jpl snapshot captured/i).waitFor({timeout:20000});
+  await page.locator('.moonverseEphemerisStatus').filter({hasText:/verified jpl snapshot captured/i}).waitFor({timeout:20000});
   const scientific=page.getByRole('button',{name:'JPL HORIZONS SNAPSHOT'});
   await scientific.waitFor({state:'visible'});
   assert.equal(await scientific.isDisabled(),false);
@@ -115,6 +116,7 @@ try{
   await page.getByText(/ILLUSTRATIVE MODEL/).waitFor();
   await checkOverflow(page);
  });
+ await scientificFixtureContext.close();
  await run('earth-observation-return-dashboard-without-portal-errors',desktop,async page=>{
   await page.locator('#auroraSidebar button[title="Earth Observation"]').click();
   await page.getByRole('heading',{name:'Earth Mission View'}).waitFor({timeout:25000});
