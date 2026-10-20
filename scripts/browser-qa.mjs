@@ -43,7 +43,16 @@ async function run(name,context,steps){
  }finally{await page.close()}
 }
 const checkOverflow=async page=>{
- const data=await page.evaluate(()=>({w:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth}));
+ const data=await page.evaluate(()=>{
+  const w=document.documentElement.clientWidth,scroll=document.documentElement.scrollWidth;
+  const offenders=scroll>w+2?[...document.querySelectorAll('body *')].map(el=>{
+   const r=el.getBoundingClientRect();
+   return {tag:el.tagName.toLowerCase(),className:typeof el.className==='string'?el.className.slice(0,100):'',
+    left:Math.round(r.left),right:Math.round(r.right),width:Math.round(r.width)};
+  }).filter(el=>el.right>w+2&&el.width>0&&el.left<w+5)
+   .sort((a,b)=>b.right-a.right).slice(0,12):[];
+  return {w,scroll,offenders};
+ });
  assert.ok(data.scroll<=data.w+2,'Horizontal overflow '+JSON.stringify(data));
 };
 async function navigate(page,title,mobile=false){
