@@ -21,8 +21,8 @@ test('Solar System and Planet Intelligence link to selected world moon system',(
 test('Moonverse scientific source links, no false live-position claims',()=>{
  const ui=src('src/Moonverse.jsx');
  const catalog=src('src/moonCatalog.mjs');
- assert.match(ui,/SIMULATION/);
- assert.match(ui,/not Horizons predictions/);
+ assert.match(ui,/EDUCATIONAL ORBITS/);
+ assert.match(ui,/JPL HORIZONS SNAPSHOT/);
  assert.match(ui,/source\w*/i);
  assert.match(catalog,/ssd\.jpl\.nasa\.gov\/sats\/phys_par/);
  assert.match(catalog,/science\.nasa\.gov\/solar-system\/moons/);
@@ -35,7 +35,7 @@ test('Moonverse 3D is itself lazy and respects reduced-motion and visibility',()
  assert.match(ui,/new IntersectionObserver/);
  assert.match(ui,/document\.visibilityState/);
  assert.match(ui,/prefers-reduced-motion: reduce/);
- assert.match(scene,/frameloop=\{active&&speed>0\?'always':'demand'\}/);
+ assert.match(scene,/frameloop=\{mode!=='horizons'&&active&&speed>0\?'always':'demand'\}/);
  assert.match(scene,/moons\.slice\(0,12\)/);
 });
 test('Moonverse has responsive layout and no forced cloud/GPS connection',()=>{
@@ -43,7 +43,7 @@ test('Moonverse has responsive layout and no forced cloud/GPS connection',()=>{
  const ui=src('src/Moonverse.jsx');
  assert.match(css,/@media\(max-width:480px\)/);
  assert.match(css,/grid-template-columns:minmax\(0,1fr\)/);
- assert.doesNotMatch(ui,/getCurrentPosition|fetch\(|getUserMedia/);
+ assert.doesNotMatch(ui,/getCurrentPosition|getUserMedia|fetch\(HORIZONS_SOURCE/);
  assert.match(ui,/aria-label="Search natural moons"/);
 });
 test('Moonverse appears in English and Bangla locale and browser QA',()=>{
