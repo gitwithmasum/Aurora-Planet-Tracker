@@ -42,7 +42,7 @@ export default function Sidebar({nav,navKey,t,tab,onSelect,collapsed,onCollapse,
  }
  const touchStart=e=>{if(e.touches.length!==1)return;touch.current={x:e.touches[0].clientX,y:e.touches[0].clientY};};
  const touchEnd=e=>{if(!menu||!touch.current)return;const point=e.changedTouches[0],start=touch.current;touch.current=null;if(start.x-point.clientX>65&&Math.abs(point.clientY-start.y)<70)onClose();};
- return <aside id="auroraSidebar" className="auroraSidebar" aria-label="Main navigation" onTouchStart={touchStart} onTouchEnd={touchEnd}>
+ return <aside id="auroraSidebar" className="auroraSidebar" role={menu?'dialog':undefined} aria-modal={menu?true:undefined} aria-label="Main navigation" onTouchStart={touchStart} onTouchEnd={touchEnd}>
   <div className="sidebarHeading">
    <span className="sidebarHeadingText">MISSION NAVIGATION</span>
    <button className="sidebarCollapseToggle" type="button" title={collapsed?'Expand sidebar':'Collapse sidebar'} aria-label={collapsed?'Expand sidebar':'Collapse sidebar'} aria-expanded={!collapsed} onClick={onCollapse}><Menu size={18}/></button>
