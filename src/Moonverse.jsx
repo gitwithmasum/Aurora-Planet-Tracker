@@ -3,6 +3,7 @@ import {ArrowUpRight,BookOpen,ChevronRight,Clock3,Compass,Database,ExternalLink,
 import {MOON_PLANETS,MOONS,MOON_SOURCE,moonsForPlanet,moonById,moonPlanet,moonCatalogSummary} from './moonCatalog.mjs';
 import {moonRelativeEpoch,sceneMoonList} from './moonOrbitMath.mjs';
 import {searchMoonScience,physicalParameters} from './moonScience.mjs';
+import {HORIZONS_PATH,HORIZONS_SOURCE,validateHorizonsSnapshot,interpolateHorizons,horizonsDistanceKm,HORIZONS_BODIES} from './horizonsCore.mjs';
 import {useLanguage} from './i18n.jsx';
 import FeatureBoundary from './FeatureBoundary.jsx';
 import './Moonverse.css';
@@ -18,9 +19,26 @@ export default function Moonverse({initialPlanet='Jupiter',initialMoonId='',onPl
  const [query,setQuery]=useState('');
  const [category,setCategory]=useState('all'),[order,setOrder]=useState('orbit-asc');
  const [active,setActive]=useState(true),[speed,setSpeed]=useState(1);
- const [date,setDate]=useState(()=>new Date('2026-10-20T00:00:00Z'));
+ const [date,setDate]=useState(()=>new Date());
+ const [orbitalMode,setOrbitalMode]=useState('model'),[snapshot,setSnapshot]=useState(null),[snapshotStatus,setSnapshotStatus]=useState('loading'),[snapshotError,setSnapshotError]=useState('');
  const [sceneOnscreen,setSceneOnscreen]=useState(true),[pageVisible,setPageVisible]=useState(document.visibilityState!=='hidden');
  const viewport=useRef(null);
+ async function loadEphemeris(signal){
+  setSnapshotStatus('loading');setSnapshotError('');
+  try{
+   const response=await fetch(import.meta.env.BASE_URL+HORIZONS_PATH,{cache:'no-store',signal});
+   if(!response.ok)throw Error('Snapshot HTTP '+response.status);
+   const data=await response.json();
+   const validity=validateHorizonsSnapshot(data);
+   if(!validity.valid)throw Error(validity.reason);
+   if(signal?.aborted)return;
+   setSnapshot(data);setSnapshotStatus('ready');
+  }catch(e){
+   if(signal?.aborted)return;
+   setSnapshot(null);setSnapshotStatus('unavailable');setSnapshotError(String(e?.message||e));
+  }
+ }
+ useEffect(()=>{const controller=new AbortController();loadEphemeris(controller.signal);return()=>controller.abort()},[]);
  useEffect(()=>{
   if(!MOON_PLANETS.some(p=>p.name===initialPlanet))return;
   setPlanet(initialPlanet);setMoonId(moonById(initialMoonId)?.planet===initialPlanet?initialMoonId:initialMoon(initialPlanet));
@@ -45,12 +63,17 @@ export default function Moonverse({initialPlanet='Jupiter',initialMoonId='',onPl
  const selectedRendered=!!selected&&sceneMoons.some(x=>x.id===selected.id);
  const baseDays=useMemo(()=>moonRelativeEpoch(date),[date]);
  const summary=moonCatalogSummary();
+ const atMs=date.getTime();
+ const verifiedForPlanet=useMemo(()=>sceneMoons.filter(m=>!!interpolateHorizons(snapshot,m.id,atMs)),[sceneMoons,snapshot,atMs]);
+ const scientificEnabled=verifiedForPlanet.length>0;
+ const effectiveMode=orbitalMode==='horizons'&&scientificEnabled?'horizons':'model';
+ const selectedVector=selected?interpolateHorizons(snapshot,selected.id,atMs):null;
  const sceneActive=active&&sceneOnscreen&&pageVisible&&!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
  function changePlanet(name){setPlanet(name);setMoonId(initialMoon(name));setQuery('');setCategory('all');onSelectParent(name)}
- function changeDate(value){const parsed=new Date(value+'T00:00:00.000Z');if(Number.isFinite(parsed.getTime()))setDate(parsed)}
+ function changeDate(value){const parsed=new Date(value.includes('T')?value+':00.000Z':value+'T00:00:00.000Z');if(Number.isFinite(parsed.getTime()))setDate(parsed)}
  return <section className="moonverse" aria-label="Moonverse Observatory">
   <div className="moonverseHero">
-   <div><span className="moonverseEyebrow">AURORA / MOONVERSE OBSERVATORY / v5.1</span>
+   <div><span className="moonverseEyebrow">AURORA / MOONVERSE OBSERVATORY / v5.2</span>
     <h3><Orbit size={29}/>{t('Planetary Moon Systems','গ্রহ ও প্রাকৃতিক উপগ্রহের জগৎ')}</h3>
     <p>{t('Travel among natural moons, inspect scientific facts, and explore educational 3D orbits without mistaking them for live ephemerides.','প্রাকৃতিক উপগ্রহের বৈজ্ঞানিক তথ্য, আবিষ্কার ও 3D orbital simulation দেখুন। এটি live orbital ephemeris নয়।')}</p>
    </div><div className="moonverseHeroMark"><strong>{summary.curated}</strong><small>{t('CURATED MOONS','নির্বাচিত উপগ্রহ')}</small></div>
@@ -65,7 +88,7 @@ export default function Moonverse({initialPlanet='Jupiter',initialMoonId='',onPl
    <div><small>{t('PARENT WORLD','মাতৃ গ্রহ')}</small><strong>{parent?.name}</strong></div>
    <div><small>{t('CATALOG ENTRIES','ক্যাটালগের উপগ্রহ')}</small><strong>{all.length}</strong></div>
    <div><small>{t('3D OBJECTS','3D উপগ্রহ')}</small><strong>{sceneMoons.length}</strong></div>
-   <div><small>{t('ORBIT MODEL','কক্ষপথ মডেল')}</small><strong>{t('Illustrative','শিক্ষামূলক')}</strong></div>
+   <div><small>{t('ORBIT MODEL','কক্ষপথ মডেল')}</small><strong>{effectiveMode==='horizons'?'JPL ICRF':t('Illustrative','শিক্ষামূলক')}</strong></div>
   </div>
   {all.length===0?<div className="moonverseEmpty">
    <Globe2 size={26}/><h4>{planet}: {t('No natural moons','কোনো প্রাকৃতিক উপগ্রহ নেই')}</h4>
@@ -73,22 +96,31 @@ export default function Moonverse({initialPlanet='Jupiter',initialMoonId='',onPl
   </div>:<div className="moonverseWorkspace">
    <div className="moonverseScenePanel">
     <div className="moonverseSceneHeader"><div><span className="moonverseEyebrow">INTERACTIVE 3D / {planet.toUpperCase()}</span><h4>{t('Orbital Observatory','অরবিটাল অবজারভেটরি')}</h4></div>
-     <span className="moonverseSimulationTag">{t('SIMULATION • NOT LIVE POSITION','সিমুলেশন • লাইভ অবস্থান নয়')}</span></div>
+     <span className="moonverseSimulationTag">{effectiveMode==='horizons'?t('JPL SAMPLED VECTORS · UTC','JPL সংগৃহীত অবস্থান · UTC'):t('ILLUSTRATIVE MODEL · NOT LIVE','শিক্ষামূলক মডেল · লাইভ নয়')}</span></div>
     <div ref={viewport} className="moonverseCanvas" aria-label={'Interactive 3D orbit illustration of '+planet}>
      <FeatureBoundary name="Moonverse 3D renderer"><Suspense fallback={<div className="moonverseLoading" role="status">{t('Loading 3D moon system…','3D উপগ্রহ লোড হচ্ছে…')}</div>}>
-      <MoonverseScene key={planet} planet={parent} moons={sceneMoons} selectedId={selected?.id} onSelect={setMoonId} epochDays={baseDays||0} speed={speed} active={sceneActive} quality={quality}/>
+      <MoonverseScene key={planet+'-'+effectiveMode} planet={parent} moons={sceneMoons} selectedId={selected?.id} onSelect={setMoonId} epochDays={baseDays||0} speed={speed} active={sceneActive} quality={quality} mode={effectiveMode} snapshot={snapshot} atMs={atMs}/>
      </Suspense></FeatureBoundary>
     </div>
+    <div className="moonverseHorizonsModes" role="group" aria-label="Moon orbit position source">
+      <button type="button" aria-pressed={effectiveMode==='model'} className={effectiveMode==='model'?'active':''} onClick={()=>setOrbitalMode('model')}>{t('EDUCATIONAL ORBITS','শিক্ষামূলক কক্ষপথ')}</button>
+      <button type="button" aria-pressed={effectiveMode==='horizons'} className={effectiveMode==='horizons'?'active':''} disabled={!scientificEnabled} onClick={()=>setOrbitalMode('horizons')}>{t('JPL HORIZONS SNAPSHOT','JPL Horizons অবস্থান')}</button>
+      <button type="button" aria-label="Reload Horizons snapshot" onClick={()=>loadEphemeris()} disabled={snapshotStatus==='loading'}>{snapshotStatus==='loading'?'CHECKING…':'CHECK DATA'}</button>
+     </div>
+    <div className="moonverseEphemerisStatus" role="status">
+     {snapshotStatus==='ready'?<>{t('Verified JPL snapshot captured','JPL snapshot সংগ্রহের সময়')}: <strong>{new Date(snapshot.createdAt).toISOString().slice(0,16).replace('T',' ')} UTC</strong> · {verifiedForPlanet.length} {t('moons covered at selected UTC time','টি উপগ্রহ এই UTC সময়ে পাওয়া যাচ্ছে')}</>:<>{t('No verified JPL position data currently available','যাচাইকৃত JPL অবস্থানের তথ্য পাওয়া যায়নি')}: {snapshotStatus==='loading'?t('checking…','পরীক্ষা হচ্ছে…'):snapshotError||t('educational mode','শিক্ষামূলক মোড')}</>}
+     {snapshotStatus==='ready'&&!scientificEnabled&&<span> · {t('Selected time/planet outside snapshot coverage; educational model shown','নির্বাচিত সময়/গ্রহ snapshot-এর বাইরে; শিক্ষামূলক মডেল দেখানো হচ্ছে')}</span>}
+    </div>
     <div className="moonverseSceneControls">
-     <button type="button" onClick={()=>setActive(v=>!v)} aria-pressed={!active}>{active?<Pause size={15}/>:<Play size={15}/>} {active?t('PAUSE','থামাও'):t('RESUME','চালাও')}</button>
+     <button type="button" disabled={effectiveMode==='horizons'} onClick={()=>setActive(v=>!v)} aria-pressed={!active}>{active?<Pause size={15}/>:<Play size={15}/>} {active?t('PAUSE','থামাও'):t('RESUME','চালাও')}</button>
      <label><SlidersHorizontal size={14}/> {t('SIM SPEED','সিমুলেশনের গতি')}
-      <select aria-label="Moon orbit playback speed" value={speed} onChange={e=>setSpeed(Number(e.target.value))}>
+      <select aria-label="Moon orbit playback speed" disabled={effectiveMode==='horizons'} value={speed} onChange={e=>setSpeed(Number(e.target.value))}>
        <option value="0">0×</option><option value=".25">0.25×</option><option value="1">1×</option><option value="5">5×</option>
       </select>
      </label>
-     <label><Clock3 size={14}/> {t('MODEL DATE','মডেল তারিখ')} <input aria-label="Moon illustrative orbit model date" type="date" min="2000-01-01" max="2100-12-31" value={date.toISOString().slice(0,10)} onChange={e=>changeDate(e.target.value)}/></label>
+     <label><Clock3 size={14}/> {t('UTC TIMESTAMP','UTC সময়')} <input aria-label="Moon orbital time UTC" type="datetime-local" step="60" min="2000-01-01T00:00" max="2100-12-31T23:59" value={date.toISOString().slice(0,16)} onChange={e=>changeDate(e.target.value)}/></label>
     </div>
-    <p className="moonverseNotice"><Info size={15}/>{t('Distances use logarithmic compression; moon sizes are exaggerated. Orbital phases, inclination and orientation are not Horizons predictions. Touch/click a rendered moon or select it from the catalog.','দূরত্ব লগারিদমিকভাবে সংকুচিত ও উপগ্রহের আকার বড় করে দেখানো হয়। Orbit phase বা দিক JPL Horizons prediction নয়। 3D-তে বা তালিকা থেকে উপগ্রহ নির্বাচন করুন।')}</p>
+    <p className="moonverseNotice"><Info size={15}/>{effectiveMode==='horizons'?t('JPL planet-centered geometric ICRF vectors, sampled every hour and linearly interpolated up to 60 minutes apart. Position directions are referenced to the source frame; visual distance is compressed. Trails show only the available snapshot interval, not complete orbits. No live Horizons API requests are made by this website.','JPL-র গ্রহ-কেন্দ্রিক ICRF অবস্থান প্রতি ঘণ্টায় সংগৃহীত, মাঝের সময় linear interpolation। 3D দূরত্ব সংকুচিত এবং রেখা শুধু snapshot সময়সীমার, পুরো কক্ষপথ নয়। ওয়েবসাইট সরাসরি Horizons API ব্যবহার করে না।'):t('Educational two-body orbital ellipses, arbitrary phase and simplified orientations—not observational ephemerides. Distances compressed and moon sizes enlarged.','শিক্ষামূলক উপবৃত্তাকার কক্ষপথ, আনুমানিক phase ও দিক। বাস্তব বর্তমান অবস্থান নয়। দূরত্ব সংকুচিত ও উপগ্রহের আকার বড়।')}</p>
    </div>
    <div className="moonverseCatalogPanel">
     <div className="moonverseCatalogHeader"><h4><Database size={18}/>{t('Moon Catalog','উপগ্রহ ক্যাটালগ')}</h4><span>{shown.length} / {all.length}</span></div>
@@ -128,6 +160,7 @@ export default function Moonverse({initialPlanet='Jupiter',initialMoonId='',onPl
    <FeatureBoundary name="Moonverse Advanced Science"><Suspense fallback={<p role="status" className="moonverseNotice">Loading advanced scientific data…</p>}>
     <MoonScienceLab moon={selected}/>
    </Suspense></FeatureBoundary>
+   <div className="moonverseEphemerisDetail"><h5>{t('JPL Orbital Intelligence','JPL কক্ষপথ গবেষণা')}</h5>{selectedVector?<p><strong>{selected.name}:</strong> {t('Planet-relative distance','গ্রহ থেকে দূরত্ব')} {num(horizonsDistanceKm(selectedVector),1)} km · {selectedVector.sampled?t('exact snapshot sample','সংগৃহীত sample'):t('hourly-sample interpolation','ঘণ্টাভিত্তিক interpolation')} · {new Date(selectedVector.timeMs).toISOString()} UTC</p>:<p>{t('No verified UTC vector for this moon and timestamp. Its educational orbit remains available.','নির্বাচিত সময়ে এই উপগ্রহের যাচাইকৃত vector নেই। শিক্ষামূলক কক্ষপথ ব্যবহার করুন।')}</p>}<a href={HORIZONS_SOURCE} target="_blank" rel="noreferrer">JPL Horizons API documentation</a></div>
    <div className="moonverseResearchGrid">
     <article><h5><BookOpen size={17}/>{t('Scientific Highlight','বৈজ্ঞানিক বৈশিষ্ট্য')}</h5><p>{selected.science}</p></article>
     <article><h5><Globe2 size={17}/>{t('Surface & Geology','পৃষ্ঠ ও ভূতত্ত্ব')}</h5><p>{selected.surface}</p></article>
