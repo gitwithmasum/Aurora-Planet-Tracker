@@ -77,3 +77,21 @@ header .sidebarMobileToggle{display:none}
  .auroraLayout--collapsed .sidebarMove{flex-direction:column}
  .sidebarQuickTools{padding-top:18px}
 }
+
+
+/* v4.8 mobile drawer accessible touch targets and safe-area spacing */
+@media(max-width:768px){
+ .auroraSidebar{
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  overscroll-behavior:contain;
+  touch-action:pan-y;
+ }
+ .auroraSidebar .sidebarLinks button,
+ .auroraSidebar .sidebarQuickTools button,
+ .auroraSidebar .sidebarHeading button{min-height:44px}
+ .auroraSidebar .sidebarLinks button:focus-visible,
+ .auroraSidebar .sidebarQuickTools button:focus-visible{
+  outline:2px solid #8ee3f4;outline-offset:-2px;
+ }
+ .auroraLayout--mobileOpen .sidebarBackdrop{touch-action:manipulation}
+}
