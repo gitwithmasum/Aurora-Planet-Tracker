@@ -1,0 +1,26 @@
+.moonCoordGrid{min-width:0;display:grid;gap:11px;padding:10px 11px;background:#0c2537;border:1px solid #4c7182;border-radius:11px;color:#bdd9e5}
+.moonCoordHeader{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:7px}
+.moonCoordHeader>span{display:inline-flex;gap:9px;align-items:center;font:800 16px Rajdhani,sans-serif;color:#f4bbdb}
+.moonCoordHeader>strong{font:800 11px Rajdhani,sans-serif;color:#eac593}
+.moonCoordGrid>p,.moonCoordEmpty{font:500 11px/1.65 'Space Grotesk',sans-serif;color:#bbd4e0;margin:0}
+.moonCoordSurface{position:relative;max-width:780px;width:100%;aspect-ratio:2/1;border:1px solid #537b91;border-radius:11px;overflow:hidden;background:#092239}
+.moonCoordSurface>svg{width:100%;height:100%;display:block;pointer-events:none}
+.moonCoordPin{position:absolute;transform:translate(-50%,-50%);border:0;color:#ffe6ae;background:#51314be8;border-radius:50%;min-width:30px;min-height:30px;display:grid;place-items:center;cursor:pointer;z-index:1;box-shadow:0 0 0 1px #ffdda8,0 0 8px #ef92c699}
+.moonCoordPin.current,.moonCoordPin:focus-visible{outline:3px solid #a5e2fa;z-index:3}
+.moonCoordPinName{position:absolute;top:100%;left:50%;transform:translateX(-50%);background:#102d42;color:#f5deed;border:1px solid #667f96;border-radius:5px;max-width:145px;white-space:nowrap;font:800 10px Rajdhani,sans-serif;padding:3px 5px;pointer-events:none}
+.moonCoordRows{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:7px}
+.moonCoordRows>div{display:flex;align-items:center;gap:5px;border:1px solid #446982;border-radius:9px;min-width:0;padding:5px}
+.moonCoordRows>div.active{border-color:#efa5ce;background:#48304a}
+.moonCoordRows button{flex:1;background:none;border:0;color:#cbe6f4;text-align:left;cursor:pointer;display:flex;flex-wrap:wrap;gap:6px;align-items:center;font:600 12px Rajdhani,sans-serif;min-height:42px;min-width:0}
+.moonCoordRows button span{color:#e0c08a}
+.moonCoordRows a{display:inline-flex;gap:5px;align-items:center;text-decoration:none;color:#b5e9ff;min-height:42px;font:700 11px Rajdhani,sans-serif}
+.moonCoordEmpty{display:flex;gap:9px;align-items:center;padding:20px;border:1px dashed #55788b;border-radius:8px}
+.moonCoordFoot a{display:inline-flex;align-items:center;gap:3px;color:#a7e0f1;text-decoration:none}
+.theme-halftone .moonCoordGrid{background:#f3faf8;color:#405e6b;border-color:#afd6ca}
+.theme-halftone .moonCoordHeader>span{color:#be327b}
+.theme-halftone .moonCoordGrid>p,.theme-halftone .moonCoordEmpty{color:#496d75}
+.theme-halftone .moonCoordRows>div{background:#fff;border-color:#b9d8d3}
+.theme-halftone .moonCoordRows>div.active{background:#f9e3f0}
+.theme-halftone .moonCoordRows button{color:#4a6275}
+.theme-halftone .moonCoordRows a,.theme-halftone .moonCoordFoot a{color:#16718d}
+@media(max-width:520px){.moonCoordGrid{padding:8px}.moonCoordPinName{max-width:70px;overflow:hidden;text-overflow:ellipsis;font-size:8px}.moonCoordRows{grid-template-columns:1fr}.moonCoordPin{min-width:34px;min-height:34px}}
