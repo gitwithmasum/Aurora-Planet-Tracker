@@ -54,3 +54,15 @@ test('Moonverse appears in English and Bangla locale and browser QA',()=>{
  assert.match(qa,/moonverse-core-and-planet-selection/);
  assert.match(qa,/mobile-moonverse-catalog-and-layout/);
 });
+ 
+test('natural moons are indexed in Universal Search with deep-link navigation',()=>{
+ const globalSearch=src('src/UniversalSearch.jsx');
+ const index=src('src/spaceSearch.mjs');
+ const app=src('src/App.jsx');
+ assert.match(globalSearch,/moons:MOONS/);
+ assert.match(globalSearch,/moon:'NATURAL MOON'/);
+ assert.match(index,/makeItem\('moon',m\.id,m\.name/);
+ assert.match(app,/item\.type==='moon'/);
+ assert.match(app,/setMoonverseTarget\(moon\.id\)/);
+ assert.match(app,/initialMoonId=\{moonverseTarget\}/);
+});
