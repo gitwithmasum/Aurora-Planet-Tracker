@@ -11,6 +11,7 @@ import './Moonverse.css';
 const MoonverseScene=lazy(()=>import('./MoonverseScene.jsx'));
 const MoonScienceLab=lazy(()=>import('./MoonScienceLab.jsx'));
 const MoonMissionArchive=lazy(()=>import('./MoonMissionArchive.jsx'));
+const MoonComparisonLab=lazy(()=>import('./MoonComparisonLab.jsx'));
 const frame=(date)=>date?.toLocaleDateString?.(undefined,{dateStyle:'medium'})||'—';
 const num=(n,fraction=1)=>Number.isFinite(n)?n.toLocaleString('en-US',{maximumFractionDigits:fraction}):'Not available';
 const initialMoon=planet=>moonsForPlanet(planet)[0]?.id||'';
@@ -80,7 +81,7 @@ export default function Moonverse({initialPlanet='Jupiter',initialMoonId='',onPl
  function changeDate(value){const parsed=new Date(value.includes('T')?value+':00.000Z':value+'T00:00:00.000Z');if(Number.isFinite(parsed.getTime()))setDate(parsed)}
  return <section className="moonverse" aria-label="Moonverse Observatory">
   <div className="moonverseHero">
-   <div><span className="moonverseEyebrow">AURORA / MOONVERSE OBSERVATORY / v5.5</span>
+   <div><span className="moonverseEyebrow">AURORA / MOONVERSE OBSERVATORY / v5.7</span>
     <h3><Orbit size={29}/>{t('Planetary Moon Systems','গ্রহ ও প্রাকৃতিক উপগ্রহের জগৎ')}</h3>
     <p>{t('Travel among natural moons, inspect scientific facts, and explore educational 3D orbits without mistaking them for live ephemerides.','প্রাকৃতিক উপগ্রহের বৈজ্ঞানিক তথ্য, আবিষ্কার ও 3D orbital simulation দেখুন। এটি live orbital ephemeris নয়।')}</p>
    </div><div className="moonverseHeroMark"><strong>{summary.curated}</strong><small>{t('CURATED MOONS','নির্বাচিত উপগ্রহ')}</small></div>
@@ -180,6 +181,7 @@ export default function Moonverse({initialPlanet='Jupiter',initialMoonId='',onPl
     <article><h5><Compass size={17}/>{t('Exploration & Missions','মহাকাশ অভিযান')}</h5><p>{selected.missions.join(' · ')}</p></article>
    </div>
    <FeatureBoundary name="Moonverse Mission Archive"><Suspense fallback={<p className="moonverseNotice" role="status">Loading mission archive…</p>}><MoonMissionArchive moon={selected}/></Suspense></FeatureBoundary>
+   <FeatureBoundary name="Moonverse Comparison Lab"><Suspense fallback={<p role="status" className="moonverseNotice">Loading comparison lab…</p>}><MoonComparisonLab moon={selected}/></Suspense></FeatureBoundary>
    <div className="moonverseSources"><strong>{t('Sources & limitations','তথ্যসূত্র ও সীমাবদ্ধতা')}</strong>
     <p>{t('Rounded reference values. Orbital plane/phase and body appearance are artistic educational representations. Discovery, density, gravity and orbital information are not equally established for all small moons.','সংখ্যাগুলো আনুমানিক/রাউন্ড করা। 3D orbit ও body texture শিক্ষামূলক visualization; সব ছোট উপগ্রহের তথ্য সমান নির্ভুল নয়।')}</p>
     <div><a href={MOON_SOURCE.nasa} target="_blank" rel="noreferrer">NASA Moons <ExternalLink size={12}/></a><a href={MOON_SOURCE.jpl} target="_blank" rel="noreferrer">JPL Physical Data <ExternalLink size={12}/></a><a href={MOON_SOURCE.orbits} target="_blank" rel="noreferrer">JPL Orbital Elements <ExternalLink size={12}/></a></div>
