@@ -1,0 +1,58 @@
+.moonScienceLab{border:1px solid #4f738b;border-radius:14px;background:#0b2139eb;color:#d8edf7;min-width:0;overflow:hidden;display:grid;gap:0}
+.moonLabHeader{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;padding:18px;border-bottom:1px solid #42657a}
+.moonLabHeader span{font:800 10px Rajdhani,sans-serif;letter-spacing:1.3px;color:#dfba89}
+.moonLabHeader h4{font:800 23px Rajdhani,sans-serif;margin:5px 0 0;color:#e8b5da;display:flex;gap:9px;align-items:center}
+.moonLabHeader .moonLabVersion{border:1px solid #6c5874;color:#f1bfdc;border-radius:8px;padding:8px}
+.moonLabTabs{display:flex;gap:5px;padding:12px;flex-wrap:wrap}
+.moonLabTabs button{border:1px solid #436680;color:#b4d6e7;background:#122c42;border-radius:8px;padding:10px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;min-height:44px;font:800 12px Rajdhani,sans-serif}
+.moonLabTabs button.current{background:#38314c;border-color:#d19bba;color:#ffe2f2}
+.moonLabBody{display:grid;gap:14px;padding:10px 17px 18px;min-width:0}
+.moonLabMetrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.moonLabMetric{border:1px solid #456279;border-radius:10px;background:#112d42;padding:12px;display:grid;gap:7px;min-width:0}
+.moonLabMetric small{font:800 10px Rajdhani,sans-serif;letter-spacing:.8px;color:#d5b889}
+.moonLabMetric strong{font:800 20px Rajdhani,sans-serif;color:#bfeaff;overflow-wrap:anywhere}
+.moonLabMetric span{font:500 11px/1.4 'Space Grotesk',sans-serif;color:#9dbaca}
+.moonLabEvidence{display:flex;gap:8px;align-items:center;flex-wrap:wrap;color:#b3d5e7;font:700 11px Rajdhani,sans-serif}
+.moonLabTag{border:1px solid #9775a0;color:#f6c5db;background:#372b45;border-radius:20px;padding:6px 10px;font:800 10px Rajdhani,sans-serif}
+.moonLabResearch{border:1px solid #3e637e;padding:16px;border-radius:10px;background:#112c41;min-width:0}
+.moonLabResearch h5{font:800 17px Rajdhani,sans-serif;color:#f5bddb;display:flex;align-items:center;gap:9px;margin:0 0 11px}
+.moonLabResearch h5:not(:first-child){margin-top:15px}
+.moonLabResearch p,.moonLabCompare>p{font:500 12px/1.7 'Space Grotesk',sans-serif;color:#c0d9e7;overflow-wrap:anywhere}
+.moonLabResearch a,.moonLabSource{color:#9cdded;font:800 12px Rajdhani,sans-serif;text-decoration:none;display:inline-flex;gap:6px;align-items:center;min-height:32px}
+.moonLabNotice{padding:11px 13px;border:1px solid #50677b;border-radius:8px;display:flex;gap:8px;align-items:flex-start;color:#c1d9e4;font:500 11px/1.7 'Space Grotesk',sans-serif;overflow-wrap:anywhere}
+.moonLabNotice svg{flex-shrink:0}
+.moonLabMedia{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:15px;min-width:0}
+.moonLabMediaFigure{min-height:185px;max-height:310px;min-width:0;border:1px solid #3f6178;border-radius:12px;overflow:hidden;background:#060f22}
+.moonLabMediaFigure img{width:100%;height:100%;max-height:310px;object-fit:contain;display:block}
+.moonLabMediaBlank{height:100%;min-height:185px;display:grid;align-content:center;justify-items:center;gap:13px;color:#b7d7e5;font:800 11px Rajdhani,sans-serif;text-align:center}
+.moonLabMediaCaption h5{font:800 20px Rajdhani,sans-serif;color:#eab7d9;margin:0 0 8px}
+.moonLabMediaCaption p{font:500 12px/1.7 'Space Grotesk',sans-serif;color:#bcd7e4}
+.moonLabActions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.moonLabActions a,.moonLabActions button,.moonLabCompareActions button{background:#163650;border:1px solid #627a96;border-radius:8px;padding:9px 12px;display:inline-flex;align-items:center;gap:6px;color:#e8e0f0;font:800 11px Rajdhani,sans-serif;min-height:42px;cursor:pointer;text-decoration:none}
+.moonLabActions button:disabled{opacity:.55;cursor:wait}
+.moonLabCompareActions{display:flex;gap:9px;flex-wrap:wrap;align-items:end}
+.moonLabCompareActions label{display:grid;gap:5px;color:#bdccd9;font:800 11px Rajdhani,sans-serif}
+.moonLabCompareActions select{background:#10293e;color:#f2d8e5;border:1px solid #69829c;border-radius:8px;padding:9px;min-height:42px;font:600 13px Rajdhani,sans-serif;max-width:min(100%,360px)}
+.moonLabSelectedChips{display:flex;gap:8px;flex-wrap:wrap;margin:13px 0}
+.moonLabSelectedChips button{display:inline-flex;align-items:center;gap:8px;border:1px solid #98658c;border-radius:20px;background:#3a3049;color:#f8d5e8;font:800 12px Rajdhani,sans-serif;padding:8px 12px;cursor:pointer}
+.moonLabComparisonPlots{display:grid;gap:14px}
+.moonLabComparisonMetric{border:1px solid #35586f;border-radius:10px;background:#112c42;padding:13px;min-width:0}
+.moonLabComparisonMetric h5{font:800 16px Rajdhani,sans-serif;color:#e9badb;margin:0 0 11px}
+.moonLabComparisonMetric h5 small{color:#d7b78c}
+.moonLabComparisonRow{display:grid;grid-template-columns:90px minmax(0,1fr) 85px;gap:9px;align-items:center;margin:6px 0;font:700 11px Rajdhani,sans-serif;min-width:0}
+.moonLabComparisonRow span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#c5dce9}
+.moonLabComparisonRow strong{text-align:right;color:#eed0ac}
+.moonLabBarTrack{height:9px;border-radius:20px;background:#203c4f;min-width:0;overflow:hidden}
+.moonLabBarTrack>div{height:100%;background:linear-gradient(90deg,#61c9dc,#edb0d2);border-radius:20px}
+.theme-halftone .moonScienceLab{background:#fffffff2;color:#395d6b;border-color:#b9d8d2}
+.theme-halftone .moonLabMetric,.theme-halftone .moonLabResearch,.theme-halftone .moonLabComparisonMetric{background:#f0faf7;border-color:#a6d1cd}
+.theme-halftone .moonLabHeader h4,.theme-halftone .moonLabMediaCaption h5,.theme-halftone .moonLabResearch h5,.theme-halftone .moonLabComparisonMetric h5{color:#bf2b78}
+.theme-halftone .moonLabMetric strong{color:#286477}
+.theme-halftone .moonLabMetric span,.theme-halftone .moonLabNotice,.theme-halftone .moonLabCompare>p,.theme-halftone .moonLabResearch p,.theme-halftone .moonLabMediaCaption p{color:#456873}
+.theme-halftone .moonLabTabs button,.theme-halftone .moonLabActions button,.theme-halftone .moonLabActions a,.theme-halftone .moonLabCompareActions button{background:#fff;color:#a72b70;border-color:#a7ccc8}
+.theme-halftone .moonLabTabs button.current{background:#f8e3f0}
+.theme-halftone .moonLabCompareActions select{background:#fff;color:#435b68}
+.theme-halftone .moonLabSource,.theme-halftone .moonLabResearch a{color:#16617e}
+.theme-halftone .moonLabComparisonRow span{color:#415d6b}
+@media(max-width:750px){.moonLabMetrics{grid-template-columns:repeat(2,minmax(0,1fr))}.moonLabMedia{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:400px){.moonLabMetrics{grid-template-columns:minmax(0,1fr)}.moonLabComparisonRow{grid-template-columns:64px minmax(0,1fr) 66px;gap:5px}.moonLabBody{padding:9px}.moonLabHeader{padding:12px}}
