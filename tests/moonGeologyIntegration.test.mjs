@@ -18,7 +18,7 @@ test('NASA feature atlas shows evidence and links with optional verified photo, 
  assert.match(ui,/extractNasaThumbnail/);
  assert.match(ui,/NASA preview unavailable/);
  assert.match(ui,/No fabricated location pins/);
- assert.match(ui,/feature\.coords\.approximate/);
+ assert.match(ui,/Approximate NASA region center/);
 });
 test('interior cutaway is marked not to scale and regions are selectable with evidence levels',()=>{
  const ui=read('src/MoonGeologyExplorer.jsx');
