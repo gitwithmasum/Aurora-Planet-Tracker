@@ -1,0 +1,61 @@
+/* v5.3: affordable static SVG interior, no WebGL render-loop or blur panels. */
+.moonGeoExplorer,.moonGeoEmpty{background:#0b2035;border:1px solid #47718b;border-radius:14px;color:#dceff6;min-width:0;overflow:hidden}
+.moonGeoHeader{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding:16px;border-bottom:1px solid #3c6178}
+.moonGeoHeader span,.moonGeoDetailTitle>span,.moonGeoInteriorDetail>div>span{font:800 10px Rajdhani,sans-serif;letter-spacing:1px;color:#dfc091}
+.moonGeoHeader h5,.moonGeoFeatureDetail h5,.moonGeoInteriorDetail h5{font:800 22px Rajdhani,sans-serif;color:#eec3df;margin:5px 0;display:flex;gap:8px;align-items:center;overflow-wrap:anywhere}
+.moonGeoHeader p,.moonGeoFeatureDetail p,.moonGeoInteriorDetail p,.moonGeoSmall,.moonGeoFooter{font:500 12px/1.65 'Space Grotesk',sans-serif;color:#bbd5e2}
+.moonGeoOcean{font:800 10px Rajdhani,sans-serif;border:1px solid #587c9f;border-radius:10px;display:flex;align-items:center;gap:7px;padding:10px;color:#b5e2f1}
+.moonGeoModes{display:flex;flex-wrap:wrap;gap:8px;padding:12px}
+.moonGeoModes button,.moonGeoFeatureList button,.moonGeoLayerButtons button{min-height:44px;border:1px solid #436b85;background:#17354c;color:#cae0ec;border-radius:9px;cursor:pointer;font:800 12px Rajdhani,sans-serif}
+.moonGeoModes button{display:inline-flex;gap:8px;align-items:center;padding:10px 12px}
+.moonGeoModes button.selected,.moonGeoFeatureList button.selected,.moonGeoLayerButtons button.selected{background:#3b304b;border-color:#e1a3c7;color:#ffe5f1}
+.moonGeoSurface{display:grid;grid-template-columns:minmax(195px,.8fr) minmax(0,1.7fr);gap:12px;padding:0 12px 14px;min-width:0}
+.moonGeoFeatureList{display:grid;align-content:start;gap:7px;max-height:480px;overflow:auto;overscroll-behavior:contain}
+.moonGeoFeatureList button{text-align:left;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;min-width:0;padding:10px}
+.moonGeoFeatureList button>span:first-child{display:grid;gap:4px;min-width:0}
+.moonGeoFeatureList strong{color:#e7c4df;font:800 14px Rajdhani,sans-serif}
+.moonGeoFeatureList small{color:#b0d1e1;font:700 11px Rajdhani,sans-serif}
+.moonGeoEvidence{display:inline-flex;align-items:center;border:1px solid #507b92;border-radius:99px;white-space:nowrap;padding:5px 8px;font:800 9px Rajdhani,sans-serif;letter-spacing:.3px;color:#b8e3f2}
+.moonGeoEvidence-inferred{border-color:#baa17a;color:#f2c68b}.moonGeoEvidence-hypothetical{border-color:#bc89b2;color:#f4bde0}
+.moonGeoFeatureDetail,.moonGeoInteriorDetail{min-width:0;border:1px solid #365c75;border-radius:11px;padding:16px;background:#102b41}
+.moonGeoFeatureDetail p,.moonGeoInteriorDetail p{overflow-wrap:anywhere}
+.moonGeoDetailTitle{display:grid;justify-items:start;gap:3px}
+.moonGeoDetailTitle h5{margin:2px 0 3px}
+.moonGeoFeatureDetail>a{color:#a5dff9;font:800 12px Rajdhani,sans-serif;display:inline-flex;gap:8px;align-items:center;text-decoration:none;min-height:42px;margin-top:12px}
+.moonGeoSmall{display:flex;align-items:flex-start;gap:7px;color:#a4bdcf;font-size:11px}
+.moonGeoMedia{display:grid;gap:10px}
+.moonGeoMedia>img{display:block;max-width:100%;width:100%;max-height:280px;object-fit:contain;background:#071321;border:1px solid #44667e;border-radius:10px}
+.moonGeoMediaPlaceholder{min-height:138px;border:1px dashed #4b748e;background:#0a1c2e;border-radius:10px;display:grid;align-content:center;justify-items:center;gap:10px;font:800 12px Rajdhani,sans-serif;color:#bcd6e5;text-align:center;padding:10px}
+.moonGeoMedia button{min-height:42px;width:max-content;max-width:100%;padding:9px 12px;border-radius:8px;border:1px solid #63839c;background:#1c4158;color:#f3cbe2;cursor:pointer;font:800 12px Rajdhani,sans-serif;display:inline-flex;align-items:center;gap:7px}
+.moonGeoMedia button:disabled{opacity:.6;cursor:wait}
+.moonGeoMedia small,.moonGeoMedia>p{font:600 11px/1.5 'Space Grotesk',sans-serif;color:#a8c7d6}
+.moonGeoInterior{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(220px,.8fr);gap:13px;padding:0 12px 14px;min-width:0}
+.moonGeoCutaway{min-width:0;display:grid;justify-items:center;gap:8px}
+.moonGeoCutaway svg{display:block;width:min(100%,370px);height:auto;max-height:340px}
+.moonGeoCutaway .moonGeoSmall{margin:0 8px 8px;text-align:center;max-width:430px}
+.moonGeoLayerButtons{width:100%;display:grid;gap:7px}
+.moonGeoLayerButtons button{display:flex;gap:8px;align-items:center;min-width:0;text-align:left;padding:8px 10px}
+.moonGeoLayerButtons button>span:nth-child(2){flex:1;min-width:0;overflow-wrap:anywhere}
+.moonGeoSwatch{width:18px;height:18px;border:1px solid #fafafa66;border-radius:50%;flex:none}
+.moonGeoInteriorDetail{align-self:start}
+.moonGeoInteriorDetail>div:first-child{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.moonGeoInteriorDetail strong{color:#edc98f;font:800 13px Rajdhani,sans-serif}
+.moonGeoCaution{background:#162f42;border:1px solid #67819b;padding:11px;border-radius:8px;display:flex;align-items:flex-start;gap:9px;font:600 12px/1.6 'Space Grotesk',sans-serif;color:#e1c7c9}
+.moonGeoCaution svg{flex:none}
+.moonGeoFooter{display:flex;gap:9px;align-items:flex-start;border-top:1px solid #41607a;padding:12px;flex-wrap:wrap}
+.moonGeoFooter svg{flex:none}.moonGeoFooter>span:nth-child(2){flex:1}
+.moonGeoFooter>span:last-child{font:800 10px Rajdhani,sans-serif;color:#efc6e0}
+.moonGeoEmpty{padding:20px}.moonGeoEmpty h5{font:800 20px Rajdhani,sans-serif;color:#f1c6df}.moonGeoEmpty p{color:#bdcfde;font:500 12px/1.7 'Space Grotesk',sans-serif}
+.theme-halftone .moonGeoExplorer,.theme-halftone .moonGeoEmpty{background:#fffffff1;color:#385769;border-color:#b1d7cf}
+.theme-halftone .moonGeoHeader h5,.theme-halftone .moonGeoFeatureDetail h5,.theme-halftone .moonGeoInteriorDetail h5{color:#c4277a}
+.theme-halftone .moonGeoHeader p,.theme-halftone .moonGeoFeatureDetail p,.theme-halftone .moonGeoInteriorDetail p,.theme-halftone .moonGeoFooter,.theme-halftone .moonGeoSmall{color:#476473}
+.theme-halftone .moonGeoFeatureDetail,.theme-halftone .moonGeoInteriorDetail{background:#f0faf9;border-color:#aed2cc}
+.theme-halftone .moonGeoFeatureList button,.theme-halftone .moonGeoModes button,.theme-halftone .moonGeoLayerButtons button,.theme-halftone .moonGeoMedia button{background:#fffafc;color:#994a77;border-color:#b4d5ca}
+.theme-halftone .moonGeoFeatureList button.selected,.theme-halftone .moonGeoModes button.selected,.theme-halftone .moonGeoLayerButtons button.selected{background:#f7e1ef}
+.theme-halftone .moonGeoFeatureList strong{color:#ad3471}
+.theme-halftone .moonGeoFeatureList small{color:#5c7b87}
+.theme-halftone .moonGeoOcean,.theme-halftone .moonGeoFeatureDetail>a{color:#166584}
+.theme-halftone .moonGeoCaution{background:#f8f4fa;color:#7f5568}
+@media(max-width:900px){.moonGeoSurface{grid-template-columns:minmax(0,1fr)}.moonGeoFeatureList{grid-template-columns:repeat(2,minmax(0,1fr));max-height:300px}.moonGeoInterior{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:520px){.moonGeoHeader{padding:12px}.moonGeoSurface,.moonGeoInterior{padding:0 8px 10px}.moonGeoFeatureList{grid-template-columns:minmax(0,1fr)}.moonGeoFeatureDetail,.moonGeoInteriorDetail{padding:12px}.moonGeoModes button{flex:1 1 130px}}
+@media(prefers-reduced-motion:reduce){.moonGeoExplorer *{animation:none!important;transition:none!important}}
