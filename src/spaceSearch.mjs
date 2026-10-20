@@ -14,7 +14,8 @@ export const SPACE_MODULES=[
  {name:'Observation Planner',terms:'astronomy observing viewing window night sky visibility schedule calendar ics saved shortlist twilight moon altitude'},
  {name:'Satellite Weather',terms:'satellite pass sunlight shadow cloud rain weather forecast meteoblue open meteo visibility observation planner'},
  {name:'Field Journal',terms:'astronomy sessions observations field log notes sightings report history backup csv json research'},
- {name:'Observation Analytics',terms:'research dashboard observation statistics field log timeline trends reports target analysis chart data visualization'}
+ {name:'Observation Analytics',terms:'research dashboard observation statistics field log timeline trends reports target analysis chart data visualization'},
+ {name:'Offline Recovery',terms:'offline pwa cache install update recovery backup restore journal data download merge replace'}
 ];
 
 const normalize=value=>String(value??'').normalize('NFKC').toLocaleLowerCase().trim().replace(/\s+/g,' ');
