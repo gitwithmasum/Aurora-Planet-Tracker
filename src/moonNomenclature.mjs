@@ -39,7 +39,7 @@ export function projectIAUPoint(feature,{width=720,height=360}={}){
 export function nomenclatureAudit(moons){
  const valid=IAU_FEATURE_COORDS.every(validNomenclatureCoordinate);
  const unique=new Set(IAU_FEATURE_COORDS.map(x=>x.moonId+'|'+x.featureId)).size===IAU_FEATURE_COORDS.length;
- const inCatalog=IAU_FEATURE_COORDS.every(x=>!!moons[x.moonId]?.some(feature=>feature.id===x.featureId));
+ const inCatalog=IAU_FEATURE_COORDS.every(x=>{const entry=moons?.[x.moonId];const features=Array.isArray(entry)?entry:entry?.features;return Array.isArray(features)&&features.some(feature=>feature.id===x.featureId)});
  return {valid:valid&&unique&&inCatalog,records:IAU_FEATURE_COORDS.length,moons:new Set(IAU_FEATURE_COORDS.map(x=>x.moonId)).size,
  errors:[!valid?'Invalid coordinate/source metadata':null,!unique?'Duplicate site keys':null,!inCatalog?'Gazetteer site not in NASA curated geology catalog':null].filter(Boolean)};
 }
