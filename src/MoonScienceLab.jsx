@@ -1,10 +1,11 @@
-import React,{useEffect,useMemo,useState} from 'react';
-import {ArrowUpRight,Camera,Check,FlaskConical,GitCompare,Info,Layers3,Plus,RefreshCw,X} from 'lucide-react';
+import React,{Suspense,lazy,useEffect,useMemo,useState} from 'react';
+import {ArrowUpRight,Camera,Check,FlaskConical,GitCompare,Info,Layers3,MapPin,Plus,RefreshCw,X} from 'lucide-react';
 import {MOONS,moonById} from './moonCatalog.mjs';
 import {moonScience,physicalParameters,PHYSICAL_SOURCE,NASA_OCEAN_SOURCE,moonComparison} from './moonScience.mjs';
 import {moonMedia,nasaImageQuery,extractNasaThumbnail} from './moonMedia.mjs';
 import {useLanguage} from './i18n.jsx';
 import './MoonScienceLab.css';
+const MoonGeologyExplorer=lazy(()=>import('./MoonGeologyExplorer.jsx'));
 const fixed=(n,d=2)=>Number.isFinite(n)?n.toLocaleString('en-US',{maximumFractionDigits:d}):'—';
 function ScienceCard({name,value,unit='',detail=''}){return <div className="moonLabMetric"><small>{name}</small><strong>{value}{value!=='—'?' '+unit:''}</strong>{detail&&<span>{detail}</span>}</div>}
 function SafeNasaMedia({record}){
@@ -103,18 +104,20 @@ export default function MoonScienceLab({moon}){
  if(!moon)return null;
  const media=moonMedia(moon.id);
  return <section className="moonScienceLab" aria-label={'Moon science lab '+moon.name}>
-  <div className="moonLabHeader"><div><span>MOONVERSE / v5.1 / JPL SCIENCE</span><h4><Layers3 size={20}/>{label('Advanced Moon Intelligence','উন্নত উপগ্রহ গবেষণা')}</h4></div>
+  <div className="moonLabHeader"><div><span>MOONVERSE / v5.3 / JPL SCIENCE + GEOLOGY</span><h4><Layers3 size={20}/>{label('Advanced Moon Intelligence','উন্নত উপগ্রহ গবেষণা')}</h4></div>
    <span className="moonLabVersion">{moon.name.toUpperCase()} · {physicalParameters(moon)?.naifCode||'—'}</span>
   </div>
   <div className="moonLabTabs" role="tablist" aria-label="Moon scientific investigations">
    {[
     ['science',label('PHYSICAL SCIENCE','পদার্থবিজ্ঞান'),FlaskConical],
+    ['geology',label('SURFACE & INTERIOR','পৃষ্ঠ ও অভ্যন্তর'),MapPin],
     ['compare',label('COMPARE MOONS','উপগ্রহ তুলনা'),GitCompare],
     ['media',label('NASA IMAGES','NASA ছবি'),Camera]
    ].map(([id,title,Icon])=><button type="button" key={id} role="tab" aria-selected={tab===id} className={tab===id?'current':''} onClick={()=>setTab(id)}><Icon size={16}/>{title}</button>)}
   </div>
   <div className="moonLabBody" role="tabpanel">
    {tab==='science'&&<PhysicalDetails moon={moon} bn={bn}/>}
+   {tab==='geology'&&<Suspense fallback={<p className="moonLabNotice" role="status">Loading moon geology and interior diagrams…</p>}><MoonGeologyExplorer moon={moon}/></Suspense>}
    {tab==='compare'&&<CompareMoons selected={moon} compareIds={compareIds} setCompareIds={setCompareIds} bn={bn}/>}
    {tab==='media'&&<SafeNasaMedia record={media}/>}
   </div>
