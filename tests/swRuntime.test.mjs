@@ -165,3 +165,13 @@ test('public planet textures work offline after a prior online fetch',async()=>{
  env.offline(true);
  assert.equal(await (await env.dispatch('fetch',{url})).text(),'jpeg');
 });
+
+test('pre-cached manifest and PWA icon survive a first offline launch',async()=>{
+ const env=swHarness();
+ await env.dispatch('install');
+ env.offline(true);
+ const manifest=await env.dispatch('fetch',{url:base+'manifest.webmanifest'});
+ assert.equal(await manifest.text(),'{}');
+ const icon=await env.dispatch('fetch',{url:base+'planet-icon.svg'});
+ assert.match(await icon.text(),/svg/);
+});
