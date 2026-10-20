@@ -1,0 +1,82 @@
+// v4.6 — versioned, local-only, deliberately scoped recovery bundles.
+// Never claim to include unrelated modules, cloud data, or weather forecasts.
+import {JOURNAL_KEY,normalizeFieldSessions,mergeFieldSessions,JOURNAL_LIMIT} from './fieldJournalCore.mjs';
+import {normalizeWatchlist} from './observationPlannerCore.mjs';
+export const RECOVERY_FORMAT='aurora-recovery-v1';
+export const RECOVERY_MAX_BYTES=2*1024*1024;
+export const WATCH_KEY='aurora-observation-targets-v1';
+export const RECOVERY_PREFERENCES={
+ 'aurora-language':['en','bn'],
+ 'aurora-galaxy-theme':['classic','cosmic','nebula','halftone'],
+ 'aurora-graphics-quality':['auto','high','low'],
+ 'aurora-sidebar-collapsed':['true','false']
+};
+const keys=[JOURNAL_KEY,WATCH_KEY,...Object.keys(RECOVERY_PREFERENCES)];
+const readJSON=text=>{try{return JSON.parse(text)}catch{throw Error('Stored local data is corrupt. Export or repair it before restoring.')}};
+export function createRecoveryBundle(storage,validIds,createdAt=new Date().toISOString()){
+ if(!storage||!Array.isArray(validIds))throw Error('Storage and known target IDs are required');
+ const rawJournal=storage.getItem(JOURNAL_KEY);
+ const rawWatchlist=storage.getItem(WATCH_KEY);
+ const sessions=rawJournal===null?[]:normalizeFieldSessions(readJSON(rawJournal));
+ const watchlist=rawWatchlist===null?[]:normalizeWatchlist(readJSON(rawWatchlist),validIds);
+ const preferences={};
+ for(const [key,allowed] of Object.entries(RECOVERY_PREFERENCES)){
+  const value=storage.getItem(key);
+  if(value!==null&&allowed.includes(value))preferences[key]=value;
+ }
+ const bundle={format:RECOVERY_FORMAT,createdAt,sessions,watchlist,preferences,
+  scope:'Field Journal, Observation Planner shortlist and selected appearance preferences only.',
+  warning:'Contains user-authored notes and possibly observer coordinates. Keep backup private.'};
+ return bundle;
+}
+export function validateRecoveryBundle(input,validIds){
+ if(!Array.isArray(validIds))throw Error('Target catalog is required');
+ const data=typeof input==='string'?readJSON(input):input;
+ if(!data||typeof data!=='object'||Array.isArray(data)||data.format!==RECOVERY_FORMAT)throw Error('Unsupported Aurora recovery backup format');
+ if(!Array.isArray(data.sessions)||data.sessions.length>JOURNAL_LIMIT||!Array.isArray(data.watchlist)||data.watchlist.length>64||
+    !data.preferences||typeof data.preferences!=='object'||Array.isArray(data.preferences))throw Error('Invalid recovery backup data or record limit');
+ const sessions=normalizeFieldSessions(data.sessions);
+ if(sessions.length!==data.sessions.length)throw Error('Some journal records are invalid or duplicated; backup rejected');
+ const watchlist=normalizeWatchlist(data.watchlist,validIds);
+ if(watchlist.length!==new Set(data.watchlist).size)throw Error('Backup contains unknown watchlist targets; backup rejected');
+ const preferences={};
+ for(const [key,allowed] of Object.entries(RECOVERY_PREFERENCES)){
+  const value=data.preferences[key];
+  if(value!==undefined){
+   if(!allowed.includes(value))throw Error('Invalid setting in backup: '+key);
+   preferences[key]=value;
+  }
+ }
+ return {format:RECOVERY_FORMAT,createdAt:String(data.createdAt||''),sessions,watchlist,preferences};
+}
+export function recoveryPreview(bundle){
+ return {sessions:bundle.sessions.length,watchlist:bundle.watchlist.length,
+  settings:Object.keys(bundle.preferences).length,
+  hasLocationData:bundle.sessions.some(s=>s.observer?.lat!==null&&typeof s.observer?.lat==='number')};
+}
+export function applyRecoveryBundle(storage,bundle,validIds,{mode='merge'}={}){
+ if(!['merge','replace'].includes(mode))throw Error('Unsupported restore mode');
+ const normalized=validateRecoveryBundle(bundle,validIds);
+ const before=new Map(keys.map(key=>[key,storage.getItem(key)]));
+ const existing=before.get(JOURNAL_KEY)===null?[]:normalizeFieldSessions(readJSON(before.get(JOURNAL_KEY)));
+ const currentWatch=before.get(WATCH_KEY)===null?[]:normalizeWatchlist(readJSON(before.get(WATCH_KEY)),validIds);
+ const sessions=mode==='merge'?mergeFieldSessions(existing,normalized.sessions):normalized.sessions;
+ const watchlist=mode==='merge'?normalizeWatchlist([...currentWatch,...normalized.watchlist],validIds):normalized.watchlist;
+ const actions=[[JOURNAL_KEY,JSON.stringify(sessions)],[WATCH_KEY,JSON.stringify(watchlist)]];
+ if(mode==='replace')for(const [key,value] of Object.entries(normalized.preferences))actions.push([key,value]);
+ const written=[];
+ try{
+  for(const [key,value] of actions){storage.setItem(key,value);written.push(key)}
+ }catch(error){
+  const rollbackErrors=[];
+  for(const key of written.reverse()){
+   try{const value=before.get(key);if(value===null)storage.removeItem(key);else storage.setItem(key,value)}catch{rollbackErrors.push(key)}
+  }
+  throw Error('Restore failed; '+(rollbackErrors.length?'some keys could not be rolled back: '+rollbackErrors.join(', '):'previous data was restored')+'. '+(error?.message||'Storage unavailable'));
+ }
+ return {sessions:sessions.length,watchlist:watchlist.length,settings:mode==='replace'?Object.keys(normalized.preferences).length:0,mode};
+}
+export function parseRecoveryText(text,validIds){
+ if(typeof text!=='string'||new TextEncoder().encode(text).length>RECOVERY_MAX_BYTES)throw Error('Recovery file exceeds the 2 MB limit');
+ return validateRecoveryBundle(text,validIds);
+}
