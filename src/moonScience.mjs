@@ -40,6 +40,8 @@ const ROWS={
  titania:[703,226.9,1.653,4.1,.032],
  oberon:[704,205.3,1.664,5.8,.050],
  miranda:[705,4.3,1.178,.2,.053],
+ // JPL orbital ID 715 is known; no GM/density in the physical-parameters table.
+ puck:[715,null,null,null,null],
  triton:[801,1428.49546,2.0649,.61603,.0110],
  nereid:[802,null,null,null,null],
  naiad:[803,.00853,1.2511,.00480,1.0478],
