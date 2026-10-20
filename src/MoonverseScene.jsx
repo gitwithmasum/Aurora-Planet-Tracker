@@ -29,7 +29,7 @@ function SelectedMoon({moon,epochDays,speed,active,onSelect,selected}){
   position.current.position.set(start.x,start.y,start.z);
  },[start,moon]);
  return <group>
-  <primitive object={new THREE.LineLoop(line,new THREE.LineBasicMaterial({color:selected?'#f6b4d9':'#6292ae',transparent:true,opacity:selected?.8:.26,depthWrite:false}))}/>
+  <lineLoop geometry={line}><lineBasicMaterial color={selected?'#f6b4d9':'#6292ae'} transparent opacity={selected?.8:.26} depthWrite={false}/></lineLoop>
   <group ref={position} position={[start?.x||0,0,start?.z||0]}>
    <mesh ref={mesh} onClick={e=>{e.stopPropagation();onSelect(moon.id)}} castShadow={false}>
     <sphereGeometry args={[moonDrawRadius(moon.radiusKm),16,12]}/>
