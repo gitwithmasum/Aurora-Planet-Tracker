@@ -19,7 +19,7 @@ test('offline asset list includes entry, CSS and dynamically imported route',()=
  const root=fixture();
  try{
   const m=buildOfflineList(manifest,root);
-  assert.equal(m.version,'4.6.0');
+  assert.equal(m.version,'4.7.0');
   assert.equal(m.assets.length,3);
   assert.ok(m.assets.includes('assets/main-abc.js'));
   assert.ok(m.assets.includes('assets/planner-def.js'));
