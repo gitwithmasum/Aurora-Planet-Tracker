@@ -77,7 +77,7 @@ export function horizonDisplayPosition(state){
  // Camera distance intentionally logarithmically compressed, direction remains ICRF.
  const displayR=Math.min(9,Math.max(2,1.8+Math.log10(Math.max(r,1000)/2000)*1.85));
  const scale=displayR/r;
- return [state.positionKm[0]*scale,state.positionKm[2]*scale,state.positionKm[1]*scale];
+ return [state.positionKm[0]*scale,state.positionKm[2]*scale,-state.positionKm[1]*scale];
 }
 export function horizonTrail(record,{atMs,points=80}={}){
  if(!record||!Array.isArray(record.rows)||!Number.isFinite(atMs))return [];
