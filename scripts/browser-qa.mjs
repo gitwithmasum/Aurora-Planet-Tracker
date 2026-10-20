@@ -78,7 +78,7 @@ try{
   await navigate(page,'Observation Analytics');
   await page.locator('.obsAnalyticsMetrics').waitFor({timeout:15000});
  });
- await run('recovery-export-and-reload',desktop,async page=>{
+ await run('recovery-backup-restore-and-reload',desktop,async page=>{
   await navigate(page,'Offline Recovery');
   await page.locator('.recoveryCenter').waitFor({timeout:15000});
   const [download]=await Promise.all([
@@ -87,8 +87,22 @@ try{
   ]);
   assert.match(download.suggestedFilename(),/aurora-recovery-v4/);
   assert.equal(await download.failure(),null);
+  const savedFile=await download.path();
+  assert.ok(savedFile,'Recovery download not available to browser test');
+  const original=await page.evaluate(()=>JSON.parse(localStorage.getItem('aurora-field-sessions-v1')||'[]'));
+  assert.ok(original.length>=1,'Expected the previously saved session');
+  // Simulate cleared local journal data in this isolated CI browser profile.
+  await page.evaluate(()=>localStorage.setItem('aurora-field-sessions-v1','[]'));
   await page.reload({waitUntil:'domcontentloaded'});
+  await navigate(page,'Offline Recovery');
+  await page.locator('input[aria-label="Choose Aurora recovery JSON"]').setInputFiles(savedFile);
+  await page.locator('.recoveryPreview').waitFor({timeout:15000});
+  page.once('dialog',dialog=>dialog.accept());
+  await page.getByRole('button',{name:'CONFIRM RESTORE'}).click();
+  await page.getByRole('button',{name:'RELOAD APP TO APPLY RESTORED DATA'}).click();
   await page.locator('main.auroraMain').waitFor();
+  await navigate(page,'Field Journal');
+  await page.getByRole('heading',{name:'Browser QA Mars sighting'}).waitFor({timeout:15000});
  });
  const mobile=await browser.newContext({...devices['Pixel 7'],viewport:{width:393,height:851},acceptDownloads:true,reducedMotion:'reduce'});
  await run('mobile-drawer-keyboard-and-no-overflow',mobile,async page=>{
