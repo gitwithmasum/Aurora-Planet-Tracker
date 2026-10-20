@@ -40,7 +40,7 @@ test('Playwright QA checks on-disk browser profile persistence and real offline 
 test('release pipeline tests both deployment paths in headless Chromium',()=>{
  const packageInfo=JSON.parse(source('package.json'));
  const pipeline=source('.github/workflows/aurora-release-qa.yml');
- assert.equal(packageInfo.version,'4.8.0');
+ assert.equal(packageInfo.version,'4.8.1');
  assert.equal(packageInfo.devDependencies.playwright,'1.64.1');
  assert.equal(packageInfo.scripts['qa:browser'],'node scripts/browser-qa.mjs');
  assert.match(pipeline,/npm run qa:browser/);
@@ -50,6 +50,6 @@ test('release pipeline tests both deployment paths in headless Chromium',()=>{
 test('build manifest and service worker versions match the release',()=>{
  const sw=source('public/sw.js');
  const manifest=source('scripts/build-offline-manifest.mjs');
- assert.match(sw,/const VERSION='aurora-v4\.8\.0'/);
- assert.match(manifest,/version:'4\.8\.0'/);
+ assert.match(sw,/const VERSION='aurora-v4\.8\.1'/);
+ assert.match(manifest,/version:'4\.8\.1'/);
 });
