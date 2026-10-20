@@ -91,7 +91,7 @@ try{
   await page.getByRole('link',{name:/NASA SCIENTIFIC SOURCE/}).waitFor();
   await page.getByRole('tab',{name:'INTERIOR CUTAWAY'}).click();
   await page.getByRole('button',{name:/Proposed salty ocean/}).click();
-  await page.locator('.moonGeoInteriorDetail').getByText('INFERRED').waitFor();
+  await page.locator('.moonGeoInteriorDetail .moonGeoEvidence-inferred').waitFor();
   await checkOverflow(page);
   await page.getByRole('tab',{name:'NASA IMAGES'}).click();
   await page.getByRole('link',{name:/OPEN VERIFIED NASA IMAGE/}).waitFor({timeout:10000});
