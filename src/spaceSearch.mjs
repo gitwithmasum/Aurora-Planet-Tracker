@@ -25,13 +25,14 @@ const words=value=>normalize(value).split(' ').filter(Boolean);
 const makeItem=(type,id,title,description,terms)=>({
  id:type+':'+id,type,target:id,title,description,terms:normalize([title,description,terms].join(' '))
 });
-export function buildSpaceIndex({planets=[],galaxies=[],satellites=[]}={}){
+export function buildSpaceIndex({planets=[],galaxies=[],satellites=[],moons=[]}={}){
  const modules=SPACE_MODULES.map(m=>makeItem('module',m.name,m.name,'Open '+m.name,m.terms));
  const worlds=planets.map(p=>makeItem('planet',p.name,p.name,p.description||'Solar System planet',`planet ${p.type||''} ${p.name==='Earth'?'world blue marble':''}`));
+ const naturalMoons=moons.map(m=>makeItem('moon',m.id,m.name,m.planet+' · Natural satellite',`natural moon ${m.planet} ${m.category||''} ${m.science||''}`));
  const deepSky=galaxies.map(g=>makeItem('galaxy',g.id,g.name,g.other||g.constellation||'Galaxy',`galaxy deep space messier ${g.other||''} ${g.constellation||''} ${g.id}`));
  // Only validated, loaded orbital catalog rows should be passed as satellites.
  const spacecraft=satellites.map(s=>makeItem('satellite',s.id,s.name,`${s.category||'Satellite'} · NORAD ${s.noradId}`,`satellite ${s.category||''} ${s.noradId} ${s.id} ${s.id==='iss'?'international space station':''}`));
- return [...worlds,...spacecraft,...deepSky,...modules];
+ return [...worlds,...naturalMoons,...spacecraft,...deepSky,...modules];
 }
 function rank(item,query,tokens){
  const title=normalize(item.title),id=normalize(item.target),term=item.terms;
