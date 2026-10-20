@@ -80,6 +80,13 @@ try{
   await page.getByRole('heading',{name:'Planetary Moon Systems'}).waitFor();
   await page.getByRole('button',{name:/Europa.*km radius/i}).click();
   await page.getByRole('heading',{name:'Europa',exact:true}).waitFor();
+  await page.locator('.moonScienceLab').waitFor({timeout:20000});
+  await page.getByRole('tab',{name:'PHYSICAL SCIENCE'}).click();
+  await page.getByText('1.315',{exact:false}).first().waitFor({timeout:10000});
+  await page.getByRole('tab',{name:'COMPARE MOONS'}).click();
+  await page.locator('.moonLabComparisonPlots').waitFor({timeout:10000});
+  await page.getByRole('tab',{name:'NASA IMAGES'}).click();
+  await page.getByRole('link',{name:/OPEN VERIFIED NASA IMAGE/}).waitFor({timeout:10000});
   await page.getByRole('button',{name:/Mars.*selected/i}).click();
   await page.getByRole('heading',{name:'Phobos',exact:true}).waitFor();
   await page.getByRole('button',{name:/Mercury.*none/i}).click();
@@ -172,6 +179,8 @@ try{
   await page.locator('.moonverseCatalogList').waitFor();
   await page.getByRole('button',{name:/Europa.*km radius/i}).click();
   await page.getByRole('heading',{name:'Europa',exact:true}).waitFor();
+  await page.locator('.moonScienceLab').waitFor({timeout:20000});
+  await page.getByRole('tab',{name:'COMPARE MOONS'}).click();
   await checkOverflow(page);
  });
  await run('mobile-pwa-service-worker-offline-reload',mobile,async page=>{
