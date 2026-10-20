@@ -92,7 +92,12 @@ export function applyRecoveryBundle(storage,bundle,validIds,{mode='merge'}={}){
  }catch(error){
   const rollbackErrors=[];
   for(const key of written.reverse()){
-   try{const value=before.get(key);if(value===null)storage.removeItem(key);else storage.setItem(key,value)}catch{rollbackErrors.push(key)}
+   try{
+    const value=before.get(key);
+    if(storage.getItem(key)===value)continue;
+    if(value===null)storage.removeItem(key);else storage.setItem(key,value);
+    if(storage.getItem(key)!==value)throw Error('Rollback not retained');
+   }catch{rollbackErrors.push(key)}
   }
   throw Error('Restore failed; '+(rollbackErrors.length?'some keys could not be rolled back: '+rollbackErrors.join(', '):'previous data was restored')+'. '+(error?.message||'Storage unavailable'));
  }
