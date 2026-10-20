@@ -30,7 +30,7 @@ export function buildOfflineList(manifest,root,{maxBytes=OFFLINE_MAX_BYTES,maxFi
   entries.push(file.path);bytes+=file.size;
  }
  if(!entries.some(x=>sorted.some(y=>y.path===x&&y.critical)))throw Error('No main JS entrypoint found in offline manifest');
- return {format:'aurora-offline-assets-v1',version:'4.8.1',generatedFor:'Vite static bundles',assets:entries,bytes,omitted:sorted.length-entries.length};
+ return {format:'aurora-offline-assets-v1',version:'4.9.0',generatedFor:'Vite static bundles',assets:entries,bytes,omitted:sorted.length-entries.length};
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){
  const root=join(process.cwd(),'dist');
