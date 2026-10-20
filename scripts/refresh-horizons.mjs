@@ -30,7 +30,7 @@ async function get(body,start,stop){
   if(!response.ok)throw Error('Horizons HTTP '+response.status);
   const json=await response.json();
   if(json.error)throw Error('Horizons returned error');
-  if(typeof json.version!=='string'||!json.version.startsWith('1.'))throw Error('Unrecognized Horizons API schema');
+  if(typeof json.signature?.version!=='string'||!json.signature.version.startsWith('1.')||!String(json.signature?.source||'').includes('Horizons'))throw Error('Unrecognized Horizons API signature/version');
   const rows=parseHorizonsVectorText(json.result);
   return {naif:body.naif,center:body.center,frame:'ICRF',rows};
  }finally{clearTimeout(timeout)}
