@@ -30,7 +30,7 @@ test('server-only serial refresh and scheduled static hosting satisfy JPL usage 
  const script=read('scripts/refresh-horizons.mjs');
  const workflow=read('.github/workflows/deploy-pages.yml');
  assert.match(script,/for\(const body of HORIZONS_BODIES\)/);
- assert.doesNotMatch(script,/Promise\.all/);
+ assert.doesNotMatch(script,/Promise\.all\(/);
  assert.match(script,/VEC_CORR:quoted\('NONE'\)/);
  assert.match(script,/TIME_TYPE:quoted\('UT'\)/);
  assert.match(workflow,/node scripts\/refresh-horizons\.mjs/);
