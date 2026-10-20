@@ -121,6 +121,23 @@ try{
   await navigate(page,'Field Journal');
   await page.getByRole('heading',{name:'Browser QA Mars sighting'}).waitFor({timeout:15000});
  });
+ await run('device-qa-checks-and-sanitized-report',desktop,async page=>{
+  await navigate(page,'Device QA');
+  await page.locator('.deviceQA').waitFor({timeout:20000});
+  await page.getByRole('button',{name:'RUN DEVICE CHECKS'}).click();
+  await page.locator('.deviceQAProbeGrid').waitFor({timeout:15000});
+  await page.getByLabel('Verification status: install').selectOption('pass');
+  const [download]=await Promise.all([
+   page.waitForEvent('download',{timeout:15000}),
+   page.getByRole('button',{name:'EXPORT PRIVACY-SAFE QA JSON'}).click()
+  ]);
+  assert.match(download.suggestedFilename(),/aurora-device-qa-v4/);
+  const report=JSON.parse(await (await import('node:fs/promises')).readFile(await download.path(),'utf8'));
+  assert.equal(report.format,'aurora-device-qa-report-v1');
+  assert.equal(report.checklist.install,'pass');
+  assert.equal(report.summary.manualComplete,false);
+  assert.ok(!JSON.stringify(report).includes('Browser QA Mars sighting'),'QA report must exclude field notes');
+ });
  const mobile=await browser.newContext({...devices['Pixel 7'],viewport:{width:393,height:851},acceptDownloads:true,reducedMotion:'reduce'});
  await run('mobile-drawer-keyboard-and-no-overflow',mobile,async page=>{
   await checkOverflow(page);
