@@ -19,3 +19,17 @@ test('dashboard true-color Earth artwork is bundled for offline/static deploymen
  const signature=readFileSync(image).subarray(0,3);
  assert.deepEqual([...signature],[0xff,0xd8,0xff],'Bundled Earth artwork must be a JPEG');
 });
+
+test('offline bundle manifest lists existing JS/CSS including lazy app modules',{skip:!existsSync(join(root,'dist/index.html'))},()=>{
+ const file=join(root,'dist/offline-assets.json');
+ assert.ok(existsSync(file),'Offline asset index must be emitted after Vite build');
+ const value=JSON.parse(readFileSync(file,'utf8'));
+ assert.equal(value.format,'aurora-offline-assets-v1');
+ assert.ok(Array.isArray(value.assets)&&value.assets.length>0);
+ assert.ok(value.assets.some(a=>a.endsWith('.js')),'Must contain an executable entry');
+ assert.ok(value.assets.every(a=>/^assets\/[a-zA-Z0-9._/-]+\.(?:js|css)$/.test(a)&&!a.includes('..')));
+ for(const asset of value.assets)assert.ok(existsSync(join(root,'dist',asset)),'Offline entry missing: '+asset);
+ const sw=readFileSync(join(root,'dist/sw.js'),'utf8');
+ assert.ok(sw.includes("aurora-v"+value.version),'Offline worker version must match generated assets');
+ assert.ok(sw.includes("OFFLINE_STATUS_RESULT"),'Cache diagnostics must be supported');
+});
