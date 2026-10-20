@@ -85,6 +85,14 @@ try{
   await page.getByText('1.315',{exact:false}).first().waitFor({timeout:10000});
   await page.getByRole('tab',{name:'COMPARE MOONS'}).click();
   await page.locator('.moonLabComparisonPlots').waitFor({timeout:10000});
+  await page.getByRole('tab',{name:'SURFACE & INTERIOR'}).click();
+  await page.locator('.moonGeoExplorer').waitFor({timeout:15000});
+  await page.getByRole('button',{name:/Conamara Chaos/}).first().click();
+  await page.getByRole('link',{name:/NASA SCIENTIFIC SOURCE/}).waitFor();
+  await page.getByRole('tab',{name:'INTERIOR CUTAWAY'}).click();
+  await page.getByRole('button',{name:/Proposed salty ocean/}).click();
+  await page.locator('.moonGeoInteriorDetail').getByText('INFERRED').waitFor();
+  await checkOverflow(page);
   await page.getByRole('tab',{name:'NASA IMAGES'}).click();
   await page.getByRole('link',{name:/OPEN VERIFIED NASA IMAGE/}).waitFor({timeout:10000});
   await page.getByRole('button',{name:/Mars.*selected/i}).click();
@@ -204,6 +212,10 @@ try{
   await page.getByRole('button',{name:/Europa.*km radius/i}).click();
   await page.getByRole('heading',{name:'Europa',exact:true}).waitFor();
   await page.locator('.moonScienceLab').waitFor({timeout:20000});
+  await page.getByRole('tab',{name:'SURFACE & INTERIOR'}).click();
+  await page.locator('.moonGeoExplorer').waitFor({timeout:15000});
+  await page.getByRole('tab',{name:'INTERIOR CUTAWAY'}).click();
+  await checkOverflow(page);
   await page.getByRole('tab',{name:'COMPARE MOONS'}).click();
   await checkOverflow(page);
  });
