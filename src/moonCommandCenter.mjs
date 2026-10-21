@@ -4,7 +4,7 @@ import {MOONS} from './moonCatalog.mjs';
 export function searchMoonCommand(query, moons=MOONS){
  const q=String(query||'').trim().toLocaleLowerCase();
  if(!q)return [];
- const tokens=q.split(/\\s+/).filter(Boolean);
+ const tokens=q.split(/\s+/).filter(Boolean);
  return moons.map((moon,index)=>({moon,index,score:tokens.reduce((sum,token)=>{
   const name=moon.name.toLocaleLowerCase(),planet=moon.planet.toLocaleLowerCase();
   const missions=moon.missions.join(' ').toLocaleLowerCase();
