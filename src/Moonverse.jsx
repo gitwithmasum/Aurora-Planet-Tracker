@@ -5,6 +5,7 @@ import {moonRelativeEpoch,sceneMoonList} from './moonOrbitMath.mjs';
 import {searchMoonScience,physicalParameters} from './moonScience.mjs';
 import {moonRenderPolicy} from './moonPerformance.mjs';
 import {searchMoonCommand} from './moonCommandCenter.mjs';
+import {auditMoonCatalog} from './moonCatalogHealth.mjs';
 import {HORIZONS_PATH,HORIZONS_SOURCE,validateHorizonsSnapshot,interpolateHorizons,horizonsDistanceKm,HORIZONS_BODIES} from './horizonsCore.mjs';
 import {useLanguage} from './i18n.jsx';
 import FeatureBoundary from './FeatureBoundary.jsx';
@@ -72,6 +73,7 @@ export default function Moonverse({initialPlanet='Jupiter',initialMoonId='',onPl
  const selectedRendered=!!selected&&sceneMoons.some(x=>x.id===selected.id);
  const baseDays=useMemo(()=>moonRelativeEpoch(date),[date]);
  const summary=moonCatalogSummary();
+ const catalogHealth=useMemo(()=>auditMoonCatalog(),[]);
  const commandResults=useMemo(()=>searchMoonCommand(commandQuery),[commandQuery]);
  const atMs=date.getTime();
  const verifiedForPlanet=useMemo(()=>sceneMoons.filter(m=>!!interpolateHorizons(snapshot,m.id,atMs)),[sceneMoons,snapshot,atMs]);
@@ -87,15 +89,16 @@ export default function Moonverse({initialPlanet='Jupiter',initialMoonId='',onPl
  function changeDate(value){const parsed=new Date(value.includes('T')?value+':00.000Z':value+'T00:00:00.000Z');if(Number.isFinite(parsed.getTime()))setDate(parsed)}
  return <section className="moonverse" aria-label="Moonverse Observatory">
   <div className="moonverseHero">
-   <div><span className="moonverseEyebrow">AURORA / MOONVERSE OBSERVATORY / v6.0</span>
+   <div><span className="moonverseEyebrow">AURORA / MOONVERSE OBSERVATORY / v6.1</span>
     <h3><Orbit size={29}/>{t('Planetary Moon Systems','গ্রহ ও প্রাকৃতিক উপগ্রহের জগৎ')}</h3>
     <p>{t('Travel among natural moons, inspect scientific facts, and explore educational 3D orbits without mistaking them for live ephemerides.','প্রাকৃতিক উপগ্রহের বৈজ্ঞানিক তথ্য, আবিষ্কার ও 3D orbital simulation দেখুন। এটি live orbital ephemeris নয়।')}</p>
    </div><div className="moonverseHeroMark"><strong>{summary.curated}</strong><small>{t('CURATED MOONS','নির্বাচিত উপগ্রহ')}</small></div>
   </div>
   <section className="moonCommandCenter" aria-label="Moonverse mission command center">
-   <div className="moonCommandHeading"><span>MISSION CONTROL / v6.0</span><strong>{t('Unified Science Command Center','সমন্বিত বিজ্ঞান কমান্ড সেন্টার')}</strong><small>{t('Jump to a module or search every curated moon from one place.','এক জায়গা থেকে মডিউলে যান অথবা সব নির্বাচিত উপগ্রহ খুঁজুন।')}</small></div>
+   <div className="moonCommandHeading"><span>MISSION CONTROL / v6.1</span><strong>{t('Unified Science Command Center','সমন্বিত বিজ্ঞান কমান্ড সেন্টার')}</strong><small>{t('Jump to a module or search every curated moon from one place.','এক জায়গা থেকে মডিউলে যান অথবা সব নির্বাচিত উপগ্রহ খুঁজুন।')}</small></div>
    <div className="moonCommandSearch"><Search size={16}/><input value={commandQuery} onFocus={()=>setCommandOpen(true)} onChange={e=>{setCommandQuery(e.target.value);setCommandOpen(true)}} onKeyDown={e=>{if(e.key==='Escape'){setCommandOpen(false);setCommandQuery('')}if(e.key==='Enter'&&commandResults[0]){const m=commandResults[0];setPlanet(m.planet);setMoonId(m.id);onSelectParent(m.planet);setCommandQuery('');setCommandOpen(false);document.getElementById('moonverse-profile')?.scrollIntoView({behavior:'smooth',block:'start'})}}} placeholder={t('Command search: moon, planet, mission, class…','খুঁজুন: উপগ্রহ, গ্রহ, মিশন, শ্রেণি…')} aria-label="Search all moons and missions"/><kbd>ENTER</kbd></div>
    {commandOpen&&commandQuery.trim()&&<div className="moonCommandResults" role="listbox" aria-label="Moon search results">{commandResults.slice(0,7).map(m=><button type="button" key={m.id} role="option" onClick={()=>{setPlanet(m.planet);setMoonId(m.id);onSelectParent(m.planet);setQuery('');setCategory('all');setCommandQuery('');setCommandOpen(false);document.getElementById('moonverse-profile')?.scrollIntoView({behavior:'smooth',block:'start'})}}><strong>{m.name}</strong><span>{m.planet} · {m.category} · {m.missions.slice(0,2).join(', ')}</span><ChevronRight size={14}/></button>)}{!commandResults.length&&<p>{t('No matching moon found.','মিল পাওয়া যায়নি।')}</p>}</div>}
+   <div className={"moonCatalogHealth "+(catalogHealth.invalid?"hasIssues":"")} role="status"><Database size={14}/><span>{t("CATALOG INTEGRITY","ক্যাটালগ যাচাই")}</span><strong>{catalogHealth.valid}/{catalogHealth.total}</strong><small>{catalogHealth.invalid?t(catalogHealth.invalid+" record(s) need review",catalogHealth.invalid+"টি রেকর্ড পর্যালোচনা প্রয়োজন"):t("records validated","রেকর্ড যাচাইকৃত")}</small></div>
    <nav className="moonCommandModules" aria-label="Jump to Moonverse modules">{[['moonverse-planets',t('Planet Systems','গ্রহ ব্যবস্থা')],['moonverse-scene',t('3D Observatory','3D অবজারভেটরি')],['moonverse-catalog',t('Moon Catalog','উপগ্রহ ক্যাটালগ')],['moonverse-profile',t('Science Profile','বৈজ্ঞানিক প্রোফাইল')],['moonverse-research',t('Research & Evidence','গবেষণা ও প্রমাণ')]].map(([id,label])=><button type="button" key={id} onClick={()=>document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'})}>{label}<ChevronRight size={13}/></button>)}</nav>
   </section>
   <div id="moonverse-planets" className="moonversePlanetRail" role="group" aria-label="Select parent planet or dwarf planet">
