@@ -36,7 +36,7 @@ try{
  const html=await(await get('index.html',{type:/text\/html/})).text();
  const list=await(await get('offline-assets.json',{type:/application\/json/})).json();
  assert.equal(list.format,'aurora-offline-assets-v1');
- assert.equal(list.version,'5.4.0');
+ assert.equal(list.version,'6.1.1');
  assert.ok(list.assets.length>0);
  assert.ok(list.assets.some(name=>name.endsWith('.js')));
  const sw=await(await get('sw.js')).text();
