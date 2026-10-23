@@ -1,3 +1,13 @@
+## Install on your phone
+
+Aurora Planet Tracker is a **Progressive Web App (PWA)**. Open the deployed site over HTTPS on your phone, wait for the first load to finish, then:
+
+- **Android (Chrome):** tap **Get mobile app** in the app, or open Chrome's ⋮ menu and choose **Install app** / **Add to Home screen**.
+- **iPhone/iPad (Safari):** tap **Get mobile app** for the guide, then use **Share → Add to Home Screen → Add**.
+- Launch **Aurora Planet** from the new home-screen icon. Static app files can be cached for offline launch after the first successful online load; live data, new images and remote services still need internet.
+
+If the install option is missing, open the site directly in Chrome or Safari instead of an in-app browser. A real Android/iOS device installation and offline-launch test is still required after deployment.
+
 <p align="center">
   <img src="src/assets/Aurora%20Planet%20Tracker%20Dashboard.png" alt="Aurora Planet Tracker — Pink & Gold Dashboard Preview" width="100%" />
 </p>
