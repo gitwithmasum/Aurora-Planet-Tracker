@@ -40,7 +40,7 @@ test('Playwright QA checks on-disk browser profile persistence and real offline 
 test('release pipeline tests both deployment paths in headless Chromium',()=>{
  const packageInfo=JSON.parse(source('package.json'));
  const pipeline=source('.github/workflows/aurora-release-qa.yml');
- assert.equal(packageInfo.version,'5.4.0');
+ assert.equal(packageInfo.version,'6.1.1');
  assert.equal(packageInfo.devDependencies.playwright,'1.64.1');
  assert.equal(packageInfo.scripts['qa:browser'],'node scripts/browser-qa.mjs');
  assert.match(pipeline,/npm run qa:browser/);
@@ -73,7 +73,7 @@ test('live Pages smoke test uses the current universal search, not removed input
 });
 test('releases pin compatible dependencies and do not bypass peer checks',()=>{
  const pkg=JSON.parse(source('package.json'));
- assert.equal(pkg.version,'5.4.0');
+ assert.equal(pkg.version,'6.1.1');
  assert.equal(pkg.devDependencies.vite,'6.3.5');
  assert.equal(pkg.devDependencies['@vitejs/plugin-react'],'4.7.0');
  for(const path of ['.github/workflows/deploy-pages.yml','.github/workflows/aurora-release-qa.yml']){

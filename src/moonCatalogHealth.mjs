@@ -9,7 +9,7 @@ export function auditMoonCatalog(moons=MOONS, planets=MOON_PLANETS){
   if(typeof moon.id!=='string'||!moon.id.trim())issues.push({code:'missing-id',id:label,message:'Missing stable moon id'});
   else if(ids.has(moon.id))issues.push({code:'duplicate-id',id:moon.id,message:'Duplicate moon id'});else ids.add(moon.id);
   if(!moonValid(moon))issues.push({code:'invalid-physical-data',id:label,message:'Physical values or parent planet failed validation'});
-  if(!Array.isArray(moon.missions)||moon.missions.some(m=>typeof m!=='string'||!m.trim()))issues.push({code:'invalid-missions',id:label,message:'Mission list must contain non-empty strings'});
+  if(!Array.isArray(moon.missions)||moon.missions.length===0||moon.missions.some(m=>typeof m!=='string'||!m.trim()))issues.push({code:'invalid-missions',id:label,message:'Mission list must contain non-empty strings'});
   if(typeof moon.source!=='string'||!moon.source.startsWith('https://'))issues.push({code:'missing-source',id:label,message:'NASA source URL is missing or not HTTPS'});
   if(typeof moon.dataSource!=='string'||!moon.dataSource.startsWith('https://'))issues.push({code:'missing-physical-source',id:label,message:'Physical-parameter source URL is missing or not HTTPS'});
   if(typeof moon.orbitSource!=='string'||!moon.orbitSource.startsWith('https://'))issues.push({code:'missing-orbit-source',id:label,message:'Orbital-parameter source URL is missing or not HTTPS'});
