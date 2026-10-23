@@ -50,8 +50,8 @@ test('release pipeline tests both deployment paths in headless Chromium',()=>{
 test('build manifest and service worker versions match the release',()=>{
  const sw=source('public/sw.js');
  const manifest=source('scripts/build-offline-manifest.mjs');
- assert.match(sw,/const VERSION='aurora-v5\.4\.0'/);
- assert.match(manifest,/version:'5\.4\.0'/);
+ assert.ok(sw.includes("const VERSION='aurora-v6.1.1'"));
+ assert.ok(manifest.includes("version:'6.1.1'"));
 });
 
 
