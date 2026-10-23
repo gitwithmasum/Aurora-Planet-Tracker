@@ -80,7 +80,7 @@ self.addEventListener('message',event=>{
   const cache=await caches.open(SHELL);
   const response=await cache.match(ASSET_LIST);
   const manifest=response?await response.json().catch(()=>null):null;
-  const assets=manifest?.version==='5.4.0'&&Array.isArray(manifest.assets)?manifest.assets.filter(safeAsset):[];
+  const assets=manifest?.version==='6.1.1'&&Array.isArray(manifest.assets)?manifest.assets.filter(safeAsset):[];
   let present=0;
   for(const path of assets){if(await cache.match(new URL(path,root)))present++}
   const shellReady=!!await cache.match(root);
