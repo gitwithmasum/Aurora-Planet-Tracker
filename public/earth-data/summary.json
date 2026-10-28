@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-10-27T22:09:01.897422+00:00",
+  "fetchedAt": "2026-10-28T05:33:23.502319+00:00",
   "weatherSource": "Open-Meteo Forecast API (model-based point samples)",
   "weatherUrl": "https://open-meteo.com/en/docs",
   "eventSource": "NASA EONET v3",
@@ -9,62 +9,62 @@
       "name": "North America",
       "lat": 40,
       "lon": -100,
-      "observedAt": "2026-10-27T22:00Z",
-      "temperatureC": 11.1,
-      "cloudPercent": 100,
+      "observedAt": "2026-10-28T05:30Z",
+      "temperatureC": 13.1,
+      "cloudPercent": 97,
       "precipitationMm": 0.0
     },
     {
       "name": "South America",
       "lat": -15,
       "lon": -60,
-      "observedAt": "2026-10-27T22:00Z",
-      "temperatureC": 26.8,
-      "cloudPercent": 30,
-      "precipitationMm": 0.0
+      "observedAt": "2026-10-28T05:30Z",
+      "temperatureC": 23.9,
+      "cloudPercent": 93,
+      "precipitationMm": 0.1
     },
     {
       "name": "Europe",
       "lat": 50,
       "lon": 12,
-      "observedAt": "2026-10-27T22:00Z",
-      "temperatureC": 7.2,
-      "cloudPercent": 74,
+      "observedAt": "2026-10-28T05:30Z",
+      "temperatureC": 6.3,
+      "cloudPercent": 100,
       "precipitationMm": 0.0
     },
     {
       "name": "West Africa",
       "lat": 8,
       "lon": -3,
-      "observedAt": "2026-10-27T22:00Z",
-      "temperatureC": 24.3,
-      "cloudPercent": 6,
+      "observedAt": "2026-10-28T05:30Z",
+      "temperatureC": 23.7,
+      "cloudPercent": 99,
       "precipitationMm": 0.0
     },
     {
       "name": "East Africa",
       "lat": -5,
       "lon": 36,
-      "observedAt": "2026-10-27T22:00Z",
-      "temperatureC": 19.1,
-      "cloudPercent": 0,
+      "observedAt": "2026-10-28T05:30Z",
+      "temperatureC": 20.7,
+      "cloudPercent": 11,
       "precipitationMm": 0.0
     },
     {
       "name": "South Asia",
       "lat": 23,
       "lon": 80,
-      "observedAt": "2026-10-27T22:00Z",
-      "temperatureC": 22.6,
-      "cloudPercent": 97,
+      "observedAt": "2026-10-28T05:30Z",
+      "temperatureC": 26.8,
+      "cloudPercent": 100,
       "precipitationMm": 0.0
     },
     {
       "name": "East Asia",
       "lat": 35,
       "lon": 120,
-      "observedAt": "2026-10-27T22:00Z",
-      "temperatureC": 14.7,
+      "observedAt": "2026-10-28T05:30Z",
+      "temperatureC": 15.8,
       "cloudPercent": 0,
       "precipitationMm": 0.0
     },
@@ -72,8 +72,8 @@
       "name": "Southeast Asia",
       "lat": 2,
       "lon": 114,
-      "observedAt": "2026-10-27T22:00Z",
-      "temperatureC": 20.9,
+      "observedAt": "2026-10-28T05:30Z",
+      "temperatureC": 30.6,
       "cloudPercent": 100,
       "precipitationMm": 0.0
     },
@@ -81,35 +81,35 @@
       "name": "Australia",
       "lat": -25,
       "lon": 135,
-      "observedAt": "2026-10-27T22:00Z",
-      "temperatureC": 18.5,
-      "cloudPercent": 0,
+      "observedAt": "2026-10-28T05:30Z",
+      "temperatureC": 27.1,
+      "cloudPercent": 75,
       "precipitationMm": 0.0
     },
     {
       "name": "Arctic",
       "lat": 75,
       "lon": 0,
-      "observedAt": "2026-10-27T22:00Z",
-      "temperatureC": 3.3,
-      "cloudPercent": 95,
+      "observedAt": "2026-10-28T05:30Z",
+      "temperatureC": 3.2,
+      "cloudPercent": 100,
       "precipitationMm": 0.0
     },
     {
       "name": "Antarctic",
       "lat": -72,
       "lon": 35,
-      "observedAt": "2026-10-27T22:00Z",
-      "temperatureC": -29.6,
-      "cloudPercent": 0,
+      "observedAt": "2026-10-28T05:30Z",
+      "temperatureC": -26.3,
+      "cloudPercent": 1,
       "precipitationMm": 0.0
     },
     {
       "name": "North Pacific",
       "lat": 25,
       "lon": -155,
-      "observedAt": "2026-10-27T22:00Z",
-      "temperatureC": 24.1,
+      "observedAt": "2026-10-28T05:30Z",
+      "temperatureC": 24.6,
       "cloudPercent": 100,
       "precipitationMm": 0.0
     },
@@ -117,8 +117,8 @@
       "name": "South Pacific",
       "lat": -25,
       "lon": -135,
-      "observedAt": "2026-10-27T22:00Z",
-      "temperatureC": 20.4,
+      "observedAt": "2026-10-28T05:30Z",
+      "temperatureC": 20.1,
       "cloudPercent": 100,
       "precipitationMm": 0.0
     },
@@ -126,53 +126,53 @@
       "name": "Atlantic",
       "lat": 12,
       "lon": -35,
-      "observedAt": "2026-10-27T22:00Z",
-      "temperatureC": 27.7,
-      "cloudPercent": 24,
+      "observedAt": "2026-10-28T05:30Z",
+      "temperatureC": 27.4,
+      "cloudPercent": 56,
       "precipitationMm": 0.0
     },
     {
       "name": "Indian Ocean",
       "lat": -20,
       "lon": 80,
-      "observedAt": "2026-10-27T22:00Z",
-      "temperatureC": 23.2,
-      "cloudPercent": 16,
+      "observedAt": "2026-10-28T05:30Z",
+      "temperatureC": 23.4,
+      "cloudPercent": 9,
       "precipitationMm": 0.0
     },
     {
       "name": "North Asia",
       "lat": 60,
       "lon": 90,
-      "observedAt": "2026-10-27T22:00Z",
-      "temperatureC": 0.6,
-      "cloudPercent": 100,
-      "precipitationMm": 0.1
+      "observedAt": "2026-10-28T05:30Z",
+      "temperatureC": -3.8,
+      "cloudPercent": 98,
+      "precipitationMm": 0.0
     },
     {
       "name": "Central America",
       "lat": 15,
       "lon": -90,
-      "observedAt": "2026-10-27T22:00Z",
-      "temperatureC": 19.9,
-      "cloudPercent": 49,
-      "precipitationMm": 0.1
+      "observedAt": "2026-10-28T05:30Z",
+      "temperatureC": 16.1,
+      "cloudPercent": 55,
+      "precipitationMm": 0.0
     },
     {
       "name": "Middle East",
       "lat": 29,
       "lon": 48,
-      "observedAt": "2026-10-27T22:00Z",
-      "temperatureC": 26.0,
-      "cloudPercent": 44,
+      "observedAt": "2026-10-28T05:30Z",
+      "temperatureC": 27.9,
+      "cloudPercent": 9,
       "precipitationMm": 0.0
     },
     {
       "name": "Southern Africa",
       "lat": -27,
       "lon": 25,
-      "observedAt": "2026-10-27T22:00Z",
-      "temperatureC": 15.9,
+      "observedAt": "2026-10-28T05:30Z",
+      "temperatureC": 16.9,
       "cloudPercent": 0,
       "precipitationMm": 0.0
     },
@@ -180,10 +180,10 @@
       "name": "North Atlantic",
       "lat": 55,
       "lon": -36,
-      "observedAt": "2026-10-27T22:00Z",
-      "temperatureC": 8.3,
+      "observedAt": "2026-10-28T05:30Z",
+      "temperatureC": 6.0,
       "cloudPercent": 100,
-      "precipitationMm": 0.1
+      "precipitationMm": 0.2
     }
   ],
   "events": [
@@ -191,9 +191,9 @@
       "id": "EONET_25729",
       "title": "Tropical Cyclone Arnab",
       "category": "Severe Storms",
-      "lat": 16.3,
-      "lon": 82.7,
-      "date": "2026-10-27T12:00:00Z",
+      "lat": 16.2,
+      "lon": 81.6,
+      "date": "2026-10-28T00:00:00Z",
       "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25729"
     },
     {
@@ -218,9 +218,9 @@
       "id": "EONET_25728",
       "title": "Typhoon In-fa",
       "category": "Severe Storms",
-      "lat": 14.5,
-      "lon": 161.6,
-      "date": "2026-10-27T12:00:00Z",
+      "lat": 14.9,
+      "lon": 159.9,
+      "date": "2026-10-28T00:00:00Z",
       "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25728"
     },
     {
@@ -236,9 +236,9 @@
       "id": "EONET_25589",
       "title": "Hurricane Vance",
       "category": "Severe Storms",
-      "lat": 16.1,
-      "lon": -107.3,
-      "date": "2026-10-27T12:00:00Z",
+      "lat": 16.9,
+      "lon": -108.3,
+      "date": "2026-10-28T00:00:00Z",
       "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25589"
     },
     {
