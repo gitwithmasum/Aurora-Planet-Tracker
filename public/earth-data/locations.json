@@ -1,6 +1,6 @@
 {
   "source": "Open-Meteo Forecast API",
-  "fetchedAt": "2026-10-30T15:08:07.941665+00:00",
+  "fetchedAt": "2026-10-30T20:55:12.505379+00:00",
   "sourceUrl": "https://open-meteo.com/en/docs",
   "historyNote": "Past days from Open-Meteo weather-model/analysis products, not station-confirmed historical observations",
   "locations": [
@@ -9,12 +9,12 @@
       "country": "Bangladesh",
       "lat": 23.81,
       "lon": 90.41,
-      "observedAt": "2026-10-30T15:00Z",
-      "temperatureC": 26.6,
-      "cloudPercent": 98,
+      "observedAt": "2026-10-30T20:45Z",
+      "temperatureC": 25.9,
+      "cloudPercent": 88,
       "precipitationMm": 0.0,
-      "humidityPercent": 87,
-      "windKmh": 4.4,
+      "humidityPercent": 91,
+      "windKmh": 4.1,
       "history": [
         {
           "date": "2026-10-23",
@@ -61,7 +61,7 @@
         {
           "date": "2026-10-30",
           "maxC": 32.7,
-          "minC": 25.2,
+          "minC": 25.4,
           "rainMm": 2.6
         }
       ]
@@ -71,12 +71,12 @@
       "country": "Bangladesh",
       "lat": 22.36,
       "lon": 91.78,
-      "observedAt": "2026-10-30T15:00Z",
-      "temperatureC": 29.1,
-      "cloudPercent": 45,
+      "observedAt": "2026-10-30T20:45Z",
+      "temperatureC": 27.7,
+      "cloudPercent": 32,
       "precipitationMm": 0.0,
-      "humidityPercent": 73,
-      "windKmh": 7.8,
+      "humidityPercent": 80,
+      "windKmh": 3.3,
       "history": [
         {
           "date": "2026-10-23",
@@ -123,7 +123,7 @@
         {
           "date": "2026-10-30",
           "maxC": 34.1,
-          "minC": 26.0,
+          "minC": 26.4,
           "rainMm": 0.2
         }
       ]
@@ -133,12 +133,12 @@
       "country": "India",
       "lat": 28.61,
       "lon": 77.21,
-      "observedAt": "2026-10-30T15:00Z",
-      "temperatureC": 19.7,
-      "cloudPercent": 34,
+      "observedAt": "2026-10-30T20:45Z",
+      "temperatureC": 19.5,
+      "cloudPercent": 0,
       "precipitationMm": 0.0,
-      "humidityPercent": 92,
-      "windKmh": 2.2,
+      "humidityPercent": 87,
+      "windKmh": 5.0,
       "history": [
         {
           "date": "2026-10-23",
@@ -185,7 +185,7 @@
         {
           "date": "2026-10-30",
           "maxC": 21.2,
-          "minC": 18.3,
+          "minC": 18.9,
           "rainMm": 19.7
         }
       ]
@@ -195,12 +195,12 @@
       "country": "India",
       "lat": 19.08,
       "lon": 72.88,
-      "observedAt": "2026-10-30T15:00Z",
-      "temperatureC": 28.2,
-      "cloudPercent": 5,
+      "observedAt": "2026-10-30T20:45Z",
+      "temperatureC": 24.7,
+      "cloudPercent": 17,
       "precipitationMm": 0.0,
-      "humidityPercent": 77,
-      "windKmh": 1.4,
+      "humidityPercent": 91,
+      "windKmh": 3.3,
       "history": [
         {
           "date": "2026-10-23",
@@ -247,8 +247,8 @@
         {
           "date": "2026-10-30",
           "maxC": 31.8,
-          "minC": 24.8,
-          "rainMm": 1.5
+          "minC": 23.2,
+          "rainMm": 4.1
         }
       ]
     },
@@ -257,12 +257,12 @@
       "country": "Japan",
       "lat": 35.68,
       "lon": 139.69,
-      "observedAt": "2026-10-30T15:00Z",
-      "temperatureC": 13.8,
-      "cloudPercent": 40,
+      "observedAt": "2026-10-30T20:45Z",
+      "temperatureC": 12.0,
+      "cloudPercent": 5,
       "precipitationMm": 0.0,
-      "humidityPercent": 92,
-      "windKmh": 2.5,
+      "humidityPercent": 95,
+      "windKmh": 3.3,
       "history": [
         {
           "date": "2026-10-23",
@@ -309,8 +309,8 @@
         {
           "date": "2026-10-30",
           "maxC": 20.2,
-          "minC": 12.1,
-          "rainMm": 0.1
+          "minC": 12.0,
+          "rainMm": 0.2
         }
       ]
     },
@@ -319,12 +319,12 @@
       "country": "South Korea",
       "lat": 37.57,
       "lon": 126.98,
-      "observedAt": "2026-10-30T15:00Z",
-      "temperatureC": 12.1,
-      "cloudPercent": 25,
+      "observedAt": "2026-10-30T20:45Z",
+      "temperatureC": 10.2,
+      "cloudPercent": 87,
       "precipitationMm": 0.0,
-      "humidityPercent": 85,
-      "windKmh": 3.2,
+      "humidityPercent": 99,
+      "windKmh": 6.1,
       "history": [
         {
           "date": "2026-10-23",
@@ -371,7 +371,7 @@
         {
           "date": "2026-10-30",
           "maxC": 17.3,
-          "minC": 7.8,
+          "minC": 8.6,
           "rainMm": 0.0
         }
       ]
@@ -381,12 +381,12 @@
       "country": "Singapore",
       "lat": 1.29,
       "lon": 103.85,
-      "observedAt": "2026-10-30T15:00Z",
-      "temperatureC": 27.0,
-      "cloudPercent": 68,
+      "observedAt": "2026-10-30T20:45Z",
+      "temperatureC": 26.9,
+      "cloudPercent": 100,
       "precipitationMm": 0.0,
-      "humidityPercent": 91,
-      "windKmh": 7.2,
+      "humidityPercent": 86,
+      "windKmh": 5.4,
       "history": [
         {
           "date": "2026-10-23",
@@ -433,7 +433,7 @@
         {
           "date": "2026-10-30",
           "maxC": 31.8,
-          "minC": 25.2,
+          "minC": 26.0,
           "rainMm": 0.4
         }
       ]
@@ -443,12 +443,12 @@
       "country": "United Arab Emirates",
       "lat": 25.2,
       "lon": 55.27,
-      "observedAt": "2026-10-30T15:00Z",
-      "temperatureC": 30.2,
+      "observedAt": "2026-10-30T20:45Z",
+      "temperatureC": 28.3,
       "cloudPercent": 0,
       "precipitationMm": 0.0,
-      "humidityPercent": 64,
-      "windKmh": 9.6,
+      "humidityPercent": 76,
+      "windKmh": 5.2,
       "history": [
         {
           "date": "2026-10-23",
@@ -505,12 +505,12 @@
       "country": "Saudi Arabia",
       "lat": 21.49,
       "lon": 39.19,
-      "observedAt": "2026-10-30T15:00Z",
-      "temperatureC": 30.9,
-      "cloudPercent": 29,
+      "observedAt": "2026-10-30T20:45Z",
+      "temperatureC": 29.5,
+      "cloudPercent": 0,
       "precipitationMm": 0.0,
-      "humidityPercent": 62,
-      "windKmh": 9.6,
+      "humidityPercent": 58,
+      "windKmh": 9.2,
       "history": [
         {
           "date": "2026-10-23",
@@ -567,12 +567,12 @@
       "country": "United Kingdom",
       "lat": 51.51,
       "lon": -0.13,
-      "observedAt": "2026-10-30T15:00Z",
-      "temperatureC": 15.5,
-      "cloudPercent": 0,
+      "observedAt": "2026-10-30T20:45Z",
+      "temperatureC": 12.9,
+      "cloudPercent": 60,
       "precipitationMm": 0.0,
-      "humidityPercent": 64,
-      "windKmh": 11.2,
+      "humidityPercent": 86,
+      "windKmh": 10.8,
       "history": [
         {
           "date": "2026-10-23",
@@ -618,7 +618,7 @@
         },
         {
           "date": "2026-10-30",
-          "maxC": 15.6,
+          "maxC": 16.1,
           "minC": 9.5,
           "rainMm": 0.0
         }
@@ -629,12 +629,12 @@
       "country": "France",
       "lat": 48.86,
       "lon": 2.35,
-      "observedAt": "2026-10-30T15:00Z",
-      "temperatureC": 15.8,
-      "cloudPercent": 0,
+      "observedAt": "2026-10-30T20:45Z",
+      "temperatureC": 10.7,
+      "cloudPercent": 11,
       "precipitationMm": 0.0,
-      "humidityPercent": 49,
-      "windKmh": 10.5,
+      "humidityPercent": 73,
+      "windKmh": 7.7,
       "history": [
         {
           "date": "2026-10-23",
@@ -680,7 +680,7 @@
         },
         {
           "date": "2026-10-30",
-          "maxC": 15.9,
+          "maxC": 15.8,
           "minC": 6.7,
           "rainMm": 0.0
         }
@@ -691,12 +691,12 @@
       "country": "United States",
       "lat": 40.71,
       "lon": -74.01,
-      "observedAt": "2026-10-30T15:00Z",
-      "temperatureC": 20.9,
-      "cloudPercent": 5,
+      "observedAt": "2026-10-30T20:45Z",
+      "temperatureC": 18.0,
+      "cloudPercent": 0,
       "precipitationMm": 0.0,
-      "humidityPercent": 59,
-      "windKmh": 16.1,
+      "humidityPercent": 36,
+      "windKmh": 26.2,
       "history": [
         {
           "date": "2026-10-23",
@@ -742,8 +742,8 @@
         },
         {
           "date": "2026-10-30",
-          "maxC": 22.1,
-          "minC": 12.4,
+          "maxC": 22.9,
+          "minC": 12.0,
           "rainMm": 0.0
         }
       ]
@@ -753,12 +753,12 @@
       "country": "United States",
       "lat": 34.05,
       "lon": -118.24,
-      "observedAt": "2026-10-30T15:00Z",
-      "temperatureC": 17.6,
+      "observedAt": "2026-10-30T20:45Z",
+      "temperatureC": 19.3,
       "cloudPercent": 100,
       "precipitationMm": 0.0,
-      "humidityPercent": 85,
-      "windKmh": 7.9,
+      "humidityPercent": 75,
+      "windKmh": 12.1,
       "history": [
         {
           "date": "2026-10-23",
@@ -806,7 +806,7 @@
           "date": "2026-10-30",
           "maxC": 20.9,
           "minC": 17.1,
-          "rainMm": 0.4
+          "rainMm": 0.2
         }
       ]
     },
@@ -815,12 +815,12 @@
       "country": "Canada",
       "lat": 43.65,
       "lon": -79.38,
-      "observedAt": "2026-10-30T15:00Z",
-      "temperatureC": 11.5,
-      "cloudPercent": 42,
+      "observedAt": "2026-10-30T20:45Z",
+      "temperatureC": 13.6,
+      "cloudPercent": 13,
       "precipitationMm": 0.0,
-      "humidityPercent": 57,
-      "windKmh": 17.6,
+      "humidityPercent": 49,
+      "windKmh": 17.3,
       "history": [
         {
           "date": "2026-10-23",
@@ -877,12 +877,12 @@
       "country": "Australia",
       "lat": -33.87,
       "lon": 151.21,
-      "observedAt": "2026-10-30T15:00Z",
-      "temperatureC": 16.5,
-      "cloudPercent": 30,
+      "observedAt": "2026-10-30T20:45Z",
+      "temperatureC": 18.3,
+      "cloudPercent": 77,
       "precipitationMm": 0.0,
-      "humidityPercent": 86,
-      "windKmh": 7.6,
+      "humidityPercent": 76,
+      "windKmh": 6.2,
       "history": [
         {
           "date": "2026-10-23",
@@ -928,7 +928,7 @@
         },
         {
           "date": "2026-10-30",
-          "maxC": 26.5,
+          "maxC": 27.1,
           "minC": 15.7,
           "rainMm": 0.0
         }
@@ -939,12 +939,12 @@
       "country": "Brazil",
       "lat": -23.55,
       "lon": -46.63,
-      "observedAt": "2026-10-30T15:00Z",
-      "temperatureC": 24.1,
-      "cloudPercent": 41,
+      "observedAt": "2026-10-30T20:45Z",
+      "temperatureC": 19.0,
+      "cloudPercent": 97,
       "precipitationMm": 0.0,
-      "humidityPercent": 66,
-      "windKmh": 8.8,
+      "humidityPercent": 87,
+      "windKmh": 10.2,
       "history": [
         {
           "date": "2026-10-23",
@@ -990,9 +990,9 @@
         },
         {
           "date": "2026-10-30",
-          "maxC": 25.0,
+          "maxC": 24.6,
           "minC": 16.4,
-          "rainMm": 3.9
+          "rainMm": 5.5
         }
       ]
     },
@@ -1001,12 +1001,12 @@
       "country": "Egypt",
       "lat": 30.04,
       "lon": 31.24,
-      "observedAt": "2026-10-30T15:00Z",
-      "temperatureC": 24.4,
-      "cloudPercent": 0,
+      "observedAt": "2026-10-30T20:45Z",
+      "temperatureC": 18.9,
+      "cloudPercent": 17,
       "precipitationMm": 0.0,
-      "humidityPercent": 32,
-      "windKmh": 6.2,
+      "humidityPercent": 54,
+      "windKmh": 3.1,
       "history": [
         {
           "date": "2026-10-23",
@@ -1052,7 +1052,7 @@
         },
         {
           "date": "2026-10-30",
-          "maxC": 26.0,
+          "maxC": 26.1,
           "minC": 15.7,
           "rainMm": 0.0
         }
@@ -1063,12 +1063,12 @@
       "country": "South Africa",
       "lat": -33.92,
       "lon": 18.42,
-      "observedAt": "2026-10-30T15:00Z",
-      "temperatureC": 22.9,
-      "cloudPercent": 53,
+      "observedAt": "2026-10-30T20:45Z",
+      "temperatureC": 18.2,
+      "cloudPercent": 99,
       "precipitationMm": 0.0,
-      "humidityPercent": 70,
-      "windKmh": 19.4,
+      "humidityPercent": 94,
+      "windKmh": 17.3,
       "history": [
         {
           "date": "2026-10-23",
@@ -1114,7 +1114,7 @@
         },
         {
           "date": "2026-10-30",
-          "maxC": 25.6,
+          "maxC": 26.6,
           "minC": 17.7,
           "rainMm": 0.0
         }
