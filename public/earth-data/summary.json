@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-11-17T07:49:26.719728+00:00",
+  "fetchedAt": "2026-11-17T18:30:21.771737+00:00",
   "weatherSource": "Open-Meteo Forecast API (model-based point samples)",
   "weatherUrl": "https://open-meteo.com/en/docs",
   "eventSource": "NASA EONET v3",
@@ -405,6 +405,7 @@
     }
   ],
   "errors": [
-    "weather: <urlopen error _ssl.c:994: The handshake operation timed out>"
+    "weather: <urlopen error _ssl.c:994: The handshake operation timed out>",
+    "EONET: HTTP Error 500: Internal Server Error"
   ]
 }
