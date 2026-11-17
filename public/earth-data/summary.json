@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-11-16T21:56:58.847001+00:00",
+  "fetchedAt": "2026-11-17T07:49:26.719728+00:00",
   "weatherSource": "Open-Meteo Forecast API (model-based point samples)",
   "weatherUrl": "https://open-meteo.com/en/docs",
   "eventSource": "NASA EONET v3",
@@ -191,9 +191,9 @@
       "id": "EONET_26463",
       "title": "Tropical Cyclone Xavier",
       "category": "Severe Storms",
-      "lat": -8.5,
-      "lon": -161,
-      "date": "2026-11-16T06:00:00Z",
+      "lat": -8.9,
+      "lon": -162.6,
+      "date": "2026-11-16T18:00:00Z",
       "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_26463"
     },
     {
@@ -404,5 +404,7 @@
       "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_26056"
     }
   ],
-  "errors": []
+  "errors": [
+    "weather: <urlopen error _ssl.c:994: The handshake operation timed out>"
+  ]
 }
