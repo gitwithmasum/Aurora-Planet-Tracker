@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-11-19T02:30:55.287140+00:00",
+  "fetchedAt": "2026-11-19T11:31:14.965718+00:00",
   "weatherSource": "Open-Meteo Forecast API (model-based point samples)",
   "weatherUrl": "https://open-meteo.com/en/docs",
   "eventSource": "NASA EONET v3",
@@ -191,9 +191,9 @@
       "id": "EONET_26494",
       "title": "Tropical Cyclone Akvan",
       "category": "Severe Storms",
-      "lat": 13.8,
-      "lon": 86.4,
-      "date": "2026-11-18T18:00:00Z",
+      "lat": 14.6,
+      "lon": 86.2,
+      "date": "2026-11-19T00:00:00Z",
       "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_26494"
     },
     {
