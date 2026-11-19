@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-11-18T20:26:04.956014+00:00",
+  "fetchedAt": "2026-11-19T02:30:55.287140+00:00",
   "weatherSource": "Open-Meteo Forecast API (model-based point samples)",
   "weatherUrl": "https://open-meteo.com/en/docs",
   "eventSource": "NASA EONET v3",
@@ -191,18 +191,18 @@
       "id": "EONET_26494",
       "title": "Tropical Cyclone Akvan",
       "category": "Severe Storms",
-      "lat": 13.6,
-      "lon": 86.5,
-      "date": "2026-11-18T12:00:00Z",
+      "lat": 13.8,
+      "lon": 86.4,
+      "date": "2026-11-18T18:00:00Z",
       "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_26494"
     },
     {
       "id": "EONET_26463",
       "title": "Tropical Cyclone Xavier",
       "category": "Severe Storms",
-      "lat": -10.2,
-      "lon": -164,
-      "date": "2026-11-18T06:00:00Z",
+      "lat": -10.3,
+      "lon": -163.8,
+      "date": "2026-11-18T18:00:00Z",
       "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_26463"
     },
     {
@@ -404,5 +404,7 @@
       "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_26056"
     }
   ],
-  "errors": []
+  "errors": [
+    "weather: <urlopen error _ssl.c:994: The handshake operation timed out>"
+  ]
 }
