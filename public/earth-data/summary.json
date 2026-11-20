@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-11-20T11:27:20.339333+00:00",
+  "fetchedAt": "2026-11-20T20:06:05.601105+00:00",
   "weatherSource": "Open-Meteo Forecast API (model-based point samples)",
   "weatherUrl": "https://open-meteo.com/en/docs",
   "eventSource": "NASA EONET v3",
@@ -188,6 +188,42 @@
   ],
   "events": [
     {
+      "id": "EONET_26568",
+      "title": "Wildfire Greene - Caney Creek Lane, Greene, Tennessee",
+      "category": "Wildfires",
+      "lat": 36.36301667,
+      "lon": -82.7985,
+      "date": "2026-11-18T14:11:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_26568"
+    },
+    {
+      "id": "EONET_26569",
+      "title": "Prescribed Fire 2027 TXTMR HFR RX, Matagorda, Texas",
+      "category": "Wildfires",
+      "lat": 28.762433,
+      "lon": -95.80795,
+      "date": "2026-11-18T09:44:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_26569"
+    },
+    {
+      "id": "EONET_26571",
+      "title": "Prescribed Fire OAK Compartment 29 RX, Bibb, Alabama",
+      "category": "Wildfires",
+      "lat": 32.945935,
+      "lon": -87.347136,
+      "date": "2026-11-18T09:18:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_26571"
+    },
+    {
+      "id": "EONET_26572",
+      "title": "Prescribed Fire rx-Lapham Good Oak 2026, Waukesha, Wisconsin",
+      "category": "Wildfires",
+      "lat": 43.0403647,
+      "lon": -88.3992015,
+      "date": "2026-11-18T08:47:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_26572"
+    },
+    {
       "id": "EONET_26494",
       "title": "Tropical Cyclone Akvan",
       "category": "Severe Storms",
@@ -197,12 +233,30 @@
       "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_26494"
     },
     {
+      "id": "EONET_26573",
+      "title": "Prescribed Fire STEELY MILL RX, El Dorado, California",
+      "category": "Wildfires",
+      "lat": 38.619383,
+      "lon": -120.50025,
+      "date": "2026-11-16T11:32:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_26573"
+    },
+    {
+      "id": "EONET_26575",
+      "title": "Prescribed Fire Elk/Clark Piles RX, Coconino, Arizona",
+      "category": "Wildfires",
+      "lat": 35.050444,
+      "lon": -111.578139,
+      "date": "2026-11-16T09:06:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_26575"
+    },
+    {
       "id": "EONET_26463",
       "title": "Tropical Cyclone Xavier",
       "category": "Severe Storms",
-      "lat": -11.1,
-      "lon": -162.6,
-      "date": "2026-11-20T00:00:00Z",
+      "lat": -11.4,
+      "lon": -163.5,
+      "date": "2026-11-20T12:00:00Z",
       "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_26463"
     },
     {
@@ -269,6 +323,24 @@
       "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_26332"
     },
     {
+      "id": "EONET_26576",
+      "title": "Prescribed Fire TSK Compartment 6 RX, Macon, Alabama",
+      "category": "Wildfires",
+      "lat": 32.446972,
+      "lon": -85.653222,
+      "date": "2026-11-11T08:18:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_26576"
+    },
+    {
+      "id": "EONET_26577",
+      "title": "Prescribed Fire Strawberry RX, Wasatch, Utah",
+      "category": "Wildfires",
+      "lat": 40.31,
+      "lon": -111.2668,
+      "date": "2026-11-10T17:06:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_26577"
+    },
+    {
       "id": "EONET_26333",
       "title": "Prescribed Fire Compartment 170 RX, Greene, Georgia",
       "category": "Wildfires",
@@ -330,79 +402,9 @@
       "lon": -111.616667,
       "date": "2026-10-30T10:13:00Z",
       "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25984"
-    },
-    {
-      "id": "EONET_6051",
-      "title": "Iceberg C39",
-      "category": "Sea and Lake Ice",
-      "lat": -65.58,
-      "lon": 55.55,
-      "date": "2026-10-30T00:00:00Z",
-      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_6051"
-    },
-    {
-      "id": "EONET_6320",
-      "title": "Iceberg A81",
-      "category": "Sea and Lake Ice",
-      "lat": -55.48,
-      "lon": -34.36,
-      "date": "2026-11-13T00:00:00Z",
-      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_6320"
-    },
-    {
-      "id": "EONET_6523",
-      "title": "Iceberg A83",
-      "category": "Sea and Lake Ice",
-      "lat": -58.98,
-      "lon": -48.45,
-      "date": "2026-11-13T00:00:00Z",
-      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_6523"
-    },
-    {
-      "id": "EONET_12618",
-      "title": "Iceberg A84",
-      "category": "Sea and Lake Ice",
-      "lat": -68.39,
-      "lon": -90.01,
-      "date": "2026-11-13T00:00:00Z",
-      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_12618"
-    },
-    {
-      "id": "EONET_25990",
-      "title": "Iceberg B22K",
-      "category": "Sea and Lake Ice",
-      "lat": -69.76,
-      "lon": 163.35,
-      "date": "2026-10-30T00:00:00Z",
-      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25990"
-    },
-    {
-      "id": "EONET_25986",
-      "title": "Prescribed Fire McCarty Piles RX, Coconino, Arizona",
-      "category": "Wildfires",
-      "lat": 34.513944,
-      "lon": -111.262694,
-      "date": "2026-10-29T12:16:00Z",
-      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25986"
-    },
-    {
-      "id": "EONET_25985",
-      "title": "Prescribed Fire Freidland-Chimney Piles RX, Coconino, Arizona",
-      "category": "Wildfires",
-      "lat": 35.283333,
-      "lon": -111.666667,
-      "date": "2026-10-29T11:37:00Z",
-      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25985"
-    },
-    {
-      "id": "EONET_26056",
-      "title": "Prescribed Fire TON RX - BAILEY LOST HP, Okanogan, Washington",
-      "category": "Wildfires",
-      "lat": 48.532726,
-      "lon": -119.055205,
-      "date": "2026-10-29T11:08:00Z",
-      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_26056"
     }
   ],
-  "errors": []
+  "errors": [
+    "weather: <urlopen error _ssl.c:994: The handshake operation timed out>"
+  ]
 }
