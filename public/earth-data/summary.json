@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-11-24T13:34:56.914187+00:00",
+  "fetchedAt": "2026-11-24T23:52:11.073174+00:00",
   "weatherSource": "Open-Meteo Forecast API (model-based point samples)",
   "weatherUrl": "https://open-meteo.com/en/docs",
   "eventSource": "NASA EONET v3",
@@ -404,5 +404,7 @@
       "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_26663"
     }
   ],
-  "errors": []
+  "errors": [
+    "weather: <urlopen error _ssl.c:994: The handshake operation timed out>"
+  ]
 }
