@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-11-24T23:52:11.073174+00:00",
+  "fetchedAt": "2026-11-25T08:22:50.683130+00:00",
   "weatherSource": "Open-Meteo Forecast API (model-based point samples)",
   "weatherUrl": "https://open-meteo.com/en/docs",
   "eventSource": "NASA EONET v3",
@@ -260,15 +260,6 @@
       "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_26572"
     },
     {
-      "id": "EONET_26494",
-      "title": "Tropical Cyclone Akvan",
-      "category": "Severe Storms",
-      "lat": 17.2,
-      "lon": 84.7,
-      "date": "2026-11-19T18:00:00Z",
-      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_26494"
-    },
-    {
       "id": "EONET_26573",
       "title": "Prescribed Fire STEELY MILL RX, El Dorado, California",
       "category": "Wildfires",
@@ -402,6 +393,15 @@
       "lon": -117.618779,
       "date": "2026-11-09T11:50:00Z",
       "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_26663"
+    },
+    {
+      "id": "EONET_2736",
+      "title": "Iceberg B22A",
+      "category": "Sea and Lake Ice",
+      "lat": -69.59,
+      "lon": 163.59,
+      "date": "2026-11-06T00:00:00Z",
+      "sourceUrl": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_2736"
     }
   ],
   "errors": [
